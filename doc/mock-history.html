@@ -1,0 +1,712 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>MuveEats — 記録の見返し（モック）</title>
+    <style>
+      :root {
+        --bg: #fafaf9;
+        --card: #ffffff;
+        --ink: #1c1917;
+        --muted: #78716c;
+        --line: #e7e5e4;
+        --accent: #059669;
+        --accent-soft: #d1fae5;
+        --warn: #f59e0b;
+      }
+      * { box-sizing: border-box; }
+      html, body { margin: 0; padding: 0; background: var(--bg); color: var(--ink); }
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans",
+          "Noto Sans JP", "Yu Gothic", sans-serif;
+        font-size: 14px;
+        line-height: 1.6;
+      }
+      a { color: inherit; }
+
+      /* === Mock の枠 === */
+      .mock-frame {
+        max-width: 768px;
+        margin: 24px auto;
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 10px 40px -20px rgba(0,0,0,0.15);
+      }
+      .mock-label {
+        max-width: 768px;
+        margin: 16px auto 4px;
+        font-size: 11px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--muted);
+        padding: 0 8px;
+      }
+      .mock-note {
+        max-width: 768px;
+        margin: 0 auto 8px;
+        font-size: 12px;
+        color: var(--muted);
+        padding: 0 8px;
+      }
+
+      /* === ヘッダー === */
+      .app-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 16px;
+        border-bottom: 1px solid var(--line);
+        background: #fff;
+      }
+      .app-header .logo {
+        font-weight: 700;
+        font-size: 16px;
+      }
+      .app-header nav {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        font-size: 13px;
+      }
+      .app-header nav a.active {
+        color: var(--accent);
+        font-weight: 600;
+      }
+      .app-header .user-chip {
+        font-size: 11px;
+        color: var(--muted);
+      }
+
+      /* === メイン === */
+      .page { padding: 20px 16px 32px; }
+      h1.page-title { font-size: 22px; margin: 0 0 4px; }
+      .subtitle { color: var(--muted); font-size: 13px; margin: 0 0 16px; }
+
+      /* === ツールバー === */
+      .toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        align-items: center;
+        margin-bottom: 16px;
+      }
+      .toolbar .search {
+        flex: 1;
+        min-width: 200px;
+        position: relative;
+      }
+      .toolbar .search input {
+        width: 100%;
+        padding: 8px 10px 8px 32px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        font-size: 13px;
+        background: #fff;
+      }
+      .toolbar .search::before {
+        content: "🔍";
+        position: absolute;
+        left: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 12px;
+      }
+      .toolbar select, .toolbar .btn {
+        padding: 8px 12px;
+        border: 1px solid var(--line);
+        background: #fff;
+        border-radius: 8px;
+        font-size: 13px;
+        cursor: pointer;
+      }
+      .toolbar .btn.primary {
+        background: var(--accent);
+        color: #fff;
+        border-color: var(--accent);
+        font-weight: 600;
+      }
+
+      /* === 期間タブ === */
+      .range-tabs {
+        display: inline-flex;
+        padding: 3px;
+        background: #f5f5f4;
+        border-radius: 8px;
+        gap: 2px;
+      }
+      .range-tabs button {
+        border: 0;
+        background: transparent;
+        padding: 5px 12px;
+        border-radius: 6px;
+        font-size: 12px;
+        font-weight: 500;
+        cursor: pointer;
+        color: var(--muted);
+      }
+      .range-tabs button.active {
+        background: #fff;
+        color: var(--ink);
+        box-shadow: 0 1px 2px rgba(0,0,0,0.08);
+      }
+
+      /* === サマリー === */
+      .summary {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
+        padding: 12px;
+        background: #f8fafc;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        margin-bottom: 16px;
+      }
+      .summary .item .label {
+        font-size: 10px;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+      .summary .item .value {
+        font-size: 18px;
+        font-weight: 700;
+        font-variant-numeric: tabular-nums;
+        margin-top: 2px;
+      }
+      .summary .item .sub {
+        font-size: 11px;
+        color: var(--muted);
+      }
+
+      /* === ミニグラフ（疑似） === */
+      .minigraph {
+        display: flex;
+        align-items: flex-end;
+        gap: 6px;
+        height: 60px;
+        padding: 12px;
+        background: #fff;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        margin-bottom: 16px;
+      }
+      .minigraph .day {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 3px;
+        font-size: 9px;
+        color: var(--muted);
+      }
+      .minigraph .bar {
+        width: 100%;
+        background: var(--accent-soft);
+        border-radius: 3px 3px 0 0;
+        position: relative;
+      }
+      .minigraph .bar.today { background: var(--accent); }
+      .minigraph .bar.over { background: var(--warn); }
+
+      /* === 日付グループ === */
+      .day-group { margin-bottom: 16px; }
+      .day-header {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        padding: 6px 4px;
+      }
+      .day-header .date {
+        font-weight: 700;
+        font-size: 14px;
+      }
+      .day-header .dow {
+        font-size: 11px;
+        color: var(--muted);
+        margin-left: 6px;
+      }
+      .day-header .day-total {
+        font-size: 12px;
+        color: var(--muted);
+      }
+      .day-header .day-total .kcal {
+        font-weight: 700;
+        color: var(--ink);
+        font-variant-numeric: tabular-nums;
+      }
+
+      .meal-list {
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        background: #fff;
+        overflow: hidden;
+      }
+      .meal-row {
+        display: flex;
+        gap: 12px;
+        padding: 12px;
+        align-items: center;
+        border-bottom: 1px solid var(--line);
+        cursor: pointer;
+      }
+      .meal-row:last-child { border-bottom: 0; }
+      .meal-row:hover { background: #fafaf9; }
+      .meal-thumb {
+        width: 56px;
+        height: 56px;
+        border-radius: 8px;
+        background: #f5f5f4;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+        flex-shrink: 0;
+      }
+      .meal-thumb.photo { background: linear-gradient(135deg, #fbbf24, #f59e0b); color: #fff; }
+      .meal-body { flex: 1; min-width: 0; }
+      .meal-name {
+        font-weight: 600;
+        margin-bottom: 2px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .meal-meta {
+        font-size: 11px;
+        color: var(--muted);
+        display: flex;
+        gap: 8px;
+        align-items: center;
+      }
+      .meal-meta .badge {
+        font-size: 10px;
+        padding: 1px 6px;
+        border-radius: 999px;
+        background: #f5f5f4;
+      }
+      .meal-meta .badge.photo {
+        background: #fef3c7;
+        color: #92400e;
+      }
+      .meal-nutri {
+        text-align: right;
+        font-size: 12px;
+        flex-shrink: 0;
+      }
+      .meal-nutri .kcal {
+        font-weight: 700;
+        font-size: 14px;
+        font-variant-numeric: tabular-nums;
+      }
+      .meal-nutri .pfc {
+        font-size: 10px;
+        color: var(--muted);
+      }
+
+      /* === 詳細パネル（モーダル風） === */
+      .detail-card {
+        background: #fff;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        overflow: hidden;
+      }
+      .detail-photo {
+        background: linear-gradient(135deg, #fbbf24, #f59e0b);
+        height: 200px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-size: 48px;
+      }
+      .detail-body { padding: 16px; }
+      .detail-body h3 {
+        margin: 0 0 4px;
+        font-size: 18px;
+      }
+      .detail-body .meta {
+        color: var(--muted);
+        font-size: 12px;
+        margin-bottom: 12px;
+      }
+      .detail-pfc {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
+        margin-bottom: 12px;
+      }
+      .detail-pfc .cell {
+        background: #f8fafc;
+        border-radius: 8px;
+        padding: 8px;
+        text-align: center;
+      }
+      .detail-pfc .cell .lbl { font-size: 10px; color: var(--muted); }
+      .detail-pfc .cell .val { font-weight: 700; font-variant-numeric: tabular-nums; }
+      .detail-note {
+        background: #fafaf9;
+        border-left: 3px solid var(--accent);
+        padding: 8px 10px;
+        font-size: 12px;
+        color: var(--muted);
+        margin-bottom: 12px;
+        border-radius: 0 6px 6px 0;
+      }
+      .detail-actions {
+        display: flex;
+        gap: 8px;
+      }
+      .detail-actions button {
+        flex: 1;
+        padding: 8px;
+        border: 1px solid var(--line);
+        background: #fff;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 13px;
+      }
+      .detail-actions button.danger { color: #dc2626; }
+      .detail-actions button.primary {
+        background: var(--ink);
+        color: #fff;
+        border-color: var(--ink);
+        font-weight: 600;
+      }
+
+      /* === 空状態 === */
+      .empty {
+        padding: 32px;
+        text-align: center;
+        color: var(--muted);
+        font-size: 13px;
+        background: #fff;
+        border: 1px dashed var(--line);
+        border-radius: 10px;
+      }
+
+      /* === 注釈 === */
+      .annotations {
+        max-width: 768px;
+        margin: 32px auto 64px;
+        padding: 16px 24px;
+        background: #fffbeb;
+        border: 1px solid #fde68a;
+        border-radius: 10px;
+        font-size: 13px;
+      }
+      .annotations h3 {
+        margin: 0 0 8px;
+        font-size: 14px;
+        color: #92400e;
+      }
+      .annotations ul { margin: 0; padding-left: 18px; }
+      .annotations li { margin-bottom: 4px; }
+
+      @media (max-width: 640px) {
+        .summary { grid-template-columns: repeat(2, 1fr); }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ===================================================== -->
+    <!-- 画面1: /history 一覧（メインの見返し画面）              -->
+    <!-- ===================================================== -->
+    <div class="mock-label">画面 1 / 3</div>
+    <div class="mock-note">/history — メインの見返し画面（日付グループ + サマリー + ミニグラフ）</div>
+
+    <div class="mock-frame">
+      <header class="app-header">
+        <div class="logo">🥗 MuveEats</div>
+        <nav>
+          <a>ダッシュボード</a>
+          <a>記録</a>
+          <a>写真解析</a>
+          <a class="active">履歴</a>
+          <span class="user-chip">you@example.com</span>
+          <button style="border:1px solid var(--line); background:#fff; padding:4px 8px; border-radius:6px; font-size:11px; cursor:pointer;">サインアウト</button>
+        </nav>
+      </header>
+
+      <div class="page">
+        <h1 class="page-title">食事の履歴</h1>
+        <p class="subtitle">記録を振り返って、傾向を見つけましょう</p>
+
+        <!-- 期間タブ + ツールバー -->
+        <div class="toolbar">
+          <div class="range-tabs">
+            <button>今日</button>
+            <button class="active">7日</button>
+            <button>30日</button>
+            <button>すべて</button>
+          </div>
+          <div class="search">
+            <input type="text" placeholder="料理名で検索（例: サラダ）" />
+          </div>
+          <select>
+            <option>すべての種別</option>
+            <option>📷 写真記録のみ</option>
+            <option>✍️ 手動記録のみ</option>
+          </select>
+        </div>
+
+        <!-- サマリー -->
+        <div class="summary">
+          <div class="item">
+            <div class="label">期間合計</div>
+            <div class="value">12,450 kcal</div>
+            <div class="sub">7日間 / 21食</div>
+          </div>
+          <div class="item">
+            <div class="label">1日平均</div>
+            <div class="value">1,779 kcal</div>
+            <div class="sub">目標 2,000 比 89%</div>
+          </div>
+          <div class="item">
+            <div class="label">タンパク質 平均</div>
+            <div class="value">98.3 g</div>
+            <div class="sub">目標 120 比 82%</div>
+          </div>
+          <div class="item">
+            <div class="label">記録ストリーク</div>
+            <div class="value">5 日 🔥</div>
+            <div class="sub">連続記録中</div>
+          </div>
+        </div>
+
+        <!-- ミニグラフ -->
+        <div class="minigraph">
+          <div class="day"><div class="bar" style="height: 30%"></div>月</div>
+          <div class="day"><div class="bar" style="height: 55%"></div>火</div>
+          <div class="day"><div class="bar over" style="height: 90%"></div>水</div>
+          <div class="day"><div class="bar" style="height: 65%"></div>木</div>
+          <div class="day"><div class="bar" style="height: 70%"></div>金</div>
+          <div class="day"><div class="bar" style="height: 50%"></div>土</div>
+          <div class="day"><div class="bar today" style="height: 45%"></div>今日</div>
+        </div>
+
+        <!-- 日付グループ: 今日 -->
+        <div class="day-group">
+          <div class="day-header">
+            <div>
+              <span class="date">5月25日</span>
+              <span class="dow">日曜日 · 今日</span>
+            </div>
+            <div class="day-total"><span class="kcal">900</span> kcal · 2食</div>
+          </div>
+          <div class="meal-list">
+            <div class="meal-row">
+              <div class="meal-thumb photo">🍱</div>
+              <div class="meal-body">
+                <div class="meal-name">サラダチキン丼</div>
+                <div class="meal-meta">
+                  <span>12:30</span>
+                  <span class="badge photo">📷 写真</span>
+                  <span>自信度 82%</span>
+                </div>
+              </div>
+              <div class="meal-nutri">
+                <div class="kcal">520 kcal</div>
+                <div class="pfc">P38 / F8 / C68</div>
+              </div>
+            </div>
+            <div class="meal-row">
+              <div class="meal-thumb">🥗</div>
+              <div class="meal-body">
+                <div class="meal-name">朝食: グラノーラとヨーグルト</div>
+                <div class="meal-meta">
+                  <span>8:00</span>
+                  <span class="badge">✍️ 手動</span>
+                </div>
+              </div>
+              <div class="meal-nutri">
+                <div class="kcal">380 kcal</div>
+                <div class="pfc">P15 / F12 / C52</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 日付グループ: 昨日 -->
+        <div class="day-group">
+          <div class="day-header">
+            <div>
+              <span class="date">5月24日</span>
+              <span class="dow">土曜日 · 昨日</span>
+            </div>
+            <div class="day-total"><span class="kcal">2,180</span> kcal · 3食</div>
+          </div>
+          <div class="meal-list">
+            <div class="meal-row">
+              <div class="meal-thumb photo">🍜</div>
+              <div class="meal-body">
+                <div class="meal-name">家系ラーメン（中盛・全部）</div>
+                <div class="meal-meta">
+                  <span>21:15</span>
+                  <span class="badge photo">📷 写真</span>
+                </div>
+              </div>
+              <div class="meal-nutri">
+                <div class="kcal">1,050 kcal</div>
+                <div class="pfc">P40 / F45 / C115</div>
+              </div>
+            </div>
+            <div class="meal-row">
+              <div class="meal-thumb photo">🍣</div>
+              <div class="meal-body">
+                <div class="meal-name">回転寿司（マグロ・サーモン他）</div>
+                <div class="meal-meta">
+                  <span>13:00</span>
+                  <span class="badge photo">📷 写真</span>
+                </div>
+              </div>
+              <div class="meal-nutri">
+                <div class="kcal">680 kcal</div>
+                <div class="pfc">P52 / F12 / C82</div>
+              </div>
+            </div>
+            <div class="meal-row">
+              <div class="meal-thumb">🍞</div>
+              <div class="meal-body">
+                <div class="meal-name">トースト + 目玉焼き</div>
+                <div class="meal-meta">
+                  <span>9:30</span>
+                  <span class="badge">✍️ 手動</span>
+                </div>
+              </div>
+              <div class="meal-nutri">
+                <div class="kcal">450 kcal</div>
+                <div class="pfc">P18 / F22 / C45</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 日付グループ: 一昨日 -->
+        <div class="day-group">
+          <div class="day-header">
+            <div>
+              <span class="date">5月23日</span>
+              <span class="dow">金曜日</span>
+            </div>
+            <div class="day-total"><span class="kcal">1,720</span> kcal · 3食</div>
+          </div>
+          <div class="meal-list">
+            <div class="meal-row">
+              <div class="meal-thumb">🍝</div>
+              <div class="meal-body">
+                <div class="meal-name">トマトソースパスタ</div>
+                <div class="meal-meta">
+                  <span>19:30</span>
+                  <span class="badge">✍️ 手動</span>
+                </div>
+              </div>
+              <div class="meal-nutri">
+                <div class="kcal">650 kcal</div>
+                <div class="pfc">P22 / F18 / C95</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="text-align:center; margin-top: 12px;">
+          <button class="btn" style="padding: 8px 24px; border: 1px solid var(--line); background:#fff; border-radius: 8px; cursor: pointer; font-size: 13px;">
+            もっと見る (残り 12 件)
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================================================== -->
+    <!-- 画面2: 詳細パネル（行クリック時）                       -->
+    <!-- ===================================================== -->
+    <div class="mock-label">画面 2 / 3</div>
+    <div class="mock-note">食事をクリックしたときの詳細表示（モーダル or 別ページ /history/[id]）</div>
+
+    <div class="mock-frame" style="max-width: 480px;">
+      <div class="detail-card">
+        <div class="detail-photo">🍱</div>
+        <div class="detail-body">
+          <h3>サラダチキン丼</h3>
+          <div class="meta">5月25日 12:30 · 📷 写真記録 · 自信度 82%</div>
+
+          <div class="detail-pfc">
+            <div class="cell"><div class="lbl">kcal</div><div class="val">520</div></div>
+            <div class="cell"><div class="lbl">P (g)</div><div class="val">38.0</div></div>
+            <div class="cell"><div class="lbl">F (g)</div><div class="val">8.0</div></div>
+            <div class="cell"><div class="lbl">C (g)</div><div class="val">68.0</div></div>
+          </div>
+
+          <div class="detail-note">
+            🤖 Gemini メモ: 鶏胸肉が約150g、白米茶碗1.5杯、レタス・トマト・ドレッシング少々と推定しました。
+          </div>
+
+          <div class="detail-actions">
+            <button class="danger">削除</button>
+            <button>編集</button>
+            <button class="primary">閉じる</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================================================== -->
+    <!-- 画面3: 空状態 / 検索結果なし                            -->
+    <!-- ===================================================== -->
+    <div class="mock-label">画面 3 / 3</div>
+    <div class="mock-note">記録ゼロ / 検索結果ゼロの空状態</div>
+
+    <div class="mock-frame">
+      <header class="app-header">
+        <div class="logo">🥗 MuveEats</div>
+        <nav>
+          <a>ダッシュボード</a>
+          <a>記録</a>
+          <a>写真解析</a>
+          <a class="active">履歴</a>
+        </nav>
+      </header>
+      <div class="page">
+        <h1 class="page-title">食事の履歴</h1>
+        <div class="toolbar">
+          <div class="range-tabs">
+            <button>今日</button>
+            <button class="active">7日</button>
+            <button>30日</button>
+            <button>すべて</button>
+          </div>
+          <div class="search">
+            <input type="text" value="チョコ" />
+          </div>
+        </div>
+        <div class="empty">
+          <div style="font-size: 32px; margin-bottom: 8px;">🔍</div>
+          <div style="font-weight: 600; color: var(--ink); margin-bottom: 4px;">
+            「チョコ」に一致する記録はありません
+          </div>
+          検索条件を変えるか、期間を「すべて」にしてみてください
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================================================== -->
+    <!-- 検討事項 / 質問                                         -->
+    <!-- ===================================================== -->
+    <div class="annotations">
+      <h3>💡 機能のポイント / 検討事項</h3>
+      <ul>
+        <li><strong>日付グルーピング:</strong> 同じ日の食事はまとめて、その日の合計 kcal を表示。スクロールで時系列に振り返る。</li>
+        <li><strong>期間タブ:</strong> 今日 / 7日 / 30日 / すべて で素早く切替。サマリーとミニグラフは選択期間に追従。</li>
+        <li><strong>ミニグラフ:</strong> 7日の日別 kcal を棒グラフで。目標オーバーは黄色、今日は濃緑で強調。</li>
+        <li><strong>サマリー4カード:</strong> 期間合計 / 1日平均 / タンパク質平均 / ストリーク。<u>目標値は別途設定画面が必要</u>（今回スコープ外）。</li>
+        <li><strong>検索:</strong> 料理名の部分一致 (ilike)。種別フィルタ（写真 / 手動）も用意。</li>
+        <li><strong>詳細表示:</strong> モーダル vs 別ページ どちらが良いか？ モバイル中心ならフルスクリーンモーダルが操作しやすい。</li>
+        <li><strong>編集 / 削除:</strong> 詳細から行う想定。編集は <code>/log</code> の再利用、削除は確認ダイアログ。</li>
+        <li><strong>写真サムネ:</strong> 現状 <code>photo_url</code> 未保存。サムネ表示するには Supabase Storage への保存が前提（フェーズ2）。今回は絵文字プレースホルダで運用するか、サムネを諦めるか。</li>
+        <li><strong>ストリーク:</strong> 「連続で1食以上記録した日数」を表示。モチベ用。計算ロジックは要相談。</li>
+      </ul>
+    </div>
+  </body>
+</html>

@@ -1,65 +1,131 @@
-import Image from "next/image";
+import { createClient } from "@/lib/supabase/server";
+import type { Meal } from "@/lib/types";
+import Link from "next/link";
 
-export default function Home() {
+function sum(meals: Meal[], key: keyof Meal) {
+  return meals.reduce((acc, m) => acc + (Number(m[key]) || 0), 0);
+}
+
+function startOfDay(d: Date) {
+  const x = new Date(d);
+  x.setHours(0, 0, 0, 0);
+  return x;
+}
+
+export default async function DashboardPage() {
+  let meals: Meal[] = [];
+  let connError: string | null = null;
+
+  try {
+    const supabase = await createClient();
+    const since = new Date();
+    since.setDate(since.getDate() - 30);
+    const { data, error } = await supabase
+      .from("meals")
+      .select("*")
+      .gte("eaten_at", since.toISOString())
+      .order("eaten_at", { ascending: false })
+      .limit(100);
+    if (error) throw error;
+    meals = (data ?? []) as Meal[];
+  } catch (e) {
+    if (e instanceof Error) {
+      connError = e.message;
+    } else if (e && typeof e === "object") {
+      connError = JSON.stringify(e);
+    } else {
+      connError = String(e);
+    }
+  }
+
+  const today = startOfDay(new Date());
+  const weekAgo = new Date(today);
+  weekAgo.setDate(weekAgo.getDate() - 6);
+
+  const todayMeals = meals.filter((m) => new Date(m.eaten_at) >= today);
+  const weekMeals = meals.filter((m) => new Date(m.eaten_at) >= weekAgo);
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <div className="space-y-6">
+      <section className="flex items-end justify-between">
+        <div>
+          <h1 className="text-2xl font-bold">今日のサマリー</h1>
+          <p className="text-sm text-neutral-500">
+            {new Date().toLocaleDateString("ja-JP", { dateStyle: "long" })}
           </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+        <div className="flex gap-2">
+          <Link
+            href="/analyze"
+            className="rounded-md bg-emerald-600 px-3 py-2 text-sm font-semibold text-white hover:bg-emerald-700"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            📷 写真から記録
+          </Link>
+          <Link
+            href="/log"
+            className="rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm font-semibold hover:bg-neutral-50"
           >
-            Documentation
-          </a>
+            ＋ 手動で記録
+          </Link>
         </div>
-      </main>
+      </section>
+
+      {connError && (
+        <div className="rounded-md border border-amber-300 bg-amber-50 p-3 text-sm text-amber-800">
+          Supabase に接続できませんでした: {connError}
+          <div className="mt-1 text-xs">
+            <code>.env.local</code> を設定し、
+            <code>supabase/schema.sql</code> を Supabase で実行してください。
+          </div>
+        </div>
+      )}
+
+      <section className="grid grid-cols-2 gap-3 md:grid-cols-4">
+        <Card label="今日のカロリー" value={`${Math.round(sum(todayMeals, "calories"))} kcal`} />
+        <Card label="今日のたんぱく質" value={`${sum(todayMeals, "protein_g").toFixed(1)} g`} />
+        <Card label="7日平均 kcal" value={`${Math.round(sum(weekMeals, "calories") / 7)} kcal`} />
+        <Card label="記録件数 (7日)" value={`${weekMeals.length} 件`} />
+      </section>
+
+      <section>
+        <h2 className="mb-2 text-lg font-semibold">最近の食事</h2>
+        {meals.length === 0 ? (
+          <p className="text-sm text-neutral-500">
+            まだ記録がありません。写真から、または手動で1食追加してみましょう。
+          </p>
+        ) : (
+          <ul className="divide-y divide-neutral-200 rounded-md border border-neutral-200 bg-white">
+            {meals.slice(0, 10).map((m) => (
+              <li key={m.id} className="flex items-center justify-between px-4 py-3">
+                <div>
+                  <div className="font-medium">{m.name}</div>
+                  <div className="text-xs text-neutral-500">
+                    {new Date(m.eaten_at).toLocaleString("ja-JP")}
+                    {m.source === "photo" && <span className="ml-2">📷</span>}
+                  </div>
+                </div>
+                <div className="text-right text-sm">
+                  <div className="font-semibold">
+                    {m.calories ? `${Math.round(m.calories)} kcal` : "—"}
+                  </div>
+                  <div className="text-xs text-neutral-500">
+                    P{m.protein_g ?? 0} / F{m.fat_g ?? 0} / C{m.carbs_g ?? 0}
+                  </div>
+                </div>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+    </div>
+  );
+}
+
+function Card({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="rounded-md border border-neutral-200 bg-white p-3">
+      <div className="text-xs text-neutral-500">{label}</div>
+      <div className="mt-1 text-xl font-bold tabular-nums">{value}</div>
     </div>
   );
 }

@@ -1,0 +1,904 @@
+<!doctype html>
+<html lang="ja" data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>MuveEats — モック v3（トレーニング + チェーン検索 + タグ）</title>
+    <style>
+      :root, [data-theme="light"] {
+        --bg: #fafaf9; --surface: #ffffff; --surface-2: #f8fafc;
+        --ink: #1c1917; --ink-2: #44403c; --muted: #78716c;
+        --line: #e7e5e4; --accent: #059669; --accent-ink: #ffffff;
+        --accent-soft: #d1fae5; --warn: #f59e0b; --danger: #dc2626;
+        --muscle: #7c3aed; --muscle-soft: #ede9fe;
+        --shadow: 0 10px 40px -20px rgba(0,0,0,0.15);
+      }
+      [data-theme="dark"] {
+        --bg: #1c1917; --surface: #292524; --surface-2: #1f1d1b;
+        --ink: #fafaf9; --ink-2: #d6d3d1; --muted: #a8a29e;
+        --line: #3f3a37; --accent: #34d399; --accent-ink: #052e2b;
+        --accent-soft: #064e3b; --warn: #fbbf24; --danger: #f87171;
+        --muscle: #a78bfa; --muscle-soft: #3b2a5e;
+        --shadow: 0 10px 40px -20px rgba(0,0,0,0.6);
+      }
+      [data-theme="pastel"] {
+        --bg: #fef6f9; --surface: #ffffff; --surface-2: #fff0f6;
+        --ink: #4a3a52; --ink-2: #6b5e75; --muted: #a89bb0;
+        --line: #f5d9e5; --accent: #f9a8d4; --accent-ink: #831843;
+        --accent-soft: #fce7f3; --warn: #fcd34d; --danger: #fb7185;
+        --muscle: #c4b5fd; --muscle-soft: #ede9fe;
+        --shadow: 0 10px 40px -20px rgba(244,114,182,0.3);
+      }
+      * { box-sizing: border-box; }
+      html, body {
+        margin: 0; padding: 0; background: var(--bg); color: var(--ink);
+        transition: background .2s, color .2s;
+      }
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans",
+          "Noto Sans JP", "Yu Gothic", sans-serif;
+        font-size: 14px; line-height: 1.6;
+      }
+
+      .theme-bar {
+        position: sticky; top: 0; z-index: 100;
+        background: var(--surface); border-bottom: 1px solid var(--line);
+        padding: 8px 16px; display: flex; gap: 8px;
+        align-items: center; justify-content: center;
+        font-size: 12px; color: var(--muted);
+      }
+      .theme-bar strong { color: var(--ink); }
+      .theme-bar button {
+        border: 1px solid var(--line); background: var(--surface);
+        color: var(--ink); padding: 4px 12px; border-radius: 999px;
+        font-size: 12px; cursor: pointer;
+      }
+      .theme-bar button.active {
+        background: var(--accent); color: var(--accent-ink);
+        border-color: var(--accent); font-weight: 600;
+      }
+
+      .mock-label {
+        max-width: 480px; margin: 24px auto 6px; padding: 0 8px;
+        font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+        color: var(--muted);
+      }
+      .mock-note {
+        max-width: 480px; margin: 0 auto 10px; padding: 0 8px;
+        font-size: 12px; color: var(--muted);
+      }
+      .mock-frame {
+        max-width: 480px; margin: 0 auto 8px;
+        background: var(--surface); border: 1px solid var(--line);
+        border-radius: 24px; overflow: hidden; box-shadow: var(--shadow);
+      }
+
+      .app-header {
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 14px 16px; border-bottom: 1px solid var(--line);
+      }
+      .app-header .logo { font-weight: 700; font-size: 16px; }
+      .app-header .menu-btn {
+        background: transparent; border: 0; font-size: 20px;
+        cursor: pointer; color: var(--ink);
+      }
+
+      .bottom-nav {
+        display: flex; border-top: 1px solid var(--line);
+        background: var(--surface);
+      }
+      .bottom-nav a {
+        flex: 1; text-align: center; padding: 10px 4px 12px;
+        text-decoration: none; color: var(--muted); font-size: 10px;
+      }
+      .bottom-nav a .icon {
+        font-size: 20px; display: block; margin-bottom: 2px;
+      }
+      .bottom-nav a.active { color: var(--accent); font-weight: 600; }
+      .bottom-nav a.active-train { color: var(--muscle); font-weight: 600; }
+
+      .page { padding: 20px 16px 16px; }
+      h1.page-title { font-size: 22px; margin: 0 0 4px; }
+      .subtitle { color: var(--muted); font-size: 12px; margin: 0 0 16px; }
+
+      .input-base, input[type="text"], input[type="number"], select, textarea {
+        padding: 8px 10px; border: 1px solid var(--line);
+        background: var(--surface); color: var(--ink);
+        border-radius: 8px; font-size: 13px; font-family: inherit;
+      }
+
+      /* ========== タグピッカー ========== */
+      .tag-section {
+        background: var(--surface-2); border: 1px solid var(--line);
+        border-radius: 10px; padding: 12px; margin-bottom: 12px;
+      }
+      .tag-section h4 {
+        margin: 0 0 6px; font-size: 11px; color: var(--muted);
+        text-transform: uppercase; letter-spacing: 0.05em;
+      }
+      .tag-group {
+        display: flex; flex-wrap: wrap; gap: 4px;
+      }
+      .tag-chip {
+        font-size: 11px; padding: 4px 10px;
+        background: var(--surface); border: 1px solid var(--line);
+        color: var(--ink-2); border-radius: 999px; cursor: pointer;
+      }
+      .tag-chip.selected {
+        background: var(--accent); color: var(--accent-ink);
+        border-color: var(--accent); font-weight: 600;
+      }
+      .tag-chip.ai-suggested {
+        border: 1px dashed var(--accent); color: var(--accent);
+        font-weight: 500;
+      }
+
+      /* ========== チェーン検索 ========== */
+      .chain-search {
+        background: linear-gradient(135deg, var(--muscle-soft), var(--surface-2));
+        border: 1px solid var(--muscle);
+        border-radius: 10px; padding: 12px; margin-bottom: 12px;
+      }
+      .chain-search .title {
+        font-weight: 700; font-size: 13px; margin-bottom: 6px;
+        color: var(--muscle);
+      }
+      .chain-search input {
+        width: 100%; margin-bottom: 8px;
+      }
+      .chain-result {
+        background: var(--surface); border: 1px solid var(--line);
+        border-radius: 8px; padding: 8px 10px; margin-bottom: 4px;
+        display: flex; align-items: center; justify-content: space-between;
+        cursor: pointer;
+      }
+      .chain-result:hover { background: var(--surface-2); }
+      .chain-result .left .name { font-weight: 600; font-size: 13px; }
+      .chain-result .left .chain {
+        font-size: 10px; color: var(--muted);
+      }
+      .chain-result .right {
+        text-align: right; font-size: 11px; color: var(--muted);
+      }
+      .chain-result .right .kcal {
+        font-weight: 700; color: var(--ink); font-size: 13px;
+      }
+      .chain-badge {
+        display: inline-block; font-size: 9px; padding: 1px 6px;
+        background: var(--muscle); color: white;
+        border-radius: 999px; margin-left: 4px;
+      }
+
+      /* ========== トレーニング ========== */
+      .train-summary {
+        display: grid; grid-template-columns: repeat(3, 1fr);
+        gap: 8px; margin-bottom: 16px;
+      }
+      .train-summary .item {
+        background: var(--muscle-soft);
+        border: 1px solid var(--muscle);
+        border-radius: 10px; padding: 10px 12px;
+      }
+      .train-summary .item .label {
+        font-size: 10px; color: var(--muscle);
+        text-transform: uppercase; letter-spacing: 0.05em;
+        font-weight: 600;
+      }
+      .train-summary .item .value {
+        font-size: 18px; font-weight: 700;
+        font-variant-numeric: tabular-nums; margin-top: 2px;
+        color: var(--ink);
+      }
+      .train-summary .item .sub {
+        font-size: 10px; color: var(--ink-2);
+      }
+
+      .train-session {
+        background: var(--surface); border: 1px solid var(--line);
+        border-radius: 12px; margin-bottom: 12px; overflow: hidden;
+      }
+      .train-session-head {
+        padding: 12px 14px;
+        background: linear-gradient(90deg, var(--muscle-soft), transparent);
+        border-bottom: 1px solid var(--line);
+        display: flex; justify-content: space-between; align-items: center;
+      }
+      .train-session-head .title {
+        font-weight: 700; font-size: 14px;
+      }
+      .train-session-head .meta {
+        font-size: 11px; color: var(--muted);
+      }
+      .train-session-head .duration {
+        font-size: 11px; color: var(--muscle); font-weight: 600;
+      }
+      .exercise {
+        padding: 10px 14px; border-bottom: 1px solid var(--line);
+      }
+      .exercise:last-child { border-bottom: 0; }
+      .exercise-head {
+        display: flex; align-items: center; justify-content: space-between;
+        margin-bottom: 6px;
+      }
+      .exercise-name {
+        font-weight: 600; font-size: 13px;
+      }
+      .exercise-meta {
+        font-size: 11px; color: var(--muted);
+      }
+      .sets-table {
+        width: 100%; font-size: 12px; border-collapse: collapse;
+      }
+      .sets-table th {
+        text-align: left; font-size: 10px;
+        color: var(--muted); font-weight: 500;
+        padding: 4px 6px;
+      }
+      .sets-table td {
+        padding: 4px 6px; font-variant-numeric: tabular-nums;
+      }
+      .sets-table td.weight { font-weight: 600; }
+      .pr-badge {
+        font-size: 9px; background: var(--warn); color: white;
+        padding: 1px 5px; border-radius: 4px; margin-left: 4px;
+      }
+
+      /* ========== トレーニング記録フォーム ========== */
+      .add-exercise-btn {
+        width: 100%; padding: 12px; margin-top: 8px;
+        background: var(--surface); border: 2px dashed var(--muscle);
+        color: var(--muscle); font-weight: 600;
+        border-radius: 10px; cursor: pointer; font-size: 13px;
+      }
+
+      .set-input-row {
+        display: grid; grid-template-columns: 30px 1fr 1fr 50px 30px;
+        gap: 6px; align-items: center; margin-bottom: 4px;
+      }
+      .set-input-row .set-num {
+        font-weight: 700; color: var(--muscle);
+        font-size: 12px; text-align: center;
+      }
+      .set-input-row input { width: 100%; }
+      .set-input-row .done-btn {
+        width: 30px; height: 30px; border-radius: 6px;
+        border: 1px solid var(--line); background: var(--surface);
+        cursor: pointer; font-size: 14px;
+      }
+      .set-input-row .done-btn.done {
+        background: var(--accent); color: var(--accent-ink);
+        border-color: var(--accent);
+      }
+      .timer {
+        display: flex; align-items: center; gap: 6px;
+        background: var(--accent-soft); border-radius: 8px;
+        padding: 8px 12px; font-size: 12px;
+        color: var(--accent); font-weight: 600;
+        margin-bottom: 8px;
+      }
+      .timer-time {
+        font-size: 16px; font-variant-numeric: tabular-nums;
+        font-weight: 700;
+      }
+
+      /* ========== 統合ダッシュボード ========== */
+      .dual-summary {
+        display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+        margin-bottom: 16px;
+      }
+      .dual-summary .card {
+        border-radius: 12px; padding: 14px; color: white;
+      }
+      .dual-summary .card.eat {
+        background: linear-gradient(135deg, var(--accent), #047857);
+      }
+      .dual-summary .card.move {
+        background: linear-gradient(135deg, var(--muscle), #5b21b6);
+      }
+      .dual-summary .card .icon {
+        font-size: 24px; margin-bottom: 4px;
+      }
+      .dual-summary .card .label {
+        font-size: 11px; opacity: 0.9; text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+      .dual-summary .card .value {
+        font-size: 22px; font-weight: 700;
+        font-variant-numeric: tabular-nums;
+      }
+      .dual-summary .card .sub {
+        font-size: 11px; opacity: 0.85;
+      }
+
+      .balance-card {
+        background: var(--surface); border: 1px solid var(--line);
+        border-radius: 12px; padding: 14px; margin-bottom: 16px;
+      }
+      .balance-card .title {
+        font-size: 12px; color: var(--muted); margin-bottom: 6px;
+      }
+      .balance-bar {
+        position: relative; height: 32px;
+        background: var(--surface-2); border-radius: 8px;
+        overflow: hidden; margin-bottom: 6px;
+      }
+      .balance-bar .intake, .balance-bar .burn {
+        position: absolute; top: 0; bottom: 0;
+        display: flex; align-items: center; padding: 0 8px;
+        font-size: 12px; font-weight: 600; color: white;
+      }
+      .balance-bar .intake {
+        left: 0; width: 60%; background: var(--accent);
+      }
+      .balance-bar .burn {
+        right: 0; width: 28%; background: var(--muscle);
+        justify-content: flex-end;
+      }
+      .balance-net {
+        text-align: center; font-size: 12px;
+        color: var(--muted);
+      }
+      .balance-net strong {
+        color: var(--ink); font-size: 14px;
+      }
+
+      .weekly-grid {
+        display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px;
+        margin-bottom: 16px;
+      }
+      .weekly-grid .day-cell {
+        background: var(--surface-2); border-radius: 6px;
+        padding: 6px 4px; text-align: center; font-size: 9px;
+        color: var(--muted);
+      }
+      .weekly-grid .day-cell .dow {
+        font-weight: 600; margin-bottom: 4px; color: var(--ink-2);
+      }
+      .weekly-grid .day-cell .marks {
+        font-size: 14px; line-height: 1.2;
+      }
+      .weekly-grid .day-cell.today {
+        background: var(--accent-soft);
+        border: 1px solid var(--accent);
+      }
+
+      /* ========== 共通 ========== */
+      .btn {
+        padding: 8px 12px; border: 1px solid var(--line);
+        background: var(--surface); color: var(--ink);
+        border-radius: 8px; cursor: pointer; font-size: 13px;
+      }
+      .btn.primary {
+        background: var(--accent); color: var(--accent-ink);
+        border-color: var(--accent); font-weight: 600;
+      }
+      .btn.muscle {
+        background: var(--muscle); color: white;
+        border-color: var(--muscle); font-weight: 600;
+      }
+
+      .annotations {
+        max-width: 720px; margin: 40px auto 80px;
+        padding: 16px 24px;
+        background: var(--surface-2); border: 1px solid var(--line);
+        border-radius: 10px; font-size: 13px;
+      }
+      .annotations h3 { margin: 0 0 8px; font-size: 14px; }
+      .annotations ul { margin: 0 0 12px; padding-left: 18px; }
+      .annotations li { margin-bottom: 6px; }
+      .annotations code {
+        background: var(--surface); padding: 1px 6px;
+        border-radius: 4px; font-size: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="theme-bar">
+      <strong>テーマ:</strong>
+      <button data-set-theme="light" class="active">☀️ Light</button>
+      <button data-set-theme="dark">🌙 Dark</button>
+      <button data-set-theme="pastel">🌸 Pastel</button>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- 画面1: 統合ダッシュボード（食事 × トレーニング）             -->
+    <!-- ============================================================ -->
+    <div class="mock-label">画面 1 / 5</div>
+    <div class="mock-note">統合ダッシュボード — 食事(緑) と トレーニング(紫) を並列に。エネルギー収支を可視化</div>
+
+    <div class="mock-frame">
+      <header class="app-header">
+        <div class="logo">🥗 MuveEats</div>
+        <button class="menu-btn">☰</button>
+      </header>
+      <div class="page">
+        <h1 class="page-title">今日</h1>
+        <p class="subtitle">5月25日(日)</p>
+
+        <!-- 食事 × トレーニング サマリー -->
+        <div class="dual-summary">
+          <div class="card eat">
+            <div class="icon">🥗</div>
+            <div class="label">摂取</div>
+            <div class="value">1,420 kcal</div>
+            <div class="sub">2食 · P 53g</div>
+          </div>
+          <div class="card move">
+            <div class="icon">💪</div>
+            <div class="label">消費</div>
+            <div class="value">420 kcal</div>
+            <div class="sub">胸の日 · 52分</div>
+          </div>
+        </div>
+
+        <!-- エネルギー収支 -->
+        <div class="balance-card">
+          <div class="title">エネルギー収支</div>
+          <div class="balance-bar">
+            <div class="intake">+1,420</div>
+            <div class="burn">-420</div>
+          </div>
+          <div class="balance-net">
+            純摂取 <strong>+1,000 kcal</strong> / 目標 -550 まで 余裕 1,550
+          </div>
+        </div>
+
+        <!-- 週次グリッド -->
+        <div style="font-size: 12px; color: var(--muted); margin-bottom: 6px;">
+          直近7日（🥗食事 / 💪トレ）
+        </div>
+        <div class="weekly-grid">
+          <div class="day-cell"><div class="dow">月</div><div class="marks">🥗</div></div>
+          <div class="day-cell"><div class="dow">火</div><div class="marks">🥗💪</div></div>
+          <div class="day-cell"><div class="dow">水</div><div class="marks">🥗</div></div>
+          <div class="day-cell"><div class="dow">木</div><div class="marks">🥗💪</div></div>
+          <div class="day-cell"><div class="dow">金</div><div class="marks">🥗</div></div>
+          <div class="day-cell"><div class="dow">土</div><div class="marks">🥗</div></div>
+          <div class="day-cell today"><div class="dow">日</div><div class="marks">🥗💪</div></div>
+        </div>
+
+        <div style="display:flex; gap:8px; margin-bottom:12px;">
+          <button class="btn primary" style="flex:1;">📷 食事を記録</button>
+          <button class="btn muscle" style="flex:1;">💪 トレを記録</button>
+        </div>
+
+        <div style="font-size: 12px; color: var(--muted);">
+          🔥 記録ストリーク 5日連続
+        </div>
+      </div>
+      <nav class="bottom-nav">
+        <a class="active"><span class="icon">🏠</span>ホーム</a>
+        <a><span class="icon">🥗</span>食事</a>
+        <a><span class="icon">💪</span>トレ</a>
+        <a><span class="icon">📚</span>履歴</a>
+        <a><span class="icon">⚙️</span>設定</a>
+      </nav>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- 画面2: 食事記録（タグピッカー + チェーン検索）              -->
+    <!-- ============================================================ -->
+    <div class="mock-label">画面 2 / 5</div>
+    <div class="mock-note">食事記録画面 — チェーン店検索 / 写真解析 / 手動 の3導線。タグは事前定義から選択</div>
+
+    <div class="mock-frame">
+      <header class="app-header">
+        <div class="logo">🥗 食事を記録</div>
+        <button class="menu-btn">×</button>
+      </header>
+      <div class="page">
+
+        <!-- チェーン店検索（最優先） -->
+        <div class="chain-search">
+          <div class="title">🏪 チェーン店メニューから検索</div>
+          <input type="text" placeholder="店名 or メニュー（例: マクドナルド ビッグマック）" value="ビッグマック" />
+          <div class="chain-result">
+            <div class="left">
+              <div class="name">ビッグマック <span class="chain-badge">公式値</span></div>
+              <div class="chain">マクドナルド</div>
+            </div>
+            <div class="right">
+              <div class="kcal">525 kcal</div>
+              <div>P26 / F28 / C42</div>
+            </div>
+          </div>
+          <div class="chain-result">
+            <div class="left">
+              <div class="name">ダブルビッグマック <span class="chain-badge">公式値</span></div>
+              <div class="chain">マクドナルド</div>
+            </div>
+            <div class="right">
+              <div class="kcal">720 kcal</div>
+              <div>P46 / F44 / C42</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 他の入力導線 -->
+        <div style="display:flex; gap:8px; margin-bottom: 16px;">
+          <button class="btn" style="flex:1;">📷 写真から</button>
+          <button class="btn" style="flex:1;">✍️ 手動入力</button>
+        </div>
+
+        <!-- 選択された内容（編集可能） -->
+        <div style="background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 14px; margin-bottom: 12px;">
+          <div style="font-weight: 700; font-size: 15px; margin-bottom: 4px;">
+            ビッグマック
+          </div>
+          <div style="font-size: 11px; color: var(--muted); margin-bottom: 10px;">
+            マクドナルド · 公式値
+          </div>
+          <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 10px;">
+            <div style="background: var(--surface-2); border-radius: 6px; padding: 6px; text-align: center;">
+              <div style="font-size:10px; color:var(--muted);">kcal</div>
+              <div style="font-weight:700;">525</div>
+            </div>
+            <div style="background: var(--surface-2); border-radius: 6px; padding: 6px; text-align: center;">
+              <div style="font-size:10px; color:var(--muted);">P</div>
+              <div style="font-weight:700;">26</div>
+            </div>
+            <div style="background: var(--surface-2); border-radius: 6px; padding: 6px; text-align: center;">
+              <div style="font-size:10px; color:var(--muted);">F</div>
+              <div style="font-weight:700;">28</div>
+            </div>
+            <div style="background: var(--surface-2); border-radius: 6px; padding: 6px; text-align: center;">
+              <div style="font-size:10px; color:var(--muted);">C</div>
+              <div style="font-weight:700;">42</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- タグピッカー -->
+        <div class="tag-section">
+          <h4>タグ（複数選択可 / AI提案にあり 🤖）</h4>
+
+          <div style="margin-bottom: 8px;">
+            <div style="font-size: 11px; color: var(--muted); margin-bottom: 4px;">栄養バランス</div>
+            <div class="tag-group">
+              <span class="tag-chip">#高タンパク</span>
+              <span class="tag-chip">#低脂質</span>
+              <span class="tag-chip">#低糖質</span>
+              <span class="tag-chip selected">#脂質高め 🤖</span>
+              <span class="tag-chip">#糖質高め</span>
+              <span class="tag-chip">#バランス良</span>
+            </div>
+          </div>
+
+          <div style="margin-bottom: 8px;">
+            <div style="font-size: 11px; color: var(--muted); margin-bottom: 4px;">シーン</div>
+            <div class="tag-group">
+              <span class="tag-chip">#自炊</span>
+              <span class="tag-chip selected">#外食 🤖</span>
+              <span class="tag-chip">#コンビニ</span>
+              <span class="tag-chip">#テイクアウト</span>
+              <span class="tag-chip selected">#チェーン店 🤖</span>
+              <span class="tag-chip selected">#ファストフード 🤖</span>
+            </div>
+          </div>
+
+          <div style="margin-bottom: 8px;">
+            <div style="font-size: 11px; color: var(--muted); margin-bottom: 4px;">タイミング</div>
+            <div class="tag-group">
+              <span class="tag-chip">#朝食</span>
+              <span class="tag-chip selected">#昼食</span>
+              <span class="tag-chip">#夕食</span>
+              <span class="tag-chip">#間食</span>
+              <span class="tag-chip">#夜食</span>
+            </div>
+          </div>
+
+          <div>
+            <div style="font-size: 11px; color: var(--muted); margin-bottom: 4px;">ジャンル</div>
+            <div class="tag-group">
+              <span class="tag-chip">#和食</span>
+              <span class="tag-chip selected">#洋食 🤖</span>
+              <span class="tag-chip">#中華</span>
+              <span class="tag-chip">#イタリアン</span>
+              <span class="tag-chip">#エスニック</span>
+            </div>
+          </div>
+        </div>
+
+        <button class="btn primary" style="width:100%; padding: 12px;">この内容で記録する</button>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- 画面3: トレーニング履歴一覧                                  -->
+    <!-- ============================================================ -->
+    <div class="mock-label">画面 3 / 5</div>
+    <div class="mock-note">/training — セッション単位のトレーニング履歴。PR 表示</div>
+
+    <div class="mock-frame">
+      <header class="app-header">
+        <div class="logo">💪 トレーニング</div>
+        <button class="menu-btn">＋</button>
+      </header>
+      <div class="page">
+
+        <div class="train-summary">
+          <div class="item">
+            <div class="label">今月</div>
+            <div class="value">12 回</div>
+            <div class="sub">目標 16 比 75%</div>
+          </div>
+          <div class="item">
+            <div class="label">総ボリューム</div>
+            <div class="value">28.4 t</div>
+            <div class="sub">先月比 +8%</div>
+          </div>
+          <div class="item">
+            <div class="label">PR</div>
+            <div class="value">3 件</div>
+            <div class="sub">今月の自己ベスト</div>
+          </div>
+        </div>
+
+        <!-- セッション1: 今日 -->
+        <div class="train-session">
+          <div class="train-session-head">
+            <div>
+              <div class="title">胸の日</div>
+              <div class="meta">5月25日(日) 19:00 · 52分</div>
+            </div>
+            <div class="duration">+420 kcal</div>
+          </div>
+          <div class="exercise">
+            <div class="exercise-head">
+              <div class="exercise-name">ベンチプレス <span class="pr-badge">PR</span></div>
+              <div class="exercise-meta">5セット / 22 rep</div>
+            </div>
+            <table class="sets-table">
+              <thead>
+                <tr><th>SET</th><th>重量</th><th>rep</th><th>RPE</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>1</td><td class="weight">60kg</td><td>10</td><td>7</td></tr>
+                <tr><td>2</td><td class="weight">70kg</td><td>8</td><td>8</td></tr>
+                <tr><td>3</td><td class="weight">75kg</td><td>5</td><td>9</td></tr>
+                <tr><td>4</td><td class="weight">80kg</td><td>3</td><td>9.5</td></tr>
+                <tr><td>5</td><td class="weight">82.5kg</td><td>1</td><td>10</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="exercise">
+            <div class="exercise-head">
+              <div class="exercise-name">インクラインダンベルプレス</div>
+              <div class="exercise-meta">4セット / 40 rep</div>
+            </div>
+            <table class="sets-table">
+              <tbody>
+                <tr><td>1</td><td class="weight">22kg×2</td><td>10</td><td>—</td></tr>
+                <tr><td>2</td><td class="weight">24kg×2</td><td>10</td><td>—</td></tr>
+                <tr><td>3</td><td class="weight">26kg×2</td><td>10</td><td>—</td></tr>
+                <tr><td>4</td><td class="weight">26kg×2</td><td>10</td><td>—</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="exercise">
+            <div class="exercise-head">
+              <div class="exercise-name">ケーブルフライ</div>
+              <div class="exercise-meta">3セット / 36 rep</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- セッション2: 木曜 -->
+        <div class="train-session">
+          <div class="train-session-head">
+            <div>
+              <div class="title">背中の日</div>
+              <div class="meta">5月22日(木) · 48分</div>
+            </div>
+            <div class="duration">+380 kcal</div>
+          </div>
+          <div class="exercise">
+            <div class="exercise-head">
+              <div class="exercise-name">デッドリフト <span class="pr-badge">PR</span></div>
+              <div class="exercise-meta">5セット</div>
+            </div>
+          </div>
+          <div class="exercise">
+            <div class="exercise-head">
+              <div class="exercise-name">ラットプルダウン</div>
+              <div class="exercise-meta">4セット</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="text-align:center; margin-top: 8px;">
+          <button class="btn">↓ もっと見る</button>
+        </div>
+      </div>
+      <nav class="bottom-nav">
+        <a><span class="icon">🏠</span>ホーム</a>
+        <a><span class="icon">🥗</span>食事</a>
+        <a class="active-train"><span class="icon">💪</span>トレ</a>
+        <a><span class="icon">📚</span>履歴</a>
+        <a><span class="icon">⚙️</span>設定</a>
+      </nav>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- 画面4: トレーニング記録画面（入力中）                        -->
+    <!-- ============================================================ -->
+    <div class="mock-label">画面 4 / 5</div>
+    <div class="mock-note">/training/new — セッション記録中の画面。インターバルタイマー付き</div>
+
+    <div class="mock-frame">
+      <header class="app-header">
+        <div class="logo">💪 胸の日</div>
+        <div style="font-size: 12px; color: var(--muscle); font-weight: 600;">⏱ 32:14</div>
+      </header>
+      <div class="page">
+
+        <!-- インターバルタイマー -->
+        <div class="timer">
+          <span>⏱ 次セットまで</span>
+          <span class="timer-time">01:24</span>
+          <span style="margin-left: auto;">/ 02:00</span>
+        </div>
+
+        <!-- 種目1（記録中） -->
+        <div class="train-session">
+          <div class="train-session-head">
+            <div>
+              <div class="title">ベンチプレス</div>
+              <div class="meta">前回: 80kg×3 (5/22)</div>
+            </div>
+          </div>
+          <div style="padding: 12px;">
+            <div class="set-input-row">
+              <div class="set-num">SET</div>
+              <div style="font-size: 10px; color: var(--muted); text-align: center;">重量 (kg)</div>
+              <div style="font-size: 10px; color: var(--muted); text-align: center;">rep</div>
+              <div style="font-size: 10px; color: var(--muted); text-align: center;">RPE</div>
+              <div></div>
+            </div>
+            <div class="set-input-row">
+              <div class="set-num">1</div>
+              <input type="number" value="60" />
+              <input type="number" value="10" />
+              <input type="number" value="7" />
+              <button class="done-btn done">✓</button>
+            </div>
+            <div class="set-input-row">
+              <div class="set-num">2</div>
+              <input type="number" value="70" />
+              <input type="number" value="8" />
+              <input type="number" value="8" />
+              <button class="done-btn done">✓</button>
+            </div>
+            <div class="set-input-row">
+              <div class="set-num">3</div>
+              <input type="number" value="75" />
+              <input type="number" value="5" />
+              <input type="number" value="9" />
+              <button class="done-btn done">✓</button>
+            </div>
+            <div class="set-input-row" style="background: var(--accent-soft); padding: 4px; border-radius: 6px;">
+              <div class="set-num">4</div>
+              <input type="number" value="80" />
+              <input type="number" placeholder="rep" />
+              <input type="number" placeholder="RPE" />
+              <button class="done-btn">✓</button>
+            </div>
+            <button class="btn" style="width: 100%; margin-top: 8px; font-size: 12px;">＋ セット追加</button>
+          </div>
+        </div>
+
+        <button class="add-exercise-btn">＋ 種目を追加</button>
+
+        <div style="margin-top: 16px; display: flex; gap: 8px;">
+          <button class="btn" style="flex:1;">中断</button>
+          <button class="btn muscle" style="flex:1;">セッション完了</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- 画面5: 種目選択（マスタから）                                -->
+    <!-- ============================================================ -->
+    <div class="mock-label">画面 5 / 5</div>
+    <div class="mock-note">種目選択 — 部位別の事前定義リスト（カスタム追加も可能）</div>
+
+    <div class="mock-frame">
+      <header class="app-header">
+        <div class="logo">💪 種目を選ぶ</div>
+        <button class="menu-btn">×</button>
+      </header>
+      <div class="page">
+        <input type="text" placeholder="種目名で検索" style="width: 100%; margin-bottom: 12px;" />
+
+        <div class="tag-section">
+          <h4>部位</h4>
+          <div class="tag-group">
+            <span class="tag-chip selected">胸</span>
+            <span class="tag-chip">背中</span>
+            <span class="tag-chip">脚</span>
+            <span class="tag-chip">肩</span>
+            <span class="tag-chip">腕</span>
+            <span class="tag-chip">腹</span>
+            <span class="tag-chip">有酸素</span>
+            <span class="tag-chip">その他</span>
+          </div>
+        </div>
+
+        <div style="background: var(--surface); border: 1px solid var(--line); border-radius: 10px; overflow: hidden;">
+          <div style="padding: 10px 12px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
+            <div>
+              <div style="font-weight: 600;">ベンチプレス</div>
+              <div style="font-size: 11px; color: var(--muted);">バーベル · 胸メイン / 三頭・前肩サブ</div>
+            </div>
+            <div style="font-size: 11px; color: var(--muscle); font-weight: 600;">よく使う</div>
+          </div>
+          <div style="padding: 10px 12px; border-bottom: 1px solid var(--line); cursor: pointer;">
+            <div style="font-weight: 600;">インクラインベンチプレス</div>
+            <div style="font-size: 11px; color: var(--muted);">バーベル · 上部胸メイン</div>
+          </div>
+          <div style="padding: 10px 12px; border-bottom: 1px solid var(--line); cursor: pointer;">
+            <div style="font-weight: 600;">ダンベルベンチプレス</div>
+            <div style="font-size: 11px; color: var(--muted);">ダンベル · 胸メイン</div>
+          </div>
+          <div style="padding: 10px 12px; border-bottom: 1px solid var(--line); cursor: pointer;">
+            <div style="font-weight: 600;">インクラインダンベルプレス</div>
+            <div style="font-size: 11px; color: var(--muted);">ダンベル · 上部胸メイン</div>
+          </div>
+          <div style="padding: 10px 12px; border-bottom: 1px solid var(--line); cursor: pointer;">
+            <div style="font-weight: 600;">ケーブルフライ</div>
+            <div style="font-size: 11px; color: var(--muted);">ケーブル · 胸メイン</div>
+          </div>
+          <div style="padding: 10px 12px; cursor: pointer;">
+            <div style="font-weight: 600;">プッシュアップ</div>
+            <div style="font-size: 11px; color: var(--muted);">自重 · 胸・三頭</div>
+          </div>
+        </div>
+
+        <button class="add-exercise-btn" style="margin-top: 12px;">＋ カスタム種目を作成</button>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- 注釈                                                          -->
+    <!-- ============================================================ -->
+    <div class="annotations">
+      <h3>📝 v3 で追加した要素</h3>
+      <ul>
+        <li><strong>🟣 トレーニング機能（紫テーマ）:</strong> 食事(緑) と視覚的に区別。<code>workouts</code> / <code>sets</code> テーブルを追加予定。</li>
+        <li><strong>セッション = 1回のトレーニング</strong>。複数種目をぶら下げ、種目ごとに複数セットを記録。RPE（主観的強度）も入れた。</li>
+        <li><strong>インターバルタイマー:</strong> セット完了 → 自動で休憩タイマースタート。</li>
+        <li><strong>PR バッジ:</strong> 種目ごとの自己ベスト更新を自動検出して表示。</li>
+        <li><strong>前回参照:</strong> 同種目の前回記録を「前回: 80kg×3」のように表示し、漸進性過負荷を意識させる。</li>
+        <li><strong>種目マスタ:</strong> 部位×器具で分類した事前定義リスト（<code>data/exercises.json</code> 想定）。カスタム追加も可。</li>
+        <li><strong>消費カロリー推定:</strong> 種目 × 重量 × rep × 時間から MET 法で概算（厳密ではないが目安）。</li>
+        <li><strong>統合ダッシュボード:</strong> 「摂取」(緑) と「消費」(紫) を並列表示、エネルギー収支バーで純摂取を可視化。</li>
+      </ul>
+
+      <h3>📝 v2 → v3 の継続事項</h3>
+      <ul>
+        <li><strong>タグ事前定義:</strong> <code>data/tags.json</code> に保存済。栄養/食材/シーン/タイミング/ジャンル/飲み物 の6カテゴリで構造化。Gemini にはこのリストから「該当タグID」を返させる方式に。</li>
+        <li><strong>チェーン店検索:</strong> 食事記録画面の最上段に配置。<code>data/chains/*.json</code> から検索 → ヒットで栄養素を自動入力。</li>
+        <li><strong>テーマ切替:</strong> 設定画面のみ（上部の切替バーはモック用）。</li>
+      </ul>
+
+      <h3>❓ ご相談</h3>
+      <ul>
+        <li><strong>消費カロリー推定の精度:</strong> MET 法でラフに計算 vs Apple Health/Google Fit 連携でデバイス値を取り込む、どちらが好み？（後者は実装重い）</li>
+        <li><strong>RPE 入力:</strong> 必須 / 任意 / そもそも要らない（重量×repだけ）、どれが良い？</li>
+        <li><strong>セッションテンプレ:</strong> 「胸の日」「背中の日」のような定型メニューをテンプレ化して使い回せると便利。要る？</li>
+        <li><strong>有酸素:</strong> 距離・時間・心拍などフィールドが違う。優先度どうしますか？</li>
+        <li><strong>追加で考えていること:</strong> 体重・体脂肪率の記録（時系列グラフ用）。これも入れたい？</li>
+      </ul>
+    </div>
+
+    <script>
+      document.querySelectorAll("[data-set-theme]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          document.documentElement.dataset.theme = btn.dataset.setTheme;
+          document.querySelectorAll("[data-set-theme]")
+            .forEach((b) => b.classList.toggle("active", b === btn));
+        });
+      });
+    </script>
+  </body>
+</html>

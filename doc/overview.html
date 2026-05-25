@@ -1,0 +1,453 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>MuveEats — プロジェクト Overview</title>
+    <style>
+      :root {
+        --bg: #fafaf9;
+        --card: #ffffff;
+        --ink: #1c1917;
+        --muted: #78716c;
+        --line: #e7e5e4;
+        --accent: #059669;
+        --accent-soft: #d1fae5;
+        --warn-bg: #fef3c7;
+        --warn-ink: #92400e;
+        --warn-line: #fcd34d;
+      }
+      * { box-sizing: border-box; }
+      html, body { margin: 0; padding: 0; background: var(--bg); color: var(--ink); }
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans",
+          "Noto Sans JP", "Yu Gothic", sans-serif;
+        line-height: 1.65;
+        font-size: 15px;
+      }
+      .wrap { max-width: 880px; margin: 0 auto; padding: 48px 24px 96px; }
+      header.hero {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 24px;
+        padding-bottom: 24px;
+        border-bottom: 1px solid var(--line);
+        margin-bottom: 32px;
+      }
+      header.hero h1 {
+        font-size: 36px;
+        margin: 0 0 8px;
+        letter-spacing: -0.02em;
+      }
+      header.hero .tag {
+        display: inline-block;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        color: var(--accent);
+        background: var(--accent-soft);
+        padding: 4px 10px;
+        border-radius: 999px;
+        text-transform: uppercase;
+        margin-bottom: 12px;
+      }
+      header.hero .lede {
+        color: var(--muted);
+        margin: 0;
+        max-width: 560px;
+      }
+      header.hero .meta {
+        font-size: 12px;
+        color: var(--muted);
+        text-align: right;
+        white-space: nowrap;
+      }
+      h2 {
+        font-size: 20px;
+        margin: 48px 0 16px;
+        padding-bottom: 8px;
+        border-bottom: 1px solid var(--line);
+      }
+      h3 { font-size: 16px; margin: 24px 0 8px; }
+      p { margin: 0 0 12px; }
+      code {
+        font-family: "SF Mono", Menlo, Consolas, monospace;
+        font-size: 13px;
+        background: #f5f5f4;
+        padding: 1px 6px;
+        border-radius: 4px;
+      }
+      pre {
+        background: #1c1917;
+        color: #e7e5e4;
+        padding: 16px 18px;
+        border-radius: 8px;
+        overflow-x: auto;
+        font-size: 13px;
+        line-height: 1.55;
+      }
+      pre code { background: transparent; color: inherit; padding: 0; }
+      ul { padding-left: 20px; margin: 0 0 12px; }
+      li { margin-bottom: 4px; }
+
+      .grid-3 {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+      }
+      .grid-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
+      @media (max-width: 640px) {
+        .grid-3, .grid-2 { grid-template-columns: 1fr; }
+        header.hero { flex-direction: column; align-items: flex-start; }
+        header.hero .meta { text-align: left; }
+      }
+
+      .card {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 16px 18px;
+      }
+      .card .label {
+        font-size: 11px;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+      }
+      .card .value {
+        font-size: 18px;
+        font-weight: 600;
+        margin-top: 4px;
+      }
+      .card p { font-size: 14px; color: var(--muted); margin: 6px 0 0; }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 14px;
+      }
+      th, td {
+        text-align: left;
+        padding: 10px 12px;
+        border-bottom: 1px solid var(--line);
+        vertical-align: top;
+      }
+      th {
+        font-size: 12px;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        font-weight: 600;
+        background: #fafaf9;
+      }
+      td code { white-space: nowrap; }
+
+      .warn {
+        border: 1px solid var(--warn-line);
+        background: var(--warn-bg);
+        color: var(--warn-ink);
+        padding: 12px 16px;
+        border-radius: 8px;
+        font-size: 14px;
+      }
+      .warn strong { color: var(--warn-ink); }
+
+      .status-pill {
+        display: inline-block;
+        font-size: 11px;
+        font-weight: 600;
+        padding: 2px 8px;
+        border-radius: 999px;
+      }
+      .status-done { background: var(--accent-soft); color: var(--accent); }
+      .status-next { background: #fef3c7; color: #92400e; }
+      .status-later { background: #f5f5f4; color: var(--muted); }
+
+      footer {
+        margin-top: 64px;
+        padding-top: 16px;
+        border-top: 1px solid var(--line);
+        font-size: 12px;
+        color: var(--muted);
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .flow {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
+        font-size: 13px;
+      }
+      .flow > div {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 12px;
+        position: relative;
+        text-align: center;
+      }
+      .flow > div:not(:last-child)::after {
+        content: "→";
+        position: absolute;
+        right: -8px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--muted);
+        font-weight: bold;
+      }
+      @media (max-width: 640px) {
+        .flow { grid-template-columns: 1fr; }
+        .flow > div:not(:last-child)::after {
+          content: "↓";
+          right: 50%;
+          top: auto;
+          bottom: -10px;
+          transform: translateX(50%);
+        }
+      }
+      .flow .step-num {
+        font-size: 10px;
+        color: var(--accent);
+        font-weight: 700;
+        letter-spacing: 0.08em;
+      }
+      .flow .step-title {
+        font-weight: 600;
+        margin: 2px 0 4px;
+      }
+      .flow .step-desc {
+        font-size: 12px;
+        color: var(--muted);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header class="hero">
+        <div>
+          <span class="tag">MVP / 着手前 Overview</span>
+          <h1>🥗 MuveEats</h1>
+          <p class="lede">
+            「動く」＋「食べる」をもじったヘルスケアアプリ。トレーニング記録と食事管理を
+            一つのダッシュボードで扱い、食事写真からはカロリー・PFCを自動推定します。
+          </p>
+        </div>
+        <div class="meta">
+          v0.1 draft<br />
+          2026-05-25
+        </div>
+      </header>
+
+      <section>
+        <h2>1. プロジェクトのゴール</h2>
+        <p>
+          「今日どれだけ動いて、どれだけ食べたか」を、面倒な入力なしに振り返れる状態を作る。
+          食事写真をスマホで撮るだけでカロリー/PFCを推定し、手動記録と統合する。
+        </p>
+        <div class="grid-3">
+          <div class="card">
+            <div class="label">主軸価値</div>
+            <div class="value">入力の摩擦を最小化</div>
+            <p>写真1枚 → 推定 → 1タップ保存。</p>
+          </div>
+          <div class="card">
+            <div class="label">ターゲット</div>
+            <div class="value">1人ユース（まずは自分）</div>
+            <p>多人数化は認証導入後。</p>
+          </div>
+          <div class="card">
+            <div class="label">差別化</div>
+            <div class="value">運動 × 食事を一体管理</div>
+            <p>消費 / 摂取の両軸ビューを志向。</p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>2. MVP スコープ</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>機能</th>
+              <th>内容</th>
+              <th>状態</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>食事写真 → カロリー解析</td>
+              <td>Gemini に画像を送り、料理名 / kcal / P・F・C / 自信度を JSON で取得</td>
+              <td><span class="status-pill status-done">スキャフォルド済</span></td>
+            </tr>
+            <tr>
+              <td>食事の手動入力</td>
+              <td>料理名・栄養素・日時・メモを記録、履歴を一覧</td>
+              <td><span class="status-pill status-done">スキャフォルド済</span></td>
+            </tr>
+            <tr>
+              <td>ダッシュボード / サマリー</td>
+              <td>今日・直近7日のカロリーと PFC、記録件数を集計</td>
+              <td><span class="status-pill status-done">スキャフォルド済</span></td>
+            </tr>
+            <tr>
+              <td>認証 (Supabase Auth)</td>
+              <td>メール or Google OAuth。RLS は導入済みのため繋ぎ込みのみ</td>
+              <td><span class="status-pill status-next">次着手</span></td>
+            </tr>
+            <tr>
+              <td>トレーニング記録</td>
+              <td>種目 / セット / 重量 / rep の記録と履歴</td>
+              <td><span class="status-pill status-later">フェーズ2</span></td>
+            </tr>
+            <tr>
+              <td>写真のストレージ保存</td>
+              <td>Supabase Storage 経由で履歴サムネ表示</td>
+              <td><span class="status-pill status-later">フェーズ2</span></td>
+            </tr>
+            <tr>
+              <td>週次 / 月次グラフ</td>
+              <td>カロリー・PFC・運動量の推移をビジュアライズ</td>
+              <td><span class="status-pill status-later">フェーズ2</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section>
+        <h2>3. 技術スタック</h2>
+        <div class="grid-2">
+          <div class="card">
+            <div class="label">フロントエンド</div>
+            <div class="value">Next.js 15 (App Router)</div>
+            <p>TypeScript / Tailwind CSS / Turbopack。Server Component で集計、Client Component で入力。</p>
+          </div>
+          <div class="card">
+            <div class="label">バックエンド / DB</div>
+            <div class="value">Supabase</div>
+            <p>Postgres + Auth + Storage + RLS。サーバー/ブラウザ両クライアントを <code>@supabase/ssr</code> で実装。</p>
+          </div>
+          <div class="card">
+            <div class="label">AI 推論</div>
+            <div class="value">Google Gemini</div>
+            <p><code>@google/genai</code> SDK。<code>responseSchema</code> で構造化 JSON を強制。</p>
+          </div>
+          <div class="card">
+            <div class="label">デプロイ想定</div>
+            <div class="value">Vercel</div>
+            <p>環境変数で API キー / モデル名を切り替え。プレビュー環境は別 Supabase プロジェクトを推奨。</p>
+          </div>
+        </div>
+
+        <div class="warn" style="margin-top: 16px">
+          <strong>⚠️ Gemini モデル名の注意:</strong>
+          ユーザー指定の <code>gemini-3.5-flash</code> は現時点で公開モデル名として確認できません。
+          動作しない場合は <code>GEMINI_MODEL=gemini-2.5-flash</code> へ切り替えてください
+          （コードは環境変数で完全に外出ししており再ビルド不要）。
+        </div>
+      </section>
+
+      <section>
+        <h2>4. 写真解析フロー</h2>
+        <div class="flow">
+          <div>
+            <div class="step-num">STEP 1</div>
+            <div class="step-title">📷 撮影 / 選択</div>
+            <div class="step-desc"><code>/analyze</code> で写真を選択</div>
+          </div>
+          <div>
+            <div class="step-num">STEP 2</div>
+            <div class="step-title">🤖 Gemini 推論</div>
+            <div class="step-desc"><code>responseSchema</code> で構造化 JSON 取得</div>
+          </div>
+          <div>
+            <div class="step-num">STEP 3</div>
+            <div class="step-title">👀 結果確認</div>
+            <div class="step-desc">料理名 / kcal / PFC / 自信度を表示</div>
+          </div>
+          <div>
+            <div class="step-num">STEP 4</div>
+            <div class="step-title">💾 保存</div>
+            <div class="step-desc">1タップで <code>meals</code> テーブルへ</div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>5. ディレクトリ構成</h2>
+        <pre><code>MuveEats/
+├── app/
+│   ├── page.tsx              ダッシュボード (Server Component)
+│   ├── log/page.tsx          手動記録フォーム
+│   ├── analyze/page.tsx      写真アップロード + 解析画面
+│   └── api/analyze-meal/     Gemini 呼び出しの API ルート
+├── lib/
+│   ├── supabase/
+│   │   ├── client.ts         ブラウザ用クライアント
+│   │   └── server.ts         サーバー用クライアント (cookies)
+│   └── types.ts              Meal / AnalysisResult 型
+├── supabase/
+│   └── schema.sql            meals テーブル + RLS ポリシー
+└── doc/
+    └── overview.html         このファイル</code></pre>
+      </section>
+
+      <section>
+        <h2>6. データモデル (meals)</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>カラム</th>
+              <th>型</th>
+              <th>説明</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td><code>id</code></td><td>uuid</td><td>PK</td></tr>
+            <tr><td><code>user_id</code></td><td>uuid</td><td><code>auth.users</code> 参照、RLS のキー</td></tr>
+            <tr><td><code>eaten_at</code></td><td>timestamptz</td><td>食事日時</td></tr>
+            <tr><td><code>name</code></td><td>text</td><td>料理名</td></tr>
+            <tr><td><code>calories</code></td><td>numeric</td><td>kcal</td></tr>
+            <tr><td><code>protein_g / fat_g / carbs_g</code></td><td>numeric</td><td>PFC (g)</td></tr>
+            <tr><td><code>photo_url</code></td><td>text</td><td>Storage URL（フェーズ2）</td></tr>
+            <tr><td><code>notes</code></td><td>text</td><td>自由メモ</td></tr>
+            <tr><td><code>source</code></td><td>text</td><td><code>'manual'</code> / <code>'photo'</code></td></tr>
+            <tr><td><code>created_at</code></td><td>timestamptz</td><td>レコード作成日時</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section>
+        <h2>7. 着手前にユーザーがやること</h2>
+        <ul>
+          <li><code>.env.local</code> に <code>GEMINI_API_KEY</code> と Supabase 接続情報を記入</li>
+          <li>Supabase の SQL Editor で <code>supabase/schema.sql</code> を実行</li>
+          <li><code>npm run dev</code> でローカル起動 → 写真1枚で解析動作を確認</li>
+          <li>モデル名が通らない場合は <code>GEMINI_MODEL=gemini-2.5-flash</code> へ変更</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>8. 次フェーズの候補 (優先度順)</h2>
+        <ol>
+          <li><strong>Supabase Auth 導入</strong> — 1人用から複数ユーザー対応へ。RLS は既に有効化済。</li>
+          <li><strong>トレーニング記録</strong> — <code>workouts</code> / <code>sets</code> テーブル追加 + 入力画面。</li>
+          <li><strong>消費カロリーの推定</strong> — トレーニング内容 + 体重から MET 法で算出、ダッシュボードに「収支」表示。</li>
+          <li><strong>写真の Storage 保存</strong> — 履歴にサムネ表示、振り返り体験を強化。</li>
+          <li><strong>グラフ化</strong> — Recharts などで週次/月次の推移を可視化。</li>
+        </ol>
+      </section>
+
+      <footer>
+        <span>MuveEats Overview — draft v0.1</span>
+        <span>Generated 2026-05-25</span>
+      </footer>
+    </div>
+  </body>
+</html>

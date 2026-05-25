@@ -1,0 +1,82 @@
+{
+  "version": 1,
+  "updated_at": "2026-05-25",
+  "description": "MuveEats の事前定義タグ。Gemini にはこのリストから選択させる（自由生成は禁止）。",
+  "categories": [
+    {
+      "id": "macro",
+      "label": "栄養バランス",
+      "tags": [
+        { "id": "high_protein", "label": "#高タンパク", "criteria": "P >= 30g または P比率 >= 25%" },
+        { "id": "low_fat", "label": "#低脂質", "criteria": "F <= 10g" },
+        { "id": "low_carb", "label": "#低糖質", "criteria": "C <= 20g" },
+        { "id": "high_carb", "label": "#糖質高め", "criteria": "C >= 80g" },
+        { "id": "high_fat", "label": "#脂質高め", "criteria": "F >= 25g" },
+        { "id": "balanced", "label": "#バランス良", "criteria": "PFC 比率がガイドライン内" }
+      ]
+    },
+    {
+      "id": "ingredient",
+      "label": "食材・調理法",
+      "tags": [
+        { "id": "veggie_rich", "label": "#野菜多め" },
+        { "id": "veggie_poor", "label": "#野菜少なめ" },
+        { "id": "fried", "label": "#揚げ物" },
+        { "id": "grilled", "label": "#焼き物" },
+        { "id": "raw", "label": "#生もの" },
+        { "id": "fermented", "label": "#発酵食品" },
+        { "id": "sweet", "label": "#甘味" },
+        { "id": "spicy", "label": "#辛い" }
+      ]
+    },
+    {
+      "id": "scene",
+      "label": "シーン",
+      "tags": [
+        { "id": "homemade", "label": "#自炊" },
+        { "id": "eating_out", "label": "#外食" },
+        { "id": "convenience", "label": "#コンビニ" },
+        { "id": "takeout", "label": "#テイクアウト" },
+        { "id": "chain", "label": "#チェーン店" },
+        { "id": "fastfood", "label": "#ファストフード" },
+        { "id": "cafe", "label": "#カフェ" }
+      ]
+    },
+    {
+      "id": "timing",
+      "label": "タイミング",
+      "tags": [
+        { "id": "breakfast", "label": "#朝食" },
+        { "id": "lunch", "label": "#昼食" },
+        { "id": "dinner", "label": "#夕食" },
+        { "id": "snack", "label": "#間食" },
+        { "id": "late_night", "label": "#夜食" },
+        { "id": "pre_workout", "label": "#トレ前" },
+        { "id": "post_workout", "label": "#トレ後" }
+      ]
+    },
+    {
+      "id": "cuisine",
+      "label": "ジャンル",
+      "tags": [
+        { "id": "japanese", "label": "#和食" },
+        { "id": "western", "label": "#洋食" },
+        { "id": "chinese", "label": "#中華" },
+        { "id": "italian", "label": "#イタリアン" },
+        { "id": "ethnic", "label": "#エスニック" },
+        { "id": "korean", "label": "#韓国料理" }
+      ]
+    },
+    {
+      "id": "drink",
+      "label": "飲み物",
+      "tags": [
+        { "id": "alcohol", "label": "#アルコール" },
+        { "id": "coffee", "label": "#コーヒー" },
+        { "id": "tea", "label": "#お茶" },
+        { "id": "juice", "label": "#ジュース" },
+        { "id": "protein_shake", "label": "#プロテイン" }
+      ]
+    }
+  ]
+}
