@@ -1,0 +1,45 @@
+{
+  "description": "data/chains/{slug}.json の slug に対するジャンル分類。MuveEats v8 で食事記録時の自動タグに使う。",
+  "genres": {
+    "mcdonalds": ["バーガー", "ファストフード"],
+    "mos-burger": ["バーガー", "ファストフード"],
+    "kfc": ["バーガー", "ファストフード"],
+    "burger-king": ["バーガー", "ファストフード"],
+    "lotteria": ["バーガー", "ファストフード"],
+
+    "sukiya": ["牛丼・和食"],
+    "yoshinoya": ["牛丼・和食"],
+    "matsuya": ["牛丼・和食"],
+    "nakau": ["牛丼・和食"],
+    "ootoya": ["牛丼・和食"],
+    "yayoi-ken": ["牛丼・和食"],
+
+    "starbucks": ["カフェ"],
+    "doutor": ["カフェ"],
+    "tullys": ["カフェ"],
+    "komeda": ["カフェ"],
+
+    "sushiro": ["寿司"],
+    "kura-zushi": ["寿司"],
+    "hama-zushi": ["寿司"],
+
+    "osaka-ohsho": ["中華・ラーメン"],
+    "ringer-hut": ["中華・ラーメン"],
+    "hidakaya": ["中華・ラーメン"],
+
+    "domino": ["ピザ"],
+    "pizza-hut": ["ピザ"],
+
+    "denny": ["ファミレス"],
+    "joyfull": ["ファミレス"],
+    "royal-host": ["ファミレス"],
+
+    "seven-eleven": ["コンビニ"],
+    "familymart": ["コンビニ"],
+    "lawson": ["コンビニ"],
+
+    "coco-ichi": ["その他"],
+    "mister-donut": ["カフェ"],
+    "tenya": ["その他"]
+  }
+}

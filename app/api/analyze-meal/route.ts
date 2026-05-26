@@ -1,10 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { GoogleGenAI, Type } from "@google/genai";
 import type { AnalysisResult } from "@/lib/types";
+import { TAG_CATEGORIES } from "@/lib/tags";
 
 export const runtime = "nodejs";
 
 const MODEL = process.env.GEMINI_MODEL || "gemini-2.5-flash";
+
+const TAG_LABELS = TAG_CATEGORIES.filter((c) => c.id !== "genre")
+  .flatMap((c) => c.tags.map((t) => t.label));
 
 const SYSTEM_PROMPT = `あなたは管理栄養士です。提供された食事写真を解析し、
 1. 写っている料理名（最も代表的なものを1つ、日本語で）
@@ -12,7 +16,10 @@ const SYSTEM_PROMPT = `あなたは管理栄養士です。提供された食事
 3. 推定マクロ栄養素（タンパク質/脂質/炭水化物、それぞれg、小数1桁）
 4. 推定の自信度（0.0〜1.0）
 5. 補足メモ（量の根拠など、簡潔に）
-をJSONで返してください。複数品目が写っていれば合算してください。`;
+6. 該当するタグを以下のリストから選んで配列で返す（複数可、無理な分類はしない）:
+${TAG_LABELS.join(" / ")}
+
+JSON で返してください。`;
 
 const responseSchema = {
   type: Type.OBJECT,
@@ -24,6 +31,7 @@ const responseSchema = {
     carbs_g: { type: Type.NUMBER },
     confidence: { type: Type.NUMBER },
     notes: { type: Type.STRING },
+    tags: { type: Type.ARRAY, items: { type: Type.STRING } },
   },
   required: ["name", "calories", "protein_g", "fat_g", "carbs_g", "confidence"],
 };
@@ -68,6 +76,11 @@ export async function POST(req: NextRequest) {
 
     const text = response.text ?? "";
     const parsed = JSON.parse(text) as AnalysisResult;
+    // Defensive: filter tags to known list
+    const allowed = new Set(TAG_LABELS);
+    if (Array.isArray(parsed.tags)) {
+      parsed.tags = parsed.tags.filter((t) => allowed.has(t));
+    }
     return NextResponse.json(parsed);
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);

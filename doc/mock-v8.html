@@ -1,0 +1,1206 @@
+<!doctype html>
+<html lang="ja" data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>MuveEats — v8 (chain search, finalized)</title>
+    <style>
+      /* === Tokens (inherited from v7) === */
+      :root, [data-theme="light"] {
+        --bg: #fafaf9;
+        --surface: #ffffff;
+        --surface-2: #f5f5f4;
+        --ink: #0c0a09;
+        --ink-2: #44403c;
+        --muted: #78716c;
+        --line: #e7e5e4;
+        --line-soft: #f5f5f4;
+        --eat: #0e7c66;
+        --move: #5b4ce0;
+        --body: #b8826b;
+        --ai: #57534e;
+        --warn: #a16207;
+        --danger: #991b1b;
+        --shadow-modal: 0 8px 24px rgba(12, 10, 9, 0.08);
+      }
+      [data-theme="dark"] {
+        --bg: #0c0a09;
+        --surface: #1c1917;
+        --surface-2: #292524;
+        --ink: #fafaf9;
+        --ink-2: #d6d3d1;
+        --muted: #a8a29e;
+        --line: #3a3633;
+        --line-soft: #292524;
+        --eat: #2dd4bf;
+        --move: #a78bfa;
+        --body: #d4a584;
+        --ai: #a8a29e;
+        --warn: #fbbf24;
+        --danger: #f87171;
+        --shadow-modal: 0 8px 24px rgba(0, 0, 0, 0.4);
+      }
+      :root {
+        --ease: cubic-bezier(0.2, 0, 0, 1);
+        --dur-fast: 120ms;
+        --dur-base: 180ms;
+      }
+
+      * { box-sizing: border-box; }
+      html, body {
+        margin: 0; padding: 0;
+        background: var(--bg); color: var(--ink);
+        transition: background var(--dur-base) var(--ease), color var(--dur-base) var(--ease);
+      }
+      body {
+        font-family: "Inter", -apple-system, BlinkMacSystemFont,
+          "Hiragino Sans", "Noto Sans JP", "Yu Gothic", sans-serif;
+        font-size: 14px;
+        line-height: 1.55;
+        -webkit-font-smoothing: antialiased;
+      }
+      .num { font-variant-numeric: tabular-nums; font-feature-settings: "tnum"; }
+
+      :focus { outline: none; }
+      :focus-visible {
+        outline: 2px solid var(--ink);
+        outline-offset: 2px;
+        border-radius: 4px;
+      }
+
+      .ic {
+        width: 18px; height: 18px;
+        stroke: currentColor; fill: none;
+        stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round;
+        display: inline-block; vertical-align: middle;
+        flex-shrink: 0;
+      }
+      .ic-sm { width: 14px; height: 14px; }
+      .ic-lg { width: 22px; height: 22px; }
+
+      /* Theme switcher (mock chrome) */
+      .theme-bar {
+        position: sticky; top: 0; z-index: 100;
+        background: var(--surface);
+        border-bottom: 1px solid var(--line);
+        padding: 10px 16px;
+        display: flex; gap: 6px;
+        align-items: center; justify-content: center;
+        font-size: 12px; color: var(--muted);
+      }
+      .theme-bar strong { color: var(--ink); font-weight: 600; margin-right: 4px; }
+      .theme-bar button {
+        border: 1px solid var(--line);
+        background: var(--surface);
+        color: var(--ink-2);
+        padding: 5px 14px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-family: inherit;
+        cursor: pointer;
+        transition: all var(--dur-fast) var(--ease);
+      }
+      .theme-bar button:hover { border-color: var(--ink-2); }
+      .theme-bar button.active {
+        background: var(--ink); color: var(--bg); border-color: var(--ink);
+      }
+
+      .mock-label {
+        max-width: 440px; margin: 32px auto 6px;
+        padding: 0 8px;
+        font-size: 10px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--muted);
+        font-weight: 600;
+      }
+      .mock-note {
+        max-width: 440px; margin: 0 auto 12px;
+        padding: 0 8px;
+        font-size: 12px; color: var(--muted);
+      }
+      .mock-frame {
+        max-width: 440px; margin: 0 auto 8px;
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 20px;
+        overflow: hidden;
+      }
+
+      .app-header {
+        padding: 18px 20px 14px;
+        border-bottom: 1px solid var(--line);
+        display: flex; align-items: center; justify-content: space-between;
+      }
+      .app-header .brand {
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+      .header-action {
+        background: transparent; border: 0;
+        cursor: pointer; color: var(--ink-2);
+        padding: 8px; border-radius: 6px;
+        display: inline-flex; align-items: center;
+        min-width: 36px; min-height: 36px;
+        justify-content: center;
+        font-family: inherit;
+      }
+      .header-action:hover { background: var(--surface-2); }
+
+      .page { padding: 18px 20px 24px; }
+      .section-title {
+        font-size: 10px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--muted);
+        font-weight: 600;
+        margin: 0 0 10px;
+        display: flex; align-items: center; justify-content: space-between;
+      }
+      .section-title .aux {
+        font-size: 11px;
+        color: var(--muted);
+        text-transform: none;
+        letter-spacing: 0;
+        font-weight: 500;
+      }
+      .section-title .aux strong { color: var(--ink); font-weight: 600; }
+
+      /* Buttons */
+      .btn {
+        font-family: inherit;
+        font-size: 13px;
+        padding: 10px 14px;
+        border: 1px solid var(--line);
+        background: var(--surface);
+        color: var(--ink);
+        border-radius: 8px;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        transition: all var(--dur-fast) var(--ease);
+      }
+      .btn:hover { border-color: var(--ink-2); }
+      .btn-primary {
+        background: var(--ink); color: var(--bg);
+        border-color: var(--ink); font-weight: 600;
+      }
+      .btn-block { width: 100%; justify-content: center; }
+      .btn-ghost { border-color: transparent; }
+
+      /* Search input */
+      .search-input {
+        position: relative;
+        margin-bottom: 16px;
+      }
+      .search-input input {
+        width: 100%;
+        padding: 12px 12px 12px 42px;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        background: var(--surface);
+        color: var(--ink);
+        font-size: 14px;
+        font-family: inherit;
+      }
+      .search-input input:focus {
+        outline: none; border-color: var(--ink);
+      }
+      .search-input .ic-search {
+        position: absolute; left: 14px; top: 50%;
+        transform: translateY(-50%);
+        color: var(--muted);
+      }
+      .search-input .clear-btn {
+        position: absolute; right: 8px; top: 50%;
+        transform: translateY(-50%);
+        background: transparent; border: 0;
+        padding: 6px; border-radius: 999px;
+        cursor: pointer;
+        color: var(--muted);
+      }
+      .search-input .clear-btn:hover { background: var(--surface-2); color: var(--ink); }
+
+      /* Catalog stats banner */
+      .catalog-stats {
+        background: var(--surface-2);
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 12px 14px;
+        margin-bottom: 18px;
+        display: flex; gap: 14px;
+        align-items: center;
+      }
+      .catalog-stats .ic {
+        color: var(--ink-2);
+        flex-shrink: 0;
+      }
+      .catalog-stats .text {
+        flex: 1;
+        font-size: 12px;
+        color: var(--muted);
+        line-height: 1.5;
+      }
+      .catalog-stats .text strong {
+        color: var(--ink); font-weight: 700;
+      }
+
+      /* Search results */
+      .results {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        overflow: hidden;
+        margin-bottom: 16px;
+      }
+      .result-row {
+        padding: 12px 14px;
+        border-bottom: 1px solid var(--line-soft);
+        display: flex; align-items: center; gap: 12px;
+        cursor: pointer;
+        transition: background var(--dur-fast) var(--ease);
+      }
+      .result-row:last-child { border-bottom: 0; }
+      .result-row:hover { background: var(--surface-2); }
+      .result-row .body { flex: 1; min-width: 0; }
+      .result-row .name {
+        font-size: 14px; font-weight: 600;
+        overflow: hidden; text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .result-row .meta {
+        display: flex; gap: 6px; align-items: center;
+        margin-top: 4px;
+        flex-wrap: wrap;
+      }
+      .result-row .chain-tag {
+        font-size: 11px;
+        color: var(--muted);
+      }
+      .result-row .official-tag {
+        font-size: 9px;
+        padding: 1px 6px;
+        background: var(--surface-2);
+        border: 1px solid var(--line);
+        border-radius: 4px;
+        color: var(--ink-2);
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        font-weight: 600;
+      }
+      .size-tag {
+        font-size: 10px;
+        padding: 1px 7px;
+        background: var(--surface);
+        border: 1px solid var(--line);
+        color: var(--ink-2);
+        border-radius: 999px;
+        font-weight: 600;
+      }
+      .result-row .nutri {
+        text-align: right;
+        flex-shrink: 0;
+        font-variant-numeric: tabular-nums;
+      }
+      .result-row .nutri .kcal {
+        font-size: 14px; font-weight: 700;
+      }
+      .result-row .nutri .kcal .unit {
+        font-size: 11px; color: var(--muted);
+        font-weight: 500; margin-left: 2px;
+      }
+      .result-row .nutri .pfc {
+        font-size: 10px; color: var(--muted);
+        margin-top: 2px;
+      }
+
+      /* Group divider */
+      .group-head {
+        padding: 8px 14px;
+        background: var(--surface-2);
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: var(--muted);
+        font-weight: 600;
+        border-bottom: 1px solid var(--line);
+        display: flex; justify-content: space-between; align-items: center;
+      }
+      .group-head .aux {
+        font-weight: 500; letter-spacing: 0;
+        text-transform: none; color: var(--muted);
+      }
+
+      /* Recent picks list */
+      .compact-list {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        overflow: hidden;
+        margin-bottom: 18px;
+      }
+      .compact-list .row {
+        padding: 10px 14px;
+        border-bottom: 1px solid var(--line-soft);
+        display: flex; align-items: center; gap: 10px;
+        cursor: pointer;
+      }
+      .compact-list .row:last-child { border-bottom: 0; }
+      .compact-list .row:hover { background: var(--surface-2); }
+      .compact-list .row .ic-sm { color: var(--muted); flex-shrink: 0; }
+      .compact-list .row .text {
+        flex: 1; min-width: 0;
+        font-size: 13px;
+        overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+      }
+      .compact-list .row .text .sub {
+        font-size: 11px; color: var(--muted);
+      }
+      .compact-list .row .kcal {
+        font-size: 12px; font-weight: 700;
+        font-variant-numeric: tabular-nums;
+        flex-shrink: 0;
+      }
+
+      /* Chain grid */
+      .chain-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+      }
+      .chain-card {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 14px 8px;
+        text-align: center;
+        cursor: pointer;
+        font-family: inherit;
+        transition: border-color var(--dur-fast) var(--ease);
+      }
+      .chain-card:hover { border-color: var(--ink-2); }
+      .chain-card .logo {
+        width: 38px; height: 38px; border-radius: 999px;
+        background: var(--surface-2);
+        margin: 0 auto 8px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 14px; font-weight: 700;
+        color: var(--ink);
+        border: 1px solid var(--line);
+        letter-spacing: 0.02em;
+      }
+      .chain-card .name {
+        font-size: 11px; font-weight: 600;
+        color: var(--ink);
+        line-height: 1.3;
+      }
+      .chain-card .count {
+        font-size: 10px; color: var(--muted);
+        margin-top: 2px;
+      }
+
+      /* Fallback CTAs */
+      .fallback-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+
+      /* Selected card */
+      .selected-card {
+        background: var(--surface);
+        border: 1px solid var(--ink);
+        border-radius: 12px;
+        padding: 14px;
+        margin-bottom: 14px;
+      }
+      .selected-card .head {
+        display: flex; justify-content: space-between;
+        align-items: flex-start; gap: 12px;
+        margin-bottom: 12px;
+      }
+      .selected-card .head .info .name {
+        font-size: 15px; font-weight: 700;
+        margin-bottom: 4px;
+      }
+      .selected-card .head .info .chain {
+        font-size: 11px; color: var(--muted);
+        display: flex; gap: 6px; align-items: center;
+      }
+      .selected-card .head .swap {
+        background: transparent; border: 0;
+        font-size: 11px; color: var(--ink-2);
+        cursor: pointer;
+        font-family: inherit;
+        text-decoration: underline;
+        text-underline-offset: 3px;
+      }
+      .nutri-cells {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 6px;
+      }
+      .nutri-cells .cell {
+        background: var(--surface-2);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 10px 6px;
+        text-align: center;
+      }
+      .nutri-cells .cell .lbl {
+        font-size: 9px; color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        font-weight: 600;
+      }
+      .nutri-cells .cell .val {
+        font-size: 17px; font-weight: 700;
+        font-variant-numeric: tabular-nums;
+        margin-top: 4px;
+      }
+
+      /* Tag picker */
+      .tag-section { margin-bottom: 12px; }
+      .tag-section .tag-cat {
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: var(--muted);
+        font-weight: 600;
+        margin-bottom: 6px;
+      }
+      .tag-section .tag-list {
+        display: flex; flex-wrap: wrap; gap: 5px;
+      }
+      .tag {
+        font-size: 11px;
+        padding: 3px 10px;
+        background: var(--surface-2);
+        border: 1px solid var(--line);
+        color: var(--ink-2);
+        border-radius: 999px;
+        cursor: pointer;
+        font-family: inherit;
+      }
+      .tag.selected {
+        background: var(--ink); color: var(--bg);
+        border-color: var(--ink);
+      }
+      .tag.ai {
+        border-style: dashed;
+        border-color: var(--ai);
+        color: var(--ai);
+      }
+      .tag.ai.selected {
+        background: var(--ink); color: var(--bg);
+        border-color: var(--ink);
+        border-style: solid;
+      }
+      .tag.auto {
+        background: var(--ink);
+        color: var(--bg);
+        border-color: var(--ink);
+        border-style: solid;
+        font-weight: 600;
+      }
+      .tag.auto::before {
+        content: "•";
+        margin-right: 4px;
+        color: var(--bg);
+      }
+
+      /* Empty hint */
+      .hint {
+        text-align: center;
+        font-size: 12px;
+        color: var(--muted);
+        padding: 8px 0;
+      }
+
+      /* Annotations */
+      .annotations {
+        max-width: 720px;
+        margin: 48px auto 80px;
+        padding: 24px 28px;
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        font-size: 13px;
+        line-height: 1.65;
+      }
+      .annotations h3 {
+        margin: 0 0 12px;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        color: var(--muted);
+        font-weight: 600;
+      }
+      .annotations h3:not(:first-child) { margin-top: 28px; }
+      .annotations ul { margin: 0; padding-left: 18px; }
+      .annotations li { margin-bottom: 8px; color: var(--ink-2); }
+      .annotations li strong { color: var(--ink); }
+      .annotations code {
+        background: var(--surface-2);
+        padding: 1px 6px;
+        border-radius: 4px;
+        font-size: 12px;
+        font-family: "SF Mono", Menlo, monospace;
+      }
+    </style>
+  </head>
+  <body>
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+      <defs>
+        <symbol id="i-close" viewBox="0 0 24 24"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></symbol>
+        <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="16" y1="16" x2="21" y2="21"/></symbol>
+        <symbol id="i-camera" viewBox="0 0 24 24"><path d="M3 8h4l2-3h6l2 3h4v12H3V8z"/><circle cx="12" cy="13" r="4"/></symbol>
+        <symbol id="i-edit" viewBox="0 0 24 24"><path d="M11 4h-7v16h16v-7M18 2l4 4-11 11h-4v-4z"/></symbol>
+        <symbol id="i-database" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v6c0 1.7 3.6 3 8 3s8-1.3 8-3V5"/><path d="M4 11v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/></symbol>
+        <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><polyline points="12,7 12,12 15,14"/></symbol>
+        <symbol id="i-chevron-right" viewBox="0 0 24 24"><polyline points="9,6 15,12 9,18"/></symbol>
+        <symbol id="i-chevron-left" viewBox="0 0 24 24"><polyline points="15,6 9,12 15,18"/></symbol>
+        <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></symbol>
+      </defs>
+    </svg>
+
+    <div class="theme-bar">
+      <strong>Theme</strong>
+      <button data-set-theme="light" class="active">Light</button>
+      <button data-set-theme="dark">Dark</button>
+    </div>
+
+    <!-- ============================================================
+         Screen 2A: Initial state — search-first, no categories
+         ============================================================ -->
+    <div class="mock-label">Screen 2A / 6 — Record Meal, initial</div>
+    <div class="mock-note">食事を記録 — 検索一本に整理。カテゴリ chip は撤廃</div>
+
+    <div class="mock-frame">
+      <div class="app-header">
+        <div class="brand">食事を記録</div>
+        <button class="header-action"><svg class="ic"><use href="#i-close"/></svg></button>
+      </div>
+      <div class="page">
+        <div class="section-title">
+          <span>チェーン店から検索</span>
+          <span class="aux"><strong>32</strong> チェーン · <strong>752</strong> 品目</span>
+        </div>
+
+        <div class="search-input">
+          <svg class="ic ic-search"><use href="#i-search"/></svg>
+          <input type="text" placeholder="店名 or メニュー名（例: ビッグマック、牛丼、ラテ）" />
+        </div>
+
+        <div class="catalog-stats">
+          <svg class="ic"><use href="#i-database"/></svg>
+          <div class="text">
+            公式の栄養情報を <strong>32 チェーン</strong> 分収録。
+            該当しない場合は写真・手動入力で記録できます。
+          </div>
+        </div>
+
+        <div class="section-title">
+          <span>よく使う</span>
+          <span class="aux">最近 30 件から</span>
+        </div>
+        <div class="compact-list">
+          <div class="row">
+            <svg class="ic ic-sm"><use href="#i-clock"/></svg>
+            <div class="text">
+              ビッグマック<div class="sub">マクドナルド · 昨日</div>
+            </div>
+            <div class="kcal num">525 kcal</div>
+          </div>
+          <div class="row">
+            <svg class="ic ic-sm"><use href="#i-clock"/></svg>
+            <div class="text">
+              牛丼 並盛<div class="sub">吉野家 · 3日前</div>
+            </div>
+            <div class="kcal num">635 kcal</div>
+          </div>
+          <div class="row">
+            <svg class="ic ic-sm"><use href="#i-clock"/></svg>
+            <div class="text">
+              スターバックス ラテ（アイス）Tall<div class="sub">スターバックス · 4日前</div>
+            </div>
+            <div class="kcal num">131 kcal</div>
+          </div>
+        </div>
+
+        <button class="btn btn-block" style="margin-bottom: 18px; justify-content: space-between;">
+          <span style="display: inline-flex; align-items: center; gap: 8px;">
+            <svg class="ic ic-sm"><use href="#i-grid"/></svg>
+            全 32 チェーンから探す
+          </span>
+          <svg class="ic ic-sm"><use href="#i-chevron-right"/></svg>
+        </button>
+
+        <div class="section-title">代替の記録方法</div>
+        <div class="fallback-row">
+          <button class="btn btn-block">
+            <svg class="ic ic-sm"><use href="#i-camera"/></svg>
+            写真から
+          </button>
+          <button class="btn btn-block">
+            <svg class="ic ic-sm"><use href="#i-edit"/></svg>
+            手動入力
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         Screen 2B: "ラテ" — cross-chain, with size auto-extract
+         ============================================================ -->
+    <div class="mock-label">Screen 2B / 6 — "ラテ" cross-chain results</div>
+    <div class="mock-note">サイズ表記（Tall / Hot / 並盛 など）を名前から自動抽出して小バッジに</div>
+
+    <div class="mock-frame">
+      <div class="app-header">
+        <div class="brand">食事を記録</div>
+        <button class="header-action"><svg class="ic"><use href="#i-close"/></svg></button>
+      </div>
+      <div class="page">
+        <div class="search-input">
+          <svg class="ic ic-search"><use href="#i-search"/></svg>
+          <input type="text" value="ラテ" />
+          <button class="clear-btn"><svg class="ic ic-sm"><use href="#i-close"/></svg></button>
+        </div>
+
+        <div class="section-title">
+          <span>検索結果</span>
+          <span class="aux"><strong>9</strong> 件 · 4 チェーン</span>
+        </div>
+
+        <div class="results">
+          <div class="group-head">
+            <span>スターバックス</span>
+            <span class="aux">5 件</span>
+          </div>
+          <div class="result-row">
+            <div class="body">
+              <div class="name">スターバックス ラテ</div>
+              <div class="meta">
+                <span class="size-tag">Hot</span>
+                <span class="size-tag">Tall</span>
+                <span class="official-tag">official</span>
+              </div>
+            </div>
+            <div class="nutri">
+              <div class="kcal num">234<span class="unit">kcal</span></div>
+              <div class="pfc num">P 13.3 / F 11.9 / C 19.0</div>
+            </div>
+          </div>
+          <div class="result-row">
+            <div class="body">
+              <div class="name">スターバックス ラテ</div>
+              <div class="meta">
+                <span class="size-tag">Iced</span>
+                <span class="size-tag">Tall</span>
+                <span class="official-tag">official</span>
+              </div>
+            </div>
+            <div class="nutri">
+              <div class="kcal num">131<span class="unit">kcal</span></div>
+              <div class="pfc num">P 7.5 / F 6.5 / C 10.9</div>
+            </div>
+          </div>
+          <div class="result-row">
+            <div class="body">
+              <div class="name">抹茶 ティー ラテ</div>
+              <div class="meta">
+                <span class="size-tag">Hot</span>
+                <span class="size-tag">Tall</span>
+                <span class="official-tag">official</span>
+              </div>
+            </div>
+            <div class="nutri">
+              <div class="kcal num">231<span class="unit">kcal</span></div>
+              <div class="pfc num">P 9.5 / F 7.3 / C 33.8</div>
+            </div>
+          </div>
+
+          <div class="group-head">
+            <span>ドトール</span>
+            <span class="aux">4 件</span>
+          </div>
+          <div class="result-row">
+            <div class="body">
+              <div class="name">カフェ・ラテ</div>
+              <div class="meta">
+                <span class="official-tag">official</span>
+              </div>
+            </div>
+            <div class="nutri">
+              <div class="kcal num">109<span class="unit">kcal</span></div>
+              <div class="pfc num">P 5.2 / F 6.0 / C 8.4</div>
+            </div>
+          </div>
+          <div class="result-row">
+            <div class="body">
+              <div class="name">豆乳ラテ</div>
+              <div class="meta">
+                <span class="official-tag">official</span>
+              </div>
+            </div>
+            <div class="nutri">
+              <div class="kcal num">82<span class="unit">kcal</span></div>
+              <div class="pfc num">P 5.5 / F 4.2 / C 5.7</div>
+            </div>
+          </div>
+          <div class="result-row">
+            <div class="body">
+              <div class="name">宇治抹茶ラテ</div>
+              <div class="meta">
+                <span class="official-tag">official</span>
+              </div>
+            </div>
+            <div class="nutri">
+              <div class="kcal num">184<span class="unit">kcal</span></div>
+              <div class="pfc num">P 5.0 / F 5.3 / C 29.2</div>
+            </div>
+          </div>
+
+          <div class="group-head">
+            <span>タリーズ</span>
+          </div>
+          <div class="result-row">
+            <div class="body">
+              <div class="name">カフェラテ</div>
+              <div class="meta">
+                <span class="size-tag">Hot</span>
+                <span class="size-tag">Tall</span>
+                <span class="official-tag">official</span>
+              </div>
+            </div>
+            <div class="nutri">
+              <div class="kcal num">134<span class="unit">kcal</span></div>
+              <div class="pfc" style="color: var(--muted);">PFC 値非公開</div>
+            </div>
+          </div>
+        </div>
+
+        <button class="btn btn-block btn-ghost" style="font-size: 12px; color: var(--muted);">
+          一致しない？ 写真や手動入力で記録 →
+        </button>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         Screen 2C: "牛丼" — size auto-extraction across chains
+         ============================================================ -->
+    <div class="mock-label">Screen 2C / 6 — "牛丼" comparison</div>
+    <div class="mock-note">サイズ（ミニ / 並盛 / 大盛）が自動で抽出され、店舗を横断して並ぶ</div>
+
+    <div class="mock-frame">
+      <div class="app-header">
+        <div class="brand">食事を記録</div>
+        <button class="header-action"><svg class="ic"><use href="#i-close"/></svg></button>
+      </div>
+      <div class="page">
+        <div class="search-input">
+          <svg class="ic ic-search"><use href="#i-search"/></svg>
+          <input type="text" value="牛丼" />
+          <button class="clear-btn"><svg class="ic ic-sm"><use href="#i-close"/></svg></button>
+        </div>
+
+        <div class="section-title">
+          <span>検索結果</span>
+          <span class="aux"><strong>11</strong> 件 · 4 チェーン</span>
+        </div>
+
+        <div class="results">
+          <div class="result-row">
+            <div class="body">
+              <div class="name">牛丼</div>
+              <div class="meta">
+                <span class="size-tag">ミニ</span>
+                <span class="chain-tag">すき家</span>
+              </div>
+            </div>
+            <div class="nutri">
+              <div class="kcal num">464<span class="unit">kcal</span></div>
+              <div class="pfc num">P 14 / F 12 / C 73</div>
+            </div>
+          </div>
+          <div class="result-row">
+            <div class="body">
+              <div class="name">牛丼</div>
+              <div class="meta">
+                <span class="size-tag">小盛</span>
+                <span class="chain-tag">吉野家</span>
+              </div>
+            </div>
+            <div class="nutri">
+              <div class="kcal num">488<span class="unit">kcal</span></div>
+              <div class="pfc num">P 17 / F 14 / C 71</div>
+            </div>
+          </div>
+          <div class="result-row">
+            <div class="body">
+              <div class="name">牛丼</div>
+              <div class="meta">
+                <span class="size-tag">並盛</span>
+                <span class="chain-tag">吉野家</span>
+              </div>
+            </div>
+            <div class="nutri">
+              <div class="kcal num">635<span class="unit">kcal</span></div>
+              <div class="pfc num">P 22 / F 19 / C 92</div>
+            </div>
+          </div>
+          <div class="result-row">
+            <div class="body">
+              <div class="name">牛丼</div>
+              <div class="meta">
+                <span class="size-tag">並盛</span>
+                <span class="chain-tag">すき家</span>
+              </div>
+            </div>
+            <div class="nutri">
+              <div class="kcal num">695<span class="unit">kcal</span></div>
+              <div class="pfc num">P 25 / F 22 / C 97</div>
+            </div>
+          </div>
+          <div class="result-row">
+            <div class="body">
+              <div class="name">牛めし</div>
+              <div class="meta">
+                <span class="size-tag">並盛</span>
+                <span class="chain-tag">松屋</span>
+              </div>
+            </div>
+            <div class="nutri">
+              <div class="kcal num">687<span class="unit">kcal</span></div>
+              <div class="pfc num">P 23 / F 21 / C 96</div>
+            </div>
+          </div>
+          <div class="result-row">
+            <div class="body">
+              <div class="name">牛丼</div>
+              <div class="meta">
+                <span class="size-tag">中盛</span>
+                <span class="chain-tag">すき家</span>
+              </div>
+            </div>
+            <div class="nutri">
+              <div class="kcal num">752<span class="unit">kcal</span></div>
+              <div class="pfc num">P 28 / F 25 / C 102</div>
+            </div>
+          </div>
+          <div class="result-row">
+            <div class="body">
+              <div class="name">牛丼</div>
+              <div class="meta">
+                <span class="size-tag">大盛</span>
+                <span class="chain-tag">吉野家</span>
+              </div>
+            </div>
+            <div class="nutri">
+              <div class="kcal num">846<span class="unit">kcal</span></div>
+              <div class="pfc num">P 28 / F 24 / C 125</div>
+            </div>
+          </div>
+          <div class="result-row">
+            <div class="body">
+              <div class="name">牛めし</div>
+              <div class="meta">
+                <span class="size-tag">大盛</span>
+                <span class="chain-tag">松屋</span>
+              </div>
+            </div>
+            <div class="nutri">
+              <div class="kcal num">933<span class="unit">kcal</span></div>
+              <div class="pfc num">P 30 / F 28 / C 129</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hint">kcal 昇順で表示中</div>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         Screen 2D: Browse by chain (grid)
+         ============================================================ -->
+    <div class="mock-label">Screen 2D / 6 — チェーン一覧</div>
+    <div class="mock-note">全 32 チェーンを並列表示。タップで各メニューへ。頭文字ロゴ</div>
+
+    <div class="mock-frame">
+      <div class="app-header">
+        <button class="header-action"><svg class="ic"><use href="#i-chevron-left"/></svg></button>
+        <div class="brand">チェーンから探す</div>
+        <button class="header-action"><svg class="ic"><use href="#i-search"/></svg></button>
+      </div>
+      <div class="page">
+        <div class="section-title">
+          <span>すべてのチェーン</span>
+          <span class="aux"><strong>32</strong> チェーン · <strong>752</strong> 品目</span>
+        </div>
+
+        <div class="chain-grid">
+          <button class="chain-card"><div class="logo">マ</div><div class="name">マクドナルド</div><div class="count">29 品目</div></button>
+          <button class="chain-card"><div class="logo">モ</div><div class="name">モスバーガー</div><div class="count">30 品目</div></button>
+          <button class="chain-card"><div class="logo">ケ</div><div class="name">ケンタッキー</div><div class="count">21 品目</div></button>
+          <button class="chain-card"><div class="logo">バ</div><div class="name">バーガーキング</div><div class="count">20 品目</div></button>
+          <button class="chain-card"><div class="logo">ロ</div><div class="name">ロッテリア</div><div class="count">27 品目</div></button>
+          <button class="chain-card"><div class="logo">す</div><div class="name">すき家</div><div class="count">22 品目</div></button>
+          <button class="chain-card"><div class="logo">吉</div><div class="name">吉野家</div><div class="count">22 品目</div></button>
+          <button class="chain-card"><div class="logo">松</div><div class="name">松屋</div><div class="count">21 品目</div></button>
+          <button class="chain-card"><div class="logo">な</div><div class="name">なか卯</div><div class="count">17 品目</div></button>
+          <button class="chain-card"><div class="logo">大</div><div class="name">大戸屋</div><div class="count">25 品目</div></button>
+          <button class="chain-card"><div class="logo">や</div><div class="name">やよい軒</div><div class="count">25 品目</div></button>
+          <button class="chain-card"><div class="logo">ス</div><div class="name">スターバックス</div><div class="count">22 品目</div></button>
+          <button class="chain-card"><div class="logo">ド</div><div class="name">ドトール</div><div class="count">31 品目</div></button>
+          <button class="chain-card"><div class="logo">タ</div><div class="name">タリーズ</div><div class="count">20 品目</div></button>
+          <button class="chain-card"><div class="logo">コ</div><div class="name">コメダ珈琲</div><div class="count">15 品目</div></button>
+        </div>
+
+        <div class="hint" style="margin-top: 14px;">15 / 32 を表示中 · もっと見る ↓</div>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         Screen 2E: Chain detail (McDonald's menu)
+         ============================================================ -->
+    <div class="mock-label">Screen 2E / 6 — マクドナルドのメニュー</div>
+    <div class="mock-note">チェーン詳細。検索 / 並び替えのみ、カテゴリチップは置かない</div>
+
+    <div class="mock-frame">
+      <div class="app-header">
+        <button class="header-action"><svg class="ic"><use href="#i-chevron-left"/></svg></button>
+        <div class="brand">マクドナルド</div>
+        <button class="header-action"><svg class="ic"><use href="#i-search"/></svg></button>
+      </div>
+      <div class="page">
+        <div class="catalog-stats" style="background: var(--surface); border-color: var(--line);">
+          <div class="text" style="flex: 1;">
+            最終更新 <strong>2026-05-26</strong> · 公式サイトから取得
+          </div>
+          <div style="font-size: 11px; color: var(--muted);">29 品目</div>
+        </div>
+
+        <div class="search-input">
+          <svg class="ic ic-search"><use href="#i-search"/></svg>
+          <input type="text" placeholder="このチェーン内で検索" />
+        </div>
+
+        <div class="results">
+          <div class="result-row">
+            <div class="body">
+              <div class="name">ハンバーガー</div>
+              <div class="meta"><span class="official-tag">official</span></div>
+            </div>
+            <div class="nutri">
+              <div class="kcal num">259<span class="unit">kcal</span></div>
+              <div class="pfc num">P 13 / F 9.5 / C 30</div>
+            </div>
+          </div>
+          <div class="result-row">
+            <div class="body">
+              <div class="name">チーズバーガー</div>
+              <div class="meta"><span class="official-tag">official</span></div>
+            </div>
+            <div class="nutri">
+              <div class="kcal num">310<span class="unit">kcal</span></div>
+              <div class="pfc num">P 16 / F 13.5 / C 31</div>
+            </div>
+          </div>
+          <div class="result-row">
+            <div class="body">
+              <div class="name">ダブルチーズバーガー</div>
+              <div class="meta"><span class="official-tag">official</span></div>
+            </div>
+            <div class="nutri">
+              <div class="kcal num">459<span class="unit">kcal</span></div>
+              <div class="pfc num">P 26 / F 25 / C 32</div>
+            </div>
+          </div>
+          <div class="result-row">
+            <div class="body">
+              <div class="name">ビッグマック</div>
+              <div class="meta"><span class="official-tag">official</span></div>
+            </div>
+            <div class="nutri">
+              <div class="kcal num">525<span class="unit">kcal</span></div>
+              <div class="pfc num">P 26 / F 28 / C 42</div>
+            </div>
+          </div>
+          <div class="result-row">
+            <div class="body">
+              <div class="name">マックフライポテト</div>
+              <div class="meta">
+                <span class="size-tag">M</span>
+                <span class="official-tag">official</span>
+              </div>
+            </div>
+            <div class="nutri">
+              <div class="kcal num">410<span class="unit">kcal</span></div>
+              <div class="pfc num">P 4.3 / F 21 / C 51</div>
+            </div>
+          </div>
+          <div class="result-row">
+            <div class="body">
+              <div class="name">マックフライポテト</div>
+              <div class="meta">
+                <span class="size-tag">L</span>
+                <span class="official-tag">official</span>
+              </div>
+            </div>
+            <div class="nutri">
+              <div class="kcal num">517<span class="unit">kcal</span></div>
+              <div class="pfc num">P 5.4 / F 27 / C 63</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hint">24 件をさらに表示 ↓</div>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         Screen 2F: After selection — auto category tag + AI tags
+         ============================================================ -->
+    <div class="mock-label">Screen 2F / 6 — 選択後の確認</div>
+    <div class="mock-note">公式値は固定 · 「ジャンル」は選択メニューから自動付与 · 他のタグは AI 提案（破線）と手動選択</div>
+
+    <div class="mock-frame">
+      <div class="app-header">
+        <button class="header-action"><svg class="ic"><use href="#i-chevron-left"/></svg></button>
+        <div class="brand">記録する内容</div>
+        <button class="header-action"><svg class="ic"><use href="#i-close"/></svg></button>
+      </div>
+      <div class="page">
+        <div class="selected-card">
+          <div class="head">
+            <div class="info">
+              <div class="name">ビッグマック</div>
+              <div class="chain">
+                マクドナルド
+                <span class="official-tag">official</span>
+              </div>
+            </div>
+            <button class="swap">変更</button>
+          </div>
+          <div class="nutri-cells">
+            <div class="cell"><div class="lbl">kcal</div><div class="val num">525</div></div>
+            <div class="cell"><div class="lbl">P</div><div class="val num">26</div></div>
+            <div class="cell"><div class="lbl">F</div><div class="val num">28</div></div>
+            <div class="cell"><div class="lbl">C</div><div class="val num">42</div></div>
+          </div>
+        </div>
+
+        <div class="section-title">食べた時刻</div>
+        <button class="btn btn-block" style="justify-content: space-between; margin-bottom: 18px;">
+          <span>5月25日 12:30</span>
+          <svg class="ic ic-sm"><use href="#i-chevron-right"/></svg>
+        </button>
+
+        <div class="section-title">
+          <span>タグ</span>
+          <span class="aux">• 自動付与 · 破線 = AI 提案</span>
+        </div>
+
+        <div class="tag-section">
+          <div class="tag-cat">ジャンル（自動）</div>
+          <div class="tag-list">
+            <span class="tag auto">バーガー</span>
+            <span class="tag auto">ファストフード</span>
+          </div>
+        </div>
+
+        <div class="tag-section">
+          <div class="tag-cat">シーン</div>
+          <div class="tag-list">
+            <button class="tag">自炊</button>
+            <button class="tag ai selected">外食</button>
+            <button class="tag">コンビニ</button>
+            <button class="tag">テイクアウト</button>
+            <button class="tag ai selected">チェーン店</button>
+          </div>
+        </div>
+
+        <div class="tag-section">
+          <div class="tag-cat">栄養バランス</div>
+          <div class="tag-list">
+            <button class="tag">高タンパク</button>
+            <button class="tag">低脂質</button>
+            <button class="tag">低糖質</button>
+            <button class="tag ai selected">脂質高め</button>
+            <button class="tag">糖質高め</button>
+            <button class="tag">バランス良</button>
+          </div>
+        </div>
+
+        <div class="tag-section">
+          <div class="tag-cat">タイミング</div>
+          <div class="tag-list">
+            <button class="tag">朝食</button>
+            <button class="tag selected">昼食</button>
+            <button class="tag">夕食</button>
+            <button class="tag">間食</button>
+            <button class="tag">夜食</button>
+          </div>
+        </div>
+
+        <button class="btn btn-primary btn-block" style="padding: 12px; margin-top: 8px;">記録する</button>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         Annotations
+         ============================================================ -->
+    <div class="annotations">
+      <h3>v8 finalized — フィードバック反映</h3>
+      <ul>
+        <li><strong>カテゴリ chip 撤廃</strong>: 検索画面 (2A) では検索一本に。ユーザーが選んだメニューに応じて、ジャンルタグが選択後画面 (2F) で自動付与される設計に変更。</li>
+        <li><strong>サイズ自動抽出</strong>: アイテム名の末尾語（"並盛 / 大盛 / 中盛 / 小盛 / ミニ / Tall / M / L" 等）をパーサで抽出し、本体名と分離して小バッジ表示。例: <code>「牛丼 並盛」 → name: "牛丼", size: "並盛"</code>。</li>
+        <li><strong>Hot/Iced 抽出</strong>: スターバックスは <code>「スターバックス ラテ（ホット）Tall」</code> から「Hot」「Tall」の2バッジを抽出。</li>
+        <li><strong>ジャンルタグ（自動）</strong> (Screen 2F): 公式値メニューには <code>category</code> から「バーガー / 牛丼・和食 / カフェ / 寿司 / 中華・ラーメン / ピザ / ファミレス / コンビニ」のいずれかを付与。さらにチェーン分類から「ファストフード」「外食」も付与。ユーザーは編集不可（• マーク付きの濃いタグ）。</li>
+        <li><strong>頭文字ロゴ</strong>: 各チェーンの先頭1文字を丸ロゴに。日本語名から取得（マ / モ / ケ / す / 吉 / 松 / ス / ド ...）。SVG ロゴが必要になったら後日差し替え。</li>
+        <li><strong>並び順</strong>: 「牛丼」のような比較系検索は kcal 昇順がデフォルト（Screen 2C 末尾に注記）。クロスチェーン検索（ラテ）はチェーン別グループ表示。</li>
+      </ul>
+
+      <h3>サイズ抽出ロジック（実装メモ）</h3>
+      <ul>
+        <li>正規表現で末尾の「サイズ語」を切り出す。優先順位高い順:
+          <code>(ミニ|小盛|並盛|中盛|大盛|特盛|Tall|Grande|Venti|Short|M|L|S)</code>
+        </li>
+        <li>飲料の温冷指定:
+          <code>(ホット|アイス|Hot|Iced)</code>
+          → 括弧書きの場合も拾う <code>「ラテ（ホット）Tall」</code>
+        </li>
+        <li>抽出後の "name" には正規化した本体名のみを格納。サイズはアイテムの <code>size</code> 属性に保存（ DB 検索の表記揺れを吸収）。</li>
+        <li>抽出できない場合はバッジ表示なし。</li>
+      </ul>
+
+      <h3>ジャンル自動付与のマッピング</h3>
+      <ul>
+        <li>各 <code>data/chains/{slug}.json</code> ルートに <code>chain_genre</code> フィールドを追加し、UI 側で参照（例: <code>"chain_genre": ["バーガー", "ファストフード"]</code>）。</li>
+        <li>アイテム単位の <code>category</code> はそのチェーン内分類なので、UI 側マッピング表でジャンル名に変換 (例: KFC の <code>"chicken"</code> → 「バーガー」グループには入らず「ファストフード」のみ)。</li>
+        <li>マッピング表 (<code>data/chain-genres.json</code> として別ファイル化案): slug → ジャンル配列。</li>
+      </ul>
+
+      <h3>本実装で必要なバックエンド処理</h3>
+      <ul>
+        <li>ビルド時に <code>data/chains/*.json</code> を統合 → <code>data/chains-index.json</code> を出力（全件 + size 抽出済 + ジャンル付与済）。</li>
+        <li>検索: 料理名 + aliases の部分一致 (ilike)。チェーン名でも一致させる。</li>
+        <li>「よく使う」: ユーザーの最近 30 件の食事記録から、同一メニュー（chain_id + item_id）を重複排除して上位 3-5 件を表示。</li>
+      </ul>
+    </div>
+
+    <script>
+      document.querySelectorAll("[data-set-theme]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          document.documentElement.dataset.theme = btn.dataset.setTheme;
+          document.querySelectorAll("[data-set-theme]")
+            .forEach((b) => b.classList.toggle("active", b === btn));
+        });
+      });
+    </script>
+  </body>
+</html>

@@ -1,81 +1,110 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { Inter } from "next/font/google";
+import Link from "next/link";
 import "./globals.css";
 import { createClient } from "@/lib/supabase/server";
+import { Icon } from "./icons";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
   title: "MuveEats — 動いて食べて、記録する",
-  description: "トレーニングと食事を一体で記録できるヘルスケアアプリ",
+  description: "食事・運動・体組成を一つにまとめる個人ヘルスハブ",
+};
+
+export const viewport: Viewport = {
+  themeColor: "#fafaf9",
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
 };
 
 export default async function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+}: Readonly<{ children: React.ReactNode }>) {
+  let userEmail: string | null = null;
+  try {
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    userEmail = user?.email ?? null;
+  } catch {
+    // 認証エラーは UI 表示に影響させない
+  }
 
   return (
-    <html
-      lang="ja"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-    >
-      <body className="min-h-full flex flex-col bg-neutral-50 text-neutral-900">
-        <header className="border-b border-neutral-200 bg-white">
-          <div className="mx-auto flex max-w-3xl items-center justify-between px-4 py-3">
-            <a href="/" className="font-bold tracking-tight text-lg">
-              🥗 MuveEats
-            </a>
-            {user ? (
-              <nav className="flex items-center gap-4 text-sm">
-                <a href="/" className="hover:underline">
-                  ダッシュボード
-                </a>
-                <a href="/log" className="hover:underline">
-                  記録
-                </a>
-                <a href="/analyze" className="hover:underline">
-                  写真解析
-                </a>
-                <span className="hidden text-xs text-neutral-500 sm:inline">
-                  {user.email}
-                </span>
-                <form action="/auth/signout" method="post">
-                  <button
-                    type="submit"
-                    className="rounded-md border border-neutral-300 bg-white px-2 py-1 text-xs hover:bg-neutral-50"
-                  >
-                    サインアウト
-                  </button>
-                </form>
-              </nav>
-            ) : (
-              <a
-                href="/login"
-                className="text-sm font-medium text-emerald-700 hover:underline"
-              >
-                サインイン
-              </a>
-            )}
-          </div>
-        </header>
-        <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-6">
-          {children}
-        </main>
+    <html lang="ja" data-theme="light" className={inter.variable}>
+      <body>
+        <div className="app-shell">
+          {userEmail ? (
+            <>
+              <AppHeader email={userEmail} />
+              <main className="app-main">{children}</main>
+              <BottomNav />
+            </>
+          ) : (
+            <main className="app-main" style={{ paddingBottom: 20 }}>
+              {children}
+            </main>
+          )}
+        </div>
       </body>
     </html>
+  );
+}
+
+function AppHeader({ email }: { email: string }) {
+  return (
+    <header className="app-header">
+      <Link href="/" className="brand">
+        MuveEats
+      </Link>
+      <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+        <span className="header-meta" title={email}>
+          {email.length > 22 ? email.slice(0, 22) + "…" : email}
+        </span>
+        <form action="/auth/signout" method="post">
+          <button
+            type="submit"
+            className="header-action"
+            aria-label="サインアウト"
+          >
+            <Icon name="close" size="sm" />
+          </button>
+        </form>
+      </div>
+    </header>
+  );
+}
+
+function BottomNav() {
+  return (
+    <nav className="bottom-nav">
+      <Link href="/" className="active">
+        <Icon name="home" />
+        ホーム
+      </Link>
+      <Link href="/meals/new">
+        <Icon name="fork" />
+        食事
+      </Link>
+      <Link href="/analyze">
+        <Icon name="camera" />
+        解析
+      </Link>
+      <Link href="/history">
+        <Icon name="book" />
+        履歴
+      </Link>
+      <Link href="/settings">
+        <Icon name="settings" />
+        設定
+      </Link>
+    </nav>
   );
 }

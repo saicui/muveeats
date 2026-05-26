@@ -24,18 +24,14 @@ function LoginInner() {
     try {
       const supabase = createClient();
       if (mode === "signup") {
-        const { data, error } = await supabase.auth.signUp({
-          email,
-          password,
-        });
+        const { data, error } = await supabase.auth.signUp({ email, password });
         if (error) throw error;
         if (data.session) {
           router.push(next);
           router.refresh();
         } else {
           setInfo(
-            "確認メールを送信しました。受信トレイのリンクから認証してください。" +
-              "（Supabase でメール確認が無効の場合はこのままサインインできます）",
+            "確認メールを送信しました。メール内のリンクから認証してください。",
           );
           setMode("signin");
         }
@@ -56,79 +52,142 @@ function LoginInner() {
   }
 
   return (
-    <div className="mx-auto max-w-sm space-y-6 py-8">
-      <div>
-        <h1 className="text-2xl font-bold">MuveEats へようこそ</h1>
-        <p className="text-sm text-neutral-500">
-          {mode === "signin"
-            ? "メールアドレスとパスワードでサインインしてください。"
-            : "アカウントを新規作成します。"}
-        </p>
-      </div>
+    <div style={{ maxWidth: 360, margin: "32px auto", padding: "0 20px" }}>
+      <h1 className="page-title" style={{ fontSize: 28 }}>
+        MuveEats
+      </h1>
+      <p className="page-subtitle">
+        動いて食べて、記録するアプリ。{mode === "signin" ? "サインインしてください。" : "アカウントを作成します。"}
+      </p>
 
-      <div className="flex rounded-md border border-neutral-300 bg-white p-1 text-sm">
+      <div
+        style={{
+          display: "flex",
+          padding: 3,
+          background: "var(--surface-2)",
+          border: "1px solid var(--line)",
+          borderRadius: 10,
+          marginBottom: 18,
+        }}
+      >
         <button
           type="button"
           onClick={() => setMode("signin")}
-          className={`flex-1 rounded-md px-3 py-1.5 font-medium ${
-            mode === "signin" ? "bg-neutral-900 text-white" : "text-neutral-600"
-          }`}
+          className="btn btn-ghost"
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            background: mode === "signin" ? "var(--surface)" : "transparent",
+            color: mode === "signin" ? "var(--ink)" : "var(--muted)",
+            fontWeight: mode === "signin" ? 600 : 500,
+            boxShadow: mode === "signin" ? "0 1px 2px rgba(0,0,0,0.04)" : "none",
+            padding: "8px 12px",
+            fontSize: 12,
+          }}
         >
           サインイン
         </button>
         <button
           type="button"
           onClick={() => setMode("signup")}
-          className={`flex-1 rounded-md px-3 py-1.5 font-medium ${
-            mode === "signup" ? "bg-neutral-900 text-white" : "text-neutral-600"
-          }`}
+          className="btn btn-ghost"
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            background: mode === "signup" ? "var(--surface)" : "transparent",
+            color: mode === "signup" ? "var(--ink)" : "var(--muted)",
+            fontWeight: mode === "signup" ? 600 : 500,
+            boxShadow: mode === "signup" ? "0 1px 2px rgba(0,0,0,0.04)" : "none",
+            padding: "8px 12px",
+            fontSize: 12,
+          }}
         >
           新規登録
         </button>
       </div>
 
-      <form onSubmit={onSubmit} className="space-y-3">
-        <label className="block">
-          <span className="mb-1 block text-sm font-medium">メールアドレス</span>
+      <form
+        onSubmit={onSubmit}
+        style={{ display: "flex", flexDirection: "column", gap: 12 }}
+      >
+        <label style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+          <span
+            style={{
+              fontSize: 10,
+              textTransform: "uppercase",
+              letterSpacing: "0.1em",
+              color: "var(--muted)",
+              fontWeight: 600,
+            }}
+          >
+            メールアドレス
+          </span>
           <input
+            className="input"
             type="email"
             required
+            autoComplete="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full rounded-md border border-neutral-300 px-3 py-2"
-            autoComplete="email"
           />
         </label>
-        <label className="block">
-          <span className="mb-1 block text-sm font-medium">パスワード</span>
+        <label style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+          <span
+            style={{
+              fontSize: 10,
+              textTransform: "uppercase",
+              letterSpacing: "0.1em",
+              color: "var(--muted)",
+              fontWeight: 600,
+            }}
+          >
+            パスワード
+          </span>
           <input
+            className="input"
             type="password"
             required
             minLength={6}
+            autoComplete={mode === "signup" ? "new-password" : "current-password"}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full rounded-md border border-neutral-300 px-3 py-2"
-            autoComplete={
-              mode === "signup" ? "new-password" : "current-password"
-            }
           />
         </label>
 
         {error && (
-          <div className="rounded-md border border-red-300 bg-red-50 p-2 text-sm text-red-800">
+          <div
+            style={{
+              padding: "10px 12px",
+              background: "var(--surface)",
+              border: "1px solid var(--danger)",
+              color: "var(--danger)",
+              borderRadius: 8,
+              fontSize: 12,
+            }}
+          >
             {error}
           </div>
         )}
         {info && (
-          <div className="rounded-md border border-emerald-300 bg-emerald-50 p-2 text-sm text-emerald-800">
+          <div
+            style={{
+              padding: "10px 12px",
+              background: "var(--surface)",
+              border: "1px solid var(--eat)",
+              color: "var(--eat)",
+              borderRadius: 8,
+              fontSize: 12,
+            }}
+          >
             {info}
           </div>
         )}
 
         <button
           type="submit"
+          className="btn btn-primary btn-block"
           disabled={submitting}
-          className="w-full rounded-md bg-emerald-600 px-4 py-2 font-semibold text-white hover:bg-emerald-700 disabled:opacity-50"
+          style={{ padding: 12 }}
         >
           {submitting
             ? "処理中…"

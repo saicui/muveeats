@@ -1,56 +1,81 @@
-# MuveEats 🥗🏃
+# MuveEats
 
-「動く」＋「食べる」をもじったヘルスケアアプリ。トレーニング記録と食事管理（写真からのカロリー推定含む）を一体化することを目指します。
+「動く」+「食べる」をもじったセルフヘルスハブ。食事・運動・体組成を1つに集約することがゴール。
 
-## 現在の MVP
+**現在 MVP 公開準備中 — 食事記録（チェーン検索 / 写真解析 / 手動入力）が動きます。**
 
-- 📷 **写真解析**: Gemini に食事写真を送り、料理名・kcal・PFC を推定
-- ✍️ **手動記録**: 料理名・栄養素・日時・メモを保存
-- 📊 **ダッシュボード**: 今日 / 7日 のカロリー・PFC・記録件数を集計
+## できること（v8 MVP）
 
-トレーニング記録機能は次フェーズで追加予定です。
+- メール + パスワード認証（Supabase Auth + RLS）
+- **チェーン店検索**: 32 チェーン / 約 770 品目の公式栄養データから検索
+  - サイズ自動抽出（並盛 / 大盛 / Tall / Hot / Iced / M / L 等）
+  - クロスチェーン横断（例: 「ラテ」でスタバ・ドトール・タリーズ等を一覧）
+- **写真解析**: Gemini に食事写真を渡し、料理名 / kcal / PFC / タグを推定
+- **手動入力**: 任意の料理を直接記録
+- 事前定義タグタクソノミー（ジャンルは選択メニューから自動付与）
+- 統合履歴（フィルタ + 削除）
+- スマホ前提のレイアウト、Light / Dark テーマ対応
 
-## スタック
+次フェーズ: 筋トレ / 有酸素 / 体組成 / 目標値 / AI 相談（[doc/screens.md](doc/screens.md) 参照）
 
-- Next.js 15 (App Router) + TypeScript + Tailwind
+## 技術スタック
+
+- Next.js 16 (App Router, TypeScript, Turbopack)
+- Tailwind v4 + CSS 変数（`doc/design-system.md`）
 - Supabase (Postgres + Auth + RLS)
 - Google Gemini API (`@google/genai`)
 
-## セットアップ
+## ローカル起動
 
-1. `.env.example` を `.env.local` にコピーし、各キーを記入。
-   ```
-   GEMINI_API_KEY=...
-   GEMINI_MODEL=gemini-3.5-flash   # 動作しない場合は gemini-2.5-flash を試してください
-   NEXT_PUBLIC_SUPABASE_URL=...
-   NEXT_PUBLIC_SUPABASE_ANON_KEY=...
-   ```
-2. Supabase の SQL Editor で `supabase/schema.sql` を実行。
-3. 開発サーバー起動:
-   ```bash
-   npm run dev
-   ```
+```bash
+# 1. 依存
+npm install
 
-> ⚠️ `gemini-3.5-flash` は現時点で公開モデル名として確認できません。401/404 が返る場合は `GEMINI_MODEL=gemini-2.5-flash` に切り替えてください。
+# 2. 環境変数
+cp .env.example .env.local
+# .env.local に GEMINI_API_KEY と Supabase の URL/anon を記入
+
+# 3. Supabase の SQL Editor で supabase/schema.sql を実行
+
+# 4. 開発サーバー
+npm run dev
+```
 
 ## ディレクトリ
 
 ```
 app/
-  page.tsx              ダッシュボード
-  log/page.tsx          手動記録フォーム
-  analyze/page.tsx      写真アップロード+解析画面
-  api/analyze-meal/     Gemini 呼び出しの API ルート
+  page.tsx                  ダッシュボード
+  meals/new/page.tsx        食事記録（検索 / 写真 / 手動）
+  history/                  履歴 + 詳細シート
+  settings/                 設定（プレースホルダ）
+  login/                    認証
+  api/
+    analyze-meal/           Gemini 画像解析
+    chains/                 チェーン検索 API
+    auth/signout/           サインアウト
 lib/
-  supabase/             browser/server クライアント
+  chains.ts                 チェーン索引 + サイズ抽出
+  tags.ts                   タグタクソノミー
+  supabase/                 client/server/middleware
   types.ts
+data/
+  tags.json                 タグ事前定義
+  chain-genres.json         slug → ジャンル
+  chains/*.json             各チェーンの公式栄養データ
 supabase/
-  schema.sql            meals テーブル + RLS
+  schema.sql                meals + profiles + RLS
+doc/
+  design-brief.md           デザインの方向性
+  design-system.md          トークン / コンポーネント
+  screens.md                全画面仕様
+  mock-v8.html              最新リファレンスモック
 ```
 
-## 次にやること候補
+## 公開デプロイ
 
-- 認証画面 (Supabase Auth: メール/Google OAuth)
-- トレーニング記録 (種目・セット・重量・rep)
-- 写真の Supabase Storage への保存と履歴サムネ表示
-- 週次・月次グラフ
+[DEPLOY.md](DEPLOY.md) に Vercel での公開手順をまとめています。
+
+## ライセンス
+
+未定（パーソナル用途を想定）。
