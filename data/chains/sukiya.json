@@ -1,0 +1,250 @@
+{
+  "chain_id": "sukiya",
+  "chain_name": "すき家",
+  "source_url": "https://images.zensho.co.jp/materials/sukiya/allergen/nutrition.pdf",
+  "fetched_at": "2026-05-26",
+  "items": [
+    {
+      "id": "gyudon_mini",
+      "name": "牛丼 ミニ",
+      "aliases": ["牛丼ミニ"],
+      "category": "gyudon",
+      "calories": 464,
+      "protein_g": 14.8,
+      "fat_g": 16.0,
+      "carbs_g": 65.7,
+      "salt_g": 1.7
+    },
+    {
+      "id": "gyudon_nami",
+      "name": "牛丼 並盛",
+      "aliases": ["牛丼並盛", "牛丼"],
+      "category": "gyudon",
+      "calories": 695,
+      "protein_g": 21.7,
+      "fat_g": 23.4,
+      "carbs_g": 99.8,
+      "salt_g": 2.4
+    },
+    {
+      "id": "gyudon_chu",
+      "name": "牛丼 中盛",
+      "aliases": ["牛丼中盛"],
+      "category": "gyudon",
+      "calories": 752,
+      "protein_g": 26.6,
+      "fat_g": 33.4,
+      "carbs_g": 86.5,
+      "salt_g": 2.8
+    },
+    {
+      "id": "gyudon_oomori",
+      "name": "牛丼 大盛",
+      "aliases": ["牛丼大盛"],
+      "category": "gyudon",
+      "calories": 908,
+      "protein_g": 28.4,
+      "fat_g": 30.7,
+      "carbs_g": 130.1,
+      "salt_g": 3.1
+    },
+    {
+      "id": "gyudon_tokumori",
+      "name": "牛丼 特盛",
+      "aliases": ["牛丼特盛"],
+      "category": "gyudon",
+      "calories": 1100,
+      "protein_g": 37.8,
+      "fat_g": 45.6,
+      "carbs_g": 134.9,
+      "salt_g": 4.2
+    },
+    {
+      "id": "gyudon_mega",
+      "name": "牛丼 メガ",
+      "aliases": ["牛丼メガ"],
+      "category": "gyudon",
+      "calories": 1365,
+      "protein_g": 50.8,
+      "fat_g": 66.3,
+      "carbs_g": 141.6,
+      "salt_g": 5.6
+    },
+    {
+      "id": "oroshiponzu_gyudon_nami",
+      "name": "おろしポン酢牛丼 並盛",
+      "aliases": ["おろしポン酢牛丼"],
+      "category": "gyudon",
+      "calories": 719,
+      "protein_g": 22.7,
+      "fat_g": 23.5,
+      "carbs_g": 103.9,
+      "salt_g": 3.5
+    },
+    {
+      "id": "negitatama_gyudon_nami",
+      "name": "ねぎ玉牛丼 並盛",
+      "aliases": ["ねぎ玉牛丼"],
+      "category": "gyudon",
+      "calories": 802,
+      "protein_g": 29.4,
+      "fat_g": 29.9,
+      "carbs_g": 104.8,
+      "salt_g": 3.2
+    },
+    {
+      "id": "3cheese_gyudon_nami",
+      "name": "とろ～り3種のチーズ牛丼 並盛",
+      "aliases": ["チーズ牛丼"],
+      "category": "gyudon",
+      "calories": 871,
+      "protein_g": 32.9,
+      "fat_g": 36.7,
+      "carbs_g": 102.8,
+      "salt_g": 3.5
+    },
+    {
+      "id": "kimchi_gyudon_nami",
+      "name": "キムチ牛丼 並盛",
+      "aliases": ["キムチ牛丼"],
+      "category": "gyudon",
+      "calories": 725,
+      "protein_g": 23.3,
+      "fat_g": 23.8,
+      "carbs_g": 104.8,
+      "salt_g": 4.2
+    },
+    {
+      "id": "takana_mentaimayo_gyudon_nami",
+      "name": "高菜明太マヨ牛丼 並盛",
+      "aliases": ["高菜明太マヨ牛丼"],
+      "category": "gyudon",
+      "calories": 795,
+      "protein_g": 23.3,
+      "fat_g": 31.5,
+      "carbs_g": 104.1,
+      "salt_g": 4.9
+    },
+    {
+      "id": "gyudon_light_nami",
+      "name": "牛丼ライト 並盛",
+      "aliases": ["牛丼ライト"],
+      "category": "gyudon",
+      "calories": 397,
+      "protein_g": 22.8,
+      "fat_g": 26.8,
+      "carbs_g": 16.8,
+      "salt_g": 2.3
+    },
+    {
+      "id": "curry_nami",
+      "name": "カレー 並盛",
+      "aliases": ["カレー"],
+      "category": "curry",
+      "calories": 653,
+      "protein_g": 12.8,
+      "fat_g": 15.7,
+      "carbs_g": 115.2,
+      "salt_g": 3.6
+    },
+    {
+      "id": "gyu_curry_nami",
+      "name": "牛カレー 並盛",
+      "aliases": ["牛カレー"],
+      "category": "curry",
+      "calories": 847,
+      "protein_g": 22.5,
+      "fat_g": 30.7,
+      "carbs_g": 120.6,
+      "salt_g": 4.8
+    },
+    {
+      "id": "sausage_curry_nami",
+      "name": "ソーセージカレー 並盛",
+      "aliases": ["ソーセージカレー"],
+      "category": "curry",
+      "calories": 910,
+      "protein_g": 23.7,
+      "fat_g": 38.3,
+      "carbs_g": 118.4,
+      "salt_g": 5.5
+    },
+    {
+      "id": "ontama_curry_nami",
+      "name": "おんたまカレー 並盛",
+      "aliases": ["おんたまカレー"],
+      "category": "curry",
+      "calories": 737,
+      "protein_g": 19.6,
+      "fat_g": 21.5,
+      "carbs_g": 115.4,
+      "salt_g": 3.8
+    },
+    {
+      "id": "cheese_hamburg_curry_nami",
+      "name": "チーズインハンバーグカレー 並盛",
+      "aliases": ["チーズインハンバーグカレー"],
+      "category": "curry",
+      "calories": 888,
+      "protein_g": 30.6,
+      "fat_g": 30.8,
+      "carbs_g": 122.7,
+      "salt_g": 5.0
+    },
+    {
+      "id": "gyukarubi_nami",
+      "name": "牛カルビ焼肉丼 並盛",
+      "aliases": ["牛カルビ丼", "焼肉丼"],
+      "category": "kodawari_don",
+      "calories": 885,
+      "protein_g": 26.4,
+      "fat_g": 38.6,
+      "carbs_g": 108.3,
+      "salt_g": 2.5
+    },
+    {
+      "id": "maguro_tataki_don_nami",
+      "name": "まぐろたたき丼 並盛",
+      "aliases": ["まぐろたたき丼", "マグロたたき丼"],
+      "category": "kodawari_don",
+      "calories": 591,
+      "protein_g": 28.9,
+      "fat_g": 10.1,
+      "carbs_g": 96.1,
+      "salt_g": 1.7
+    },
+    {
+      "id": "umadashi_tori_soboro_nami",
+      "name": "旨だしとりそぼろ丼 並盛",
+      "aliases": ["とりそぼろ丼"],
+      "category": "kodawari_don",
+      "calories": 673,
+      "protein_g": 30.6,
+      "fat_g": 14.4,
+      "carbs_g": 104.8,
+      "salt_g": 3.4
+    },
+    {
+      "id": "gyu_oshokuji_salad",
+      "name": "牛・お食事サラダ 並盛",
+      "aliases": ["牛お食事サラダ"],
+      "category": "salad",
+      "calories": 359,
+      "protein_g": 15.5,
+      "fat_g": 22.1,
+      "carbs_g": 26.6,
+      "salt_g": 1.7
+    },
+    {
+      "id": "chicken_oshokuji_salad",
+      "name": "チキン・お食事サラダ 並盛",
+      "aliases": ["チキンお食事サラダ"],
+      "category": "salad",
+      "calories": 247,
+      "protein_g": 24.5,
+      "fat_g": 7.8,
+      "carbs_g": 21.5,
+      "salt_g": 0.9
+    }
+  ]
+}

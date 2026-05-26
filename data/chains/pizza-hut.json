@@ -1,0 +1,250 @@
+{
+  "chain_id": "pizza-hut",
+  "chain_name": "ピザハット",
+  "source_url": "https://static.pizzahut.jp/jp/tenant/content/upload_38d46850-9960-4235-ad92-80552df56903.pdf",
+  "fetched_at": "2026-05-26",
+  "items": [
+    {
+      "id": "pizza_s_italian_tomato_garlic",
+      "name": "イタリアントマト＆ガーリック（Sサイズ）",
+      "aliases": ["イタリアントマト", "ガーリックピザ"],
+      "category": "pizza",
+      "calories": 571,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "pizza_s_aspara_bacon",
+      "name": "アスパラベーコーン（Sサイズ）",
+      "aliases": ["アスパラベーコン"],
+      "category": "pizza",
+      "calories": 707,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "pizza_s_tuna_mild",
+      "name": "ツナマイルド（Sサイズ）",
+      "aliases": ["ツナピザ"],
+      "category": "pizza",
+      "calories": 689,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "pizza_s_seafood_mix",
+      "name": "シーフードミックス（Sサイズ）",
+      "aliases": ["シーフードピザ"],
+      "category": "pizza",
+      "calories": 687,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "pizza_s_teriyaki_chicken",
+      "name": "直火焼テリマヨチキン（Sサイズ）",
+      "aliases": ["テリマヨチキン"],
+      "category": "pizza",
+      "calories": 767,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "pizza_s_jaga_mayo_corn",
+      "name": "じゃがマヨコーン（Sサイズ）",
+      "aliases": ["マヨコーン"],
+      "category": "pizza",
+      "calories": 740,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "pizza_s_garlic_meat_gourmet",
+      "name": "ガーリックミートグルメ（Sサイズ）",
+      "aliases": ["ミートグルメ"],
+      "category": "pizza",
+      "calories": 729,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "pizza_s_super_supreme",
+      "name": "スーパー・シュプリーム（Sサイズ）",
+      "aliases": ["シュプリーム"],
+      "category": "pizza",
+      "calories": 765,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "pizza_s_deluxe",
+      "name": "デラックス（Sサイズ）",
+      "aliases": ["デラックスピザ"],
+      "category": "pizza",
+      "calories": 711,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "pizza_s_hawaiian",
+      "name": "ハワイアン（Sサイズ）",
+      "aliases": ["ハワイアンピザ"],
+      "category": "pizza",
+      "calories": 658,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "pizza_s_margherita",
+      "name": "ピザハット・マルゲリータ（Sサイズ）",
+      "aliases": ["マルゲリータ"],
+      "category": "pizza",
+      "calories": 587,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "pizza_s_quattro_formaggi",
+      "name": "とろける４種チーズのフォルマッジ（Sサイズ）",
+      "aliases": ["フォルマッジ", "チーズピザ"],
+      "category": "pizza",
+      "calories": 847,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "pizza_s_iberico",
+      "name": "ジューシー厚切イベリコ（Sサイズ）",
+      "aliases": ["イベリコピザ"],
+      "category": "pizza",
+      "calories": 941,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "pizza_s_spicy_jalapeno",
+      "name": "スパイシー辛ペーニョ（Sサイズ）",
+      "aliases": ["辛ペーニョ", "ハラペーニョピザ"],
+      "category": "pizza",
+      "calories": 680,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "pizza_s_cheese_cheese",
+      "name": "たっぷりチーズ＆チーズ（Sサイズ）",
+      "aliases": ["チーズチーズ"],
+      "category": "pizza",
+      "calories": 748,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "pizza_s_new_pulkogi",
+      "name": "新・特うまプルコギ（Sサイズ）",
+      "aliases": ["プルコギピザ"],
+      "category": "pizza",
+      "calories": 924,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "side_chicken_nugget_m",
+      "name": "チキンナゲット Mサイズ（8ピース）",
+      "aliases": ["チキンナゲット"],
+      "category": "side",
+      "calories": 293,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "side_hat_fry_potato_s",
+      "name": "ハットフライポテト Sサイズ",
+      "aliases": ["フライポテト"],
+      "category": "side",
+      "calories": 185,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "side_hat_fry_potato_m",
+      "name": "ハットフライポテト Mサイズ",
+      "aliases": ["フライポテトM"],
+      "category": "side",
+      "calories": 369,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "side_bone_chicken_s",
+      "name": "骨付きチキン（プレーン）Sサイズ（2ピース）",
+      "aliases": ["骨付きチキン"],
+      "category": "side",
+      "calories": 197,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "side_honey_cheese_ball",
+      "name": "ハニーチーズボール",
+      "aliases": ["チーズボール"],
+      "category": "side",
+      "calories": 265,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "salad_fresh_caesar",
+      "name": "フレッシュ野菜の彩りサラダ（シーザードレッシング付き）",
+      "aliases": ["サラダ", "シーザーサラダ"],
+      "category": "salad",
+      "calories": 110,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    }
+  ]
+}

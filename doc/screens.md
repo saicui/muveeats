@@ -1,7 +1,7 @@
 # MuveEats — Screens Spec
 
-> 全画面のレイアウト・コンテンツ要件。`mock-v4.html` がリファレンス実装。
-> ☑ = モック済み / ☐ = 未モック（Claude Design に作成を依頼したい）
+> 全画面のレイアウト・コンテンツ要件。最新リファレンス実装は `mock-v7.html`。
+> ☑ = モック済み / ☐ = 未モック / 🆕 = v5 で追加
 
 ---
 
@@ -11,24 +11,25 @@
 Home (Dashboard)
 ├── Meals
 │   ├── Record meal              ☑ Screen 2
-│   ├── Meal detail (modal)      ☐
+│   ├── Meal detail (modal)      🆕 Screen 9 (v5)
 │   └── Meal history             ☑ (履歴の一部)
 ├── Workouts
 │   ├── Strength session         ☑ Screen 3
 │   ├── Strength history         ☐
 │   ├── Cardio record            ☑ Screen 4
 │   ├── Cardio history           ☐
-│   └── Exercise picker          ☐
+│   └── Exercise picker          🆕 Screen 8 (v5)
 ├── Body
-│   └── Body composition         ☑ Screen 5
+│   ├── Body composition         ☑ Screen 5
+│   └── Body entry (modal)       🆕 Screen 10 (v5)
 ├── History (unified timeline)   ☑ Screen 6
-└── Settings                     ☐
-    ├── Goals                    ☐
-    ├── Profile                  ☐
-    ├── AI consultation          ☐
-    ├── Theme                    ☐
-    ├── Data (export, delete)    ☐
-    └── Account / Sign out       ☐
+└── Settings                     🆕 Screen 7 (v5)
+    ├── Goals                    🆕 同上
+    ├── Profile                  🆕 同上
+    ├── AI consultation          🆕 同上
+    ├── Theme                    🆕 同上
+    ├── Data (export, delete)    🆕 同上
+    └── Account / Sign out       🆕 同上
 ```
 
 加えて、認証関連:
@@ -132,7 +133,7 @@ Home (Dashboard)
 - 派生指標 2×2 グリッド: 筋肉量 / 内臓脂肪 / 基礎代謝 / BMI
 - 記録履歴リスト
 
-**入力**: ヘッダー右の `+` から記録モーダル（未モック）。
+**入力**: ヘッダー右の `+` から記録モーダル（Screen 10）を開く。すべて手動入力（体組成計の数値を読んでそのまま打ち込むフロー）。
 
 ---
 
@@ -151,11 +152,11 @@ Home (Dashboard)
 - 食事: 料理名 / 時刻 / 自信度 or 手動 / kcal / PFC / タグ
 - 筋トレ: セッション名 / 時刻 / 時間 / 消費 kcal / PR有無
 - 有酸素: 種目 / 時刻 / 距離 + 時間 + 心拍 / 消費 kcal / ペース
-- 体組成: 体重 + 体脂肪 / 時刻 / 計測源
+- 体組成: 体重 + 体脂肪 / 時刻 / すべて手動記録
 
 ---
 
-## ☐ Settings (未モック / 作成依頼)
+## 🆕 Screen 7: Settings (v5 で実装)
 
 **目的**: 目標設定 + プロフィール + AI 相談 + 表示設定 + データ管理。
 
@@ -177,7 +178,23 @@ Home (Dashboard)
 
 ---
 
-## ☐ Meal Detail Modal
+## 🆕 Screen 9: Meal Detail Modal (v5 で実装 / v6 で編集可に)
+
+**目的**: 履歴で食事をタップしたときの詳細 + 微修正。
+
+**構成要素**:
+- ボトムシート型（下からスライドイン）
+- ハンドル (4px 高さの灰バー)
+- タイトル: 料理名 / 永続メタ: 日時 · 記録ソース · 自信度（AI 色）
+- **編集可能フィールド** (v6):
+  - 料理名 / 食べた時刻 / kcal / P / F / C
+- タグ選択（予め選択はそのまま、タップで ON/OFF）
+- AI メモ（読み取り専用 / 写真記録の場合のみ）
+- アクション: 削除 / キャンセル / 保存
+
+**挙動**:
+- 保存した値は「手動修正された記録」として保持される（AI 認識値との差分はログにのみ保持）。
+- タグはユーザーが手動選択 / 解除したとされ、AI 提案フラグ（破線）は以降付かない。
 
 **目的**: 履歴で食事をタップしたときの詳細。
 
@@ -215,7 +232,7 @@ Home (Dashboard)
 
 ---
 
-## ☐ Exercise Picker
+## 🆕 Screen 8: Exercise Picker (v5 で実装)
 
 **目的**: 筋トレ種目の選択。
 
@@ -243,14 +260,15 @@ Home (Dashboard)
 
 ---
 
-## ☐ Body Composition Entry Modal
+## 🆕 Screen 10: Body Composition Entry Modal (v5 で実装)
 
-**目的**: 体重・体脂肪などの入力。
+**目的**: 体重・体脂肪などの手動入力。
 
-**構成案**:
+**構成**:
 - ボトムシート
-- 日時 / 体重 / 体脂肪率 / 筋肉量 / 内臓脂肪 を縦に
-- 体組成計の写真をアップロードして OCR する（拡張）— フェーズ2
+- 日時 / 体重 / 体脂肪率 / 筋肉量 / 内臓脂肪 / 基礎代謝を縦に
+- 空欄項目はスキップされる
+- 体組成計やスマートデバイスの連携は**無し**。すべて手入力。
 
 ---
 

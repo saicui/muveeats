@@ -1,0 +1,239 @@
+{
+  "chain_id": "domino",
+  "chain_name": "ドミノ・ピザ",
+  "source_url": "https://www.dominos.jp/nutritional-pizzas-information",
+  "fetched_at": "2026-05-26",
+  "items": [
+    {
+      "id": "pizza_m_margherita",
+      "name": "マルゲリータ（Mサイズ・ハンドトス 1スライス）",
+      "aliases": ["マルゲリータ"],
+      "category": "pizza",
+      "calories": 138,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "pizza_m_american",
+      "name": "アメリカン（Mサイズ・ハンドトス 1スライス）",
+      "aliases": ["アメリカンピザ"],
+      "category": "pizza",
+      "calories": 148,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "pizza_m_garlic_master",
+      "name": "ガーリック・マスター（Mサイズ・ハンドトス 1スライス）",
+      "aliases": ["ガーリックマスター"],
+      "category": "pizza",
+      "calories": 160,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "pizza_m_garlic_shrimp",
+      "name": "ガーリックシュリンプ（Mサイズ・ハンドトス 1スライス）",
+      "aliases": ["ガーリックシュリンプ"],
+      "category": "pizza",
+      "calories": 154,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "pizza_m_double_mozzarella",
+      "name": "ダブルモッツァレラ（Mサイズ・ハンドトス 1スライス）",
+      "aliases": ["ダブルモッツァレラ"],
+      "category": "pizza",
+      "calories": 169,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "pizza_m_domino_deluxe",
+      "name": "ドミノ・デラックス（Mサイズ・ハンドトス 1スライス）",
+      "aliases": ["デラックス"],
+      "category": "pizza",
+      "calories": 163,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "pizza_m_tropical",
+      "name": "トロピカル（Mサイズ・ハンドトス 1スライス）",
+      "aliases": ["トロピカルピザ"],
+      "category": "pizza",
+      "calories": 143,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "pizza_m_giga_meat",
+      "name": "ギガ・ミート（Mサイズ・ハンドトス 1スライス）",
+      "aliases": ["ギガミート"],
+      "category": "pizza",
+      "calories": 184,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "pizza_m_genovese",
+      "name": "ジェノベーゼ（Mサイズ・ハンドトス 1スライス）",
+      "aliases": ["ジェノベーゼ"],
+      "category": "pizza",
+      "calories": 165,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "pizza_m_mayo_jaga",
+      "name": "マヨじゃが（Mサイズ・ハンドトス 1スライス）",
+      "aliases": ["マヨじゃがピザ"],
+      "category": "pizza",
+      "calories": 200,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "pizza_m_korea_karubi",
+      "name": "高麗カルビ（Mサイズ・ハンドトス 1スライス）",
+      "aliases": ["カルビピザ"],
+      "category": "pizza",
+      "calories": 175,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "pizza_m_teriyaki_chicken",
+      "name": "炭火焼チキテリ（Mサイズ・ハンドトス 1スライス）",
+      "aliases": ["チキテリ"],
+      "category": "pizza",
+      "calories": 180,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "pizza_m_charcoal_beef",
+      "name": "炭火焼ビーフ（Mサイズ・ハンドトス 1スライス）",
+      "aliases": ["炭火焼きビーフ"],
+      "category": "pizza",
+      "calories": 180,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "pizza_m_spicy",
+      "name": "スパイシー（Mサイズ・ハンドトス 1スライス）",
+      "aliases": ["スパイシーピザ"],
+      "category": "pizza",
+      "calories": 164,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "pizza_m_mayo_shrimp",
+      "name": "マヨシュリンプ（Mサイズ・ハンドトス 1スライス）",
+      "aliases": ["マヨシュリンプ"],
+      "category": "pizza",
+      "calories": 166,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "side_chicken_nugget",
+      "name": "チキンナゲット",
+      "aliases": ["ナゲット"],
+      "category": "side",
+      "calories": 478,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "side_consomme_potato",
+      "name": "コンソメポテト",
+      "aliases": ["ポテト"],
+      "category": "side",
+      "calories": 318,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "side_caesar_salad",
+      "name": "シーザーサラダ",
+      "aliases": ["サラダ"],
+      "category": "side",
+      "calories": 192,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "side_cheese_stick",
+      "name": "のび～るチーズ棒",
+      "aliases": ["チーズスティック"],
+      "category": "side",
+      "calories": 330,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "side_karaage",
+      "name": "ジューシーからあげ",
+      "aliases": ["唐揚げ"],
+      "category": "side",
+      "calories": 453,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "side_fried_chicken",
+      "name": "骨付きフライドチキン",
+      "aliases": ["フライドチキン"],
+      "category": "side",
+      "calories": 433,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    }
+  ]
+}

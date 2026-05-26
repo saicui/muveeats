@@ -1,0 +1,283 @@
+{
+  "chain_id": "kura-zushi",
+  "chain_name": "くら寿司",
+  "source_url": "https://www.kurasushi.co.jp/common/pdf/kura_allergen.pdf",
+  "fetched_at": "2026-05-26",
+  "items": [
+    {
+      "id": "sushi_salmon",
+      "name": "サーモン",
+      "aliases": ["鮭", "さけ"],
+      "category": "sushi",
+      "calories": 93,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "sushi_maguro",
+      "name": "熟成まぐろ",
+      "aliases": ["まぐろ", "マグロ"],
+      "category": "sushi",
+      "calories": 82,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "sushi_ebi",
+      "name": "えび",
+      "aliases": ["海老", "エビ"],
+      "category": "sushi",
+      "calories": 74,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "sushi_ikura",
+      "name": "いくら",
+      "aliases": ["イクラ", "いくら軍艦"],
+      "category": "sushi",
+      "calories": 93,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "sushi_hamachi",
+      "name": "はまち",
+      "aliases": ["ハマチ", "ぶり"],
+      "category": "sushi",
+      "calories": 118,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "sushi_anago",
+      "name": "あなご",
+      "aliases": ["穴子", "アナゴ"],
+      "category": "sushi",
+      "calories": 94,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "sushi_toro_salmon",
+      "name": "とろサーモン",
+      "aliases": ["サーモントロ"],
+      "category": "sushi",
+      "calories": 98,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "sushi_ika",
+      "name": "いか",
+      "aliases": ["イカ", "烏賊"],
+      "category": "sushi",
+      "calories": 73,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "sushi_ebi_mayo",
+      "name": "えびマヨ",
+      "aliases": ["海老マヨ"],
+      "category": "sushi",
+      "calories": 182,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "sushi_maguro_yukke",
+      "name": "まぐろユッケ",
+      "aliases": ["マグロユッケ"],
+      "category": "sushi",
+      "calories": 142,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "sushi_negi_maguro",
+      "name": "ねぎまぐろ",
+      "aliases": ["ねぎとろ"],
+      "category": "sushi",
+      "calories": 99,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "sushi_tuna_salad",
+      "name": "ツナサラダ",
+      "aliases": ["ツナサラダ巻"],
+      "category": "sushi",
+      "calories": 163,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "sushi_tamago",
+      "name": "たまご焼き",
+      "aliases": ["玉子", "たまご"],
+      "category": "sushi",
+      "calories": 114,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "sushi_salmon_avocado",
+      "name": "サーモンアボカドチーズ",
+      "aliases": ["サーモンアボカド"],
+      "category": "sushi",
+      "calories": 116,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "sushi_uni_kaisengunkan",
+      "name": "うに入り海鮮軍艦",
+      "aliases": ["うに軍艦"],
+      "category": "sushi",
+      "calories": 89,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "side_takoyaki",
+      "name": "揚げたこ焼き",
+      "aliases": ["たこ焼き"],
+      "category": "side",
+      "calories": 200,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "side_kura_potato",
+      "name": "くらポテト",
+      "aliases": ["ポテト", "フライドポテト"],
+      "category": "side",
+      "calories": 396,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "side_chawanmushi",
+      "name": "特製茶碗蒸し",
+      "aliases": ["茶碗蒸し"],
+      "category": "side",
+      "calories": 67,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "side_ebi_ten_udon",
+      "name": "えび天うどん",
+      "aliases": ["えびてんうどん"],
+      "category": "noodle",
+      "calories": 274,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "side_tantanmen",
+      "name": "胡麻香る担々麺",
+      "aliases": ["担々麺"],
+      "category": "noodle",
+      "calories": 423,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "side_chicken_nanban",
+      "name": "チキン南蛮",
+      "aliases": ["チキンナンバン"],
+      "category": "side",
+      "calories": 372,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "side_unadon",
+      "name": "うな丼（白米）",
+      "aliases": ["うなぎ丼"],
+      "category": "donburi",
+      "calories": 532,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "side_ramen_shoyu",
+      "name": "7種の魚介 醤油らーめん",
+      "aliases": ["醤油ラーメン", "魚介ラーメン"],
+      "category": "noodle",
+      "calories": 286,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "side_kaisen_don",
+      "name": "旬の海鮮丼",
+      "aliases": ["海鮮丼"],
+      "category": "donburi",
+      "calories": 462,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "side_maguro_minibowl",
+      "name": "まぐろうま煮ミニ丼",
+      "aliases": ["まぐろ丼"],
+      "category": "donburi",
+      "calories": 312,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    }
+  ]
+}

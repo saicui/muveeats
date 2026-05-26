@@ -1,0 +1,283 @@
+{
+  "chain_id": "ootoya",
+  "chain_name": "大戸屋",
+  "source_url": "https://www.ootoya.com/menu_list/info/nutrition/27186",
+  "fetched_at": "2026-05-26",
+  "items": [
+    {
+      "id": "shogayaki_teishoku",
+      "name": "すりおろし生しょうがの豚肩ロース生姜焼き",
+      "aliases": ["生姜焼き定食", "豚生姜焼き"],
+      "category": "teishoku",
+      "calories": 829,
+      "protein_g": 33.4,
+      "fat_g": 34.5,
+      "carbs_g": 86.1,
+      "salt_g": 5.3
+    },
+    {
+      "id": "chicken_nanban",
+      "name": "大戸屋風チキン南蛮",
+      "aliases": ["チキン南蛮定食"],
+      "category": "teishoku",
+      "calories": 1283,
+      "protein_g": 44.1,
+      "fat_g": 70.8,
+      "carbs_g": 107.2,
+      "salt_g": 5.2
+    },
+    {
+      "id": "kaji_karaage",
+      "name": "香味唐揚げ",
+      "aliases": ["唐揚げ定食", "から揚げ定食"],
+      "category": "teishoku",
+      "calories": 955,
+      "protein_g": 37.1,
+      "fat_g": 40.3,
+      "carbs_g": 101.1,
+      "salt_g": 4.5
+    },
+    {
+      "id": "moromi_chicken",
+      "name": "もろみチキンの炭火焼き",
+      "aliases": ["もろみチキン定食"],
+      "category": "teishoku",
+      "calories": 802,
+      "protein_g": 42.3,
+      "fat_g": 30.9,
+      "carbs_g": 78.3,
+      "salt_g": 5.2
+    },
+    {
+      "id": "oil_drizzle_chicken",
+      "name": "生ニラだれの油淋鶏",
+      "aliases": ["油淋鶏定食", "ユーリンチー"],
+      "category": "teishoku",
+      "calories": 1038,
+      "protein_g": 42.9,
+      "fat_g": 44.7,
+      "carbs_g": 105.7,
+      "salt_g": 6.6
+    },
+    {
+      "id": "demi_chicken_katsu",
+      "name": "デミグラスチキンかつ",
+      "aliases": ["チキンかつ定食"],
+      "category": "teishoku",
+      "calories": 865,
+      "protein_g": 29.3,
+      "fat_g": 34.3,
+      "carbs_g": 101.2,
+      "salt_g": 4.2
+    },
+    {
+      "id": "pork_hire_katsu",
+      "name": "三元豚のヒレかつ",
+      "aliases": ["ひれかつ定食"],
+      "category": "teishoku",
+      "calories": 980,
+      "protein_g": 46.5,
+      "fat_g": 36.1,
+      "carbs_g": 112.0,
+      "salt_g": 4.9
+    },
+    {
+      "id": "hokke_炭火",
+      "name": "しまほっけの炭火焼き",
+      "aliases": ["ほっけ定食"],
+      "category": "teishoku",
+      "calories": 612,
+      "protein_g": 45.5,
+      "fat_g": 13.1,
+      "carbs_g": 75.7,
+      "salt_g": 5.4
+    },
+    {
+      "id": "saba_charcoal",
+      "name": "さばの炭火焼き",
+      "aliases": ["さば定食"],
+      "category": "teishoku",
+      "calories": 870,
+      "protein_g": 35.9,
+      "fat_g": 47.4,
+      "carbs_g": 76.1,
+      "salt_g": 2.9
+    },
+    {
+      "id": "saba_misoni",
+      "name": "さばの味噌煮",
+      "aliases": ["鯖みそ定食"],
+      "category": "teishoku",
+      "calories": 739,
+      "protein_g": 36.9,
+      "fat_g": 26.9,
+      "carbs_g": 82.8,
+      "salt_g": 3.9
+    },
+    {
+      "id": "mapo_tofu",
+      "name": "ピリ辛本格マーボードーフ",
+      "aliases": ["麻婆豆腐定食"],
+      "category": "teishoku",
+      "calories": 674,
+      "protein_g": 26.7,
+      "fat_g": 19.9,
+      "carbs_g": 92.1,
+      "salt_g": 5.2
+    },
+    {
+      "id": "niku_yasai_炒め",
+      "name": "肉野菜塩こうじ炒め",
+      "aliases": ["肉野菜炒め定食"],
+      "category": "teishoku",
+      "calories": 809,
+      "protein_g": 22.6,
+      "fat_g": 40.2,
+      "carbs_g": 84.8,
+      "salt_g": 5.7
+    },
+    {
+      "id": "gyu_stamina_teppan",
+      "name": "国産牛のスタミナ鉄板焼き",
+      "aliases": ["牛鉄板焼き定食"],
+      "category": "teishoku",
+      "calories": 1049,
+      "protein_g": 28.9,
+      "fat_g": 58.4,
+      "carbs_g": 88.9,
+      "salt_g": 5.0
+    },
+    {
+      "id": "tonkatsu_mayo_chicken",
+      "name": "懐かしの甘から照り焼きチキン",
+      "aliases": ["照り焼きチキン定食"],
+      "category": "teishoku",
+      "calories": 1400,
+      "protein_g": 51.8,
+      "fat_g": 66.5,
+      "carbs_g": 110.0,
+      "salt_g": 6.4
+    },
+    {
+      "id": "sawara_saiyaki",
+      "name": "鰆の西京焼き",
+      "aliases": ["西京焼き定食"],
+      "category": "teishoku",
+      "calories": 699,
+      "protein_g": 40.5,
+      "fat_g": 17.8,
+      "carbs_g": 89.6,
+      "salt_g": 6.8
+    },
+    {
+      "id": "katsuo_ume",
+      "name": "鰹の梅はさみ揚げ",
+      "aliases": ["かつおフライ定食"],
+      "category": "teishoku",
+      "calories": 672,
+      "protein_g": 27.6,
+      "fat_g": 19.2,
+      "carbs_g": 92.7,
+      "salt_g": 7.7
+    },
+    {
+      "id": "ebi_tamago_toji_juu",
+      "name": "海老の玉子とじ重",
+      "aliases": ["海老玉子とじ丼"],
+      "category": "don",
+      "calories": 886,
+      "protein_g": 33.1,
+      "fat_g": 25.4,
+      "carbs_g": 120.1,
+      "salt_g": 6.9
+    },
+    {
+      "id": "bakudan_don",
+      "name": "大戸屋ばくだん丼",
+      "aliases": ["ばくだん丼"],
+      "category": "don",
+      "calories": 568,
+      "protein_g": 28.8,
+      "fat_g": 12.0,
+      "carbs_g": 77.6,
+      "salt_g": 3.2
+    },
+    {
+      "id": "kimuchi_nabe_teishoku",
+      "name": "辛旨 鶏とつくねのキムチチゲ",
+      "aliases": ["キムチチゲ定食"],
+      "category": "teishoku",
+      "calories": 863,
+      "protein_g": 41.8,
+      "fat_g": 33.6,
+      "carbs_g": 89.1,
+      "salt_g": 7.7
+    },
+    {
+      "id": "pork_hire_shyabu",
+      "name": "豚ヒレの冷しゃぶ おろし柚香だれ",
+      "aliases": ["冷しゃぶ定食"],
+      "category": "teishoku",
+      "calories": 627,
+      "protein_g": 42.3,
+      "fat_g": 8.0,
+      "carbs_g": 93.7,
+      "salt_g": 4.8
+    },
+    {
+      "id": "毎日定食",
+      "name": "毎日定食",
+      "aliases": ["毎日のおかず定食"],
+      "category": "teishoku",
+      "calories": 807,
+      "protein_g": 28.1,
+      "fat_g": 25.0,
+      "carbs_g": 106.2,
+      "salt_g": 6.2
+    },
+    {
+      "id": "katsuryoku_teishoku",
+      "name": "活力定食",
+      "aliases": ["大盛り定食"],
+      "category": "teishoku",
+      "calories": 1114,
+      "protein_g": 48.0,
+      "fat_g": 48.7,
+      "carbs_g": 109.9,
+      "salt_g": 7.0
+    },
+    {
+      "id": "miso_soup",
+      "name": "あおさと豆腐の味噌汁",
+      "aliases": ["みそ汁"],
+      "category": "side",
+      "calories": 53,
+      "protein_g": 6.5,
+      "fat_g": 1.2,
+      "carbs_g": 2.9,
+      "salt_g": 1.8
+    },
+    {
+      "id": "natto",
+      "name": "納豆",
+      "aliases": ["納豆"],
+      "category": "side",
+      "calories": 92,
+      "protein_g": 7.6,
+      "fat_g": 4.6,
+      "carbs_g": 2.5,
+      "salt_g": 0.5
+    },
+    {
+      "id": "tofu",
+      "name": "ひんやり豆腐",
+      "aliases": ["冷やっこ"],
+      "category": "side",
+      "calories": 41,
+      "protein_g": 3.9,
+      "fat_g": 2.1,
+      "carbs_g": 1.4,
+      "salt_g": 0.0
+    }
+  ]
+}

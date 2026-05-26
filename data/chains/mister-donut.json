@@ -1,0 +1,250 @@
+{
+  "chain_id": "mister-donut",
+  "chain_name": "ミスタードーナツ",
+  "source_url": "https://www.misterdonut.jp/m_menu/eiyou/eiyou.pdf",
+  "fetched_at": "2026-05-26",
+  "items": [
+    {
+      "id": "pon_de_ring",
+      "name": "ポン・デ・リング",
+      "aliases": ["ポンデリング"],
+      "category": "donut",
+      "calories": 219,
+      "protein_g": 1.2,
+      "fat_g": 11.8,
+      "carbs_g": 26.9,
+      "salt_g": 0.6
+    },
+    {
+      "id": "pon_de_angel",
+      "name": "ポン・デ・エンゼル",
+      "aliases": ["ポンデエンゼル"],
+      "category": "donut",
+      "calories": 251,
+      "protein_g": 1.7,
+      "fat_g": 15.8,
+      "carbs_g": 25.3,
+      "salt_g": 0.6
+    },
+    {
+      "id": "pon_de_strawberry",
+      "name": "ポン・デ・ストロベリー",
+      "aliases": ["ポンデストロベリー"],
+      "category": "donut",
+      "calories": 245,
+      "protein_g": 1.3,
+      "fat_g": 15.6,
+      "carbs_g": 24.5,
+      "salt_g": 0.6
+    },
+    {
+      "id": "angel_cream",
+      "name": "エンゼルクリーム",
+      "aliases": ["エンゼルクリームドーナツ"],
+      "category": "donut",
+      "calories": 200,
+      "protein_g": 3.1,
+      "fat_g": 12.0,
+      "carbs_g": 19.5,
+      "salt_g": 0.5
+    },
+    {
+      "id": "custard_cream",
+      "name": "カスタードクリーム",
+      "aliases": ["カスタードドーナツ"],
+      "category": "donut",
+      "calories": 222,
+      "protein_g": 3.4,
+      "fat_g": 11.8,
+      "carbs_g": 25.2,
+      "salt_g": 0.5
+    },
+    {
+      "id": "honey_dip",
+      "name": "ハニーディップ",
+      "aliases": ["ハニーディップドーナツ"],
+      "category": "donut",
+      "calories": 216,
+      "protein_g": 4.1,
+      "fat_g": 11.4,
+      "carbs_g": 24.0,
+      "salt_g": 0.6
+    },
+    {
+      "id": "sugar_raised",
+      "name": "シュガーレイズド",
+      "aliases": ["シュガーレイズドドーナツ"],
+      "category": "donut",
+      "calories": 207,
+      "protein_g": 4.1,
+      "fat_g": 11.5,
+      "carbs_g": 21.3,
+      "salt_g": 0.6
+    },
+    {
+      "id": "choco_ring",
+      "name": "チョコリング",
+      "aliases": ["チョコリングドーナツ"],
+      "category": "donut",
+      "calories": 250,
+      "protein_g": 4.5,
+      "fat_g": 15.5,
+      "carbs_g": 22.6,
+      "salt_g": 0.6
+    },
+    {
+      "id": "french_cruller",
+      "name": "フレンチクルーラー",
+      "aliases": ["クルーラー"],
+      "category": "donut",
+      "calories": 148,
+      "protein_g": 1.5,
+      "fat_g": 9.2,
+      "carbs_g": 14.3,
+      "salt_g": 0.2
+    },
+    {
+      "id": "angel_french",
+      "name": "エンゼルフレンチ",
+      "aliases": ["エンゼルフレンチドーナツ"],
+      "category": "donut",
+      "calories": 186,
+      "protein_g": 2.1,
+      "fat_g": 13.7,
+      "carbs_g": 13.1,
+      "salt_g": 0.2
+    },
+    {
+      "id": "old_fashion",
+      "name": "オールドファッション",
+      "aliases": ["オールドファッションドーナツ"],
+      "category": "donut",
+      "calories": 281,
+      "protein_g": 3.4,
+      "fat_g": 17.0,
+      "carbs_g": 28.0,
+      "salt_g": 0.7
+    },
+    {
+      "id": "choco_fashion",
+      "name": "チョコファッション",
+      "aliases": ["チョコファッションドーナツ"],
+      "category": "donut",
+      "calories": 318,
+      "protein_g": 3.7,
+      "fat_g": 19.7,
+      "carbs_g": 30.7,
+      "salt_g": 0.7
+    },
+    {
+      "id": "chocolate",
+      "name": "チョコレート",
+      "aliases": ["チョコドーナツ"],
+      "category": "donut",
+      "calories": 245,
+      "protein_g": 2.9,
+      "fat_g": 13.9,
+      "carbs_g": 26.8,
+      "salt_g": 0.5
+    },
+    {
+      "id": "honey_churo",
+      "name": "ハニーチュロ",
+      "aliases": ["チュロス"],
+      "category": "donut",
+      "calories": 205,
+      "protein_g": 3.3,
+      "fat_g": 10.1,
+      "carbs_g": 24.9,
+      "salt_g": 0.6
+    },
+    {
+      "id": "choco_churo",
+      "name": "チョコチュロ",
+      "aliases": ["チョコチュロス"],
+      "category": "donut",
+      "calories": 270,
+      "protein_g": 4.0,
+      "fat_g": 16.5,
+      "carbs_g": 25.8,
+      "salt_g": 0.6
+    },
+    {
+      "id": "pie_bbq_frankfurter",
+      "name": "ホット・セイボリーパイ BBQフランクフルト",
+      "aliases": ["フランクフルトパイ"],
+      "category": "savory",
+      "calories": 311,
+      "protein_g": 6.8,
+      "fat_g": 21.5,
+      "carbs_g": 24.1,
+      "salt_g": 1.5
+    },
+    {
+      "id": "pie_butter_chicken_curry",
+      "name": "バターチキンカレーパイ",
+      "aliases": ["カレーパイ"],
+      "category": "savory",
+      "calories": 265,
+      "protein_g": 5.8,
+      "fat_g": 15.1,
+      "carbs_g": 26.0,
+      "salt_g": 1.0
+    },
+    {
+      "id": "shiru_soba",
+      "name": "汁そば",
+      "aliases": ["ミスドそば"],
+      "category": "dimsum",
+      "calories": 229,
+      "protein_g": 8.4,
+      "fat_g": 1.1,
+      "carbs_g": 43.7,
+      "salt_g": 3.7
+    },
+    {
+      "id": "shisen_tantanmen",
+      "name": "四川担々麺",
+      "aliases": ["担担麺"],
+      "category": "dimsum",
+      "calories": 554,
+      "protein_g": 16.4,
+      "fat_g": 30.3,
+      "carbs_g": 52.0,
+      "salt_g": 4.6
+    },
+    {
+      "id": "tamago_chahan",
+      "name": "たまごチャーハン",
+      "aliases": ["チャーハン"],
+      "category": "dimsum",
+      "calories": 588,
+      "protein_g": 16.2,
+      "fat_g": 24.3,
+      "carbs_g": 72.3,
+      "salt_g": 2.4
+    },
+    {
+      "id": "blend_coffee",
+      "name": "ミスド ブレンドコーヒー",
+      "aliases": ["コーヒー"],
+      "category": "drink",
+      "calories": 7,
+      "protein_g": 0.4,
+      "fat_g": 0.0,
+      "carbs_g": 1.2,
+      "salt_g": 0.0
+    },
+    {
+      "id": "cafe_ole",
+      "name": "ミスド カフェオレ",
+      "aliases": ["カフェオレ"],
+      "category": "drink",
+      "calories": 66,
+      "protein_g": 1.7,
+      "fat_g": 2.9,
+      "carbs_g": 8.1,
+      "salt_g": 0.1
+    }
+  ]
+}

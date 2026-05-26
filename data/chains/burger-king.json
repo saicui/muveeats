@@ -1,0 +1,228 @@
+{
+  "chain_id": "burger-king",
+  "chain_name": "バーガーキング",
+  "source_url": "https://www.burgerking.co.jp/images/org/pdf/2025/07/24/d7dd6359-8125-4202-aa58-653666afc1c0.pdf",
+  "fetched_at": "2026-05-26",
+  "items": [
+    {
+      "id": "whopper_cheese",
+      "name": "ワッパーチーズ",
+      "aliases": ["Whopper Cheese"],
+      "category": "burger",
+      "calories": 750,
+      "protein_g": 32.7,
+      "fat_g": 46.3,
+      "carbs_g": 51.4,
+      "salt_g": 3.7
+    },
+    {
+      "id": "whopper_cheese_jr",
+      "name": "ワッパーチーズジュニア",
+      "aliases": ["Whopper Cheese Jr"],
+      "category": "burger",
+      "calories": 372,
+      "protein_g": 16.1,
+      "fat_g": 21.8,
+      "carbs_g": 28.2,
+      "salt_g": 1.7
+    },
+    {
+      "id": "double_whopper_cheese",
+      "name": "ダブルワッパーチーズ",
+      "aliases": ["Double Whopper Cheese"],
+      "category": "burger",
+      "calories": 985,
+      "protein_g": 51.2,
+      "fat_g": 64.1,
+      "carbs_g": 51.5,
+      "salt_g": 3.9
+    },
+    {
+      "id": "triple_whopper_cheese",
+      "name": "トリプルワッパーチーズ",
+      "aliases": ["Triple Whopper Cheese"],
+      "category": "burger",
+      "calories": 1219,
+      "protein_g": 69.7,
+      "fat_g": 81.9,
+      "carbs_g": 51.6,
+      "salt_g": 4.1
+    },
+    {
+      "id": "avocado_whopper",
+      "name": "アボカドワッパー",
+      "aliases": ["Avocado Whopper"],
+      "category": "burger",
+      "calories": 732,
+      "protein_g": 28.7,
+      "fat_g": 45.1,
+      "carbs_g": 54.5,
+      "salt_g": 3.0
+    },
+    {
+      "id": "quatro_cheese_whopper",
+      "name": "クアトロチーズワッパー",
+      "aliases": ["Quattro Cheese Whopper"],
+      "category": "burger",
+      "calories": 823,
+      "protein_g": 37.5,
+      "fat_g": 53.7,
+      "carbs_g": 48.0,
+      "salt_g": 3.8
+    },
+    {
+      "id": "whopper",
+      "name": "ワッパー",
+      "aliases": ["Whopper"],
+      "category": "burger",
+      "calories": 672,
+      "protein_g": 28.2,
+      "fat_g": 39.9,
+      "carbs_g": 50.8,
+      "salt_g": 3.0
+    },
+    {
+      "id": "smoky_bbq_whopper",
+      "name": "スモーキーBBQワッパー",
+      "aliases": ["Smoky BBQ Whopper"],
+      "category": "burger",
+      "calories": 674,
+      "protein_g": 28.1,
+      "fat_g": 39.9,
+      "carbs_g": 51.3,
+      "salt_g": 2.9
+    },
+    {
+      "id": "teriyaki_whopper",
+      "name": "テリヤキワッパー",
+      "aliases": ["Teriyaki Whopper"],
+      "category": "burger",
+      "calories": 684,
+      "protein_g": 28.2,
+      "fat_g": 40.0,
+      "carbs_g": 53.4,
+      "salt_g": 3.0
+    },
+    {
+      "id": "classic_smoky_fried_chicken_burger",
+      "name": "クラシック スモーキーフライドチキンバーガー",
+      "aliases": ["スモーキーフライドチキンバーガー"],
+      "category": "chicken_burger",
+      "calories": 563,
+      "protein_g": 26.7,
+      "fat_g": 32.7,
+      "carbs_g": 40.7,
+      "salt_g": 2.8
+    },
+    {
+      "id": "tartare_chicken_burger",
+      "name": "タルタルチキンバーガー",
+      "aliases": ["Tartare Chicken Burger"],
+      "category": "chicken_burger",
+      "calories": 424,
+      "protein_g": 13.6,
+      "fat_g": 25.8,
+      "carbs_g": 34.3,
+      "salt_g": 2.1
+    },
+    {
+      "id": "fish_burger",
+      "name": "フィッシュバーガー",
+      "aliases": ["Fish Burger"],
+      "category": "burger",
+      "calories": 373,
+      "protein_g": 14.4,
+      "fat_g": 18.4,
+      "carbs_g": 37.6,
+      "salt_g": 2.1
+    },
+    {
+      "id": "hotdog_classic",
+      "name": "クラシック ホットドッグ",
+      "aliases": ["Classic Hot Dog"],
+      "category": "hotdog",
+      "calories": 302,
+      "protein_g": 12.3,
+      "fat_g": 19.0,
+      "carbs_g": 20.5,
+      "salt_g": 1.9
+    },
+    {
+      "id": "fries_s",
+      "name": "フレンチフライ S",
+      "aliases": ["French Fries S"],
+      "category": "side",
+      "calories": 216,
+      "protein_g": 3.0,
+      "fat_g": 9.8,
+      "carbs_g": 29.0,
+      "salt_g": 0.9
+    },
+    {
+      "id": "fries_m",
+      "name": "フレンチフライ M",
+      "aliases": ["French Fries M"],
+      "category": "side",
+      "calories": 306,
+      "protein_g": 4.3,
+      "fat_g": 13.9,
+      "carbs_g": 41.1,
+      "salt_g": 1.3
+    },
+    {
+      "id": "fries_l",
+      "name": "フレンチフライ L",
+      "aliases": ["French Fries L"],
+      "category": "side",
+      "calories": 438,
+      "protein_g": 6.1,
+      "fat_g": 19.9,
+      "carbs_g": 58.8,
+      "salt_g": 1.8
+    },
+    {
+      "id": "onion_ring",
+      "name": "オニオンリング",
+      "aliases": ["Onion Ring"],
+      "category": "side",
+      "calories": 218,
+      "protein_g": 2.5,
+      "fat_g": 10.9,
+      "carbs_g": 27.5,
+      "salt_g": 1.5
+    },
+    {
+      "id": "chili_cheese_fry",
+      "name": "チリチーズフライ",
+      "aliases": ["Chili Cheese Fry"],
+      "category": "side",
+      "calories": 325,
+      "protein_g": 8.9,
+      "fat_g": 18.3,
+      "carbs_g": 32.0,
+      "salt_g": 2.6
+    },
+    {
+      "id": "coke_m",
+      "name": "コカ・コーラ M",
+      "aliases": ["Coke M"],
+      "category": "drink",
+      "calories": 129,
+      "protein_g": 0.0,
+      "fat_g": 0.0,
+      "carbs_g": 32.4,
+      "salt_g": 0.0
+    },
+    {
+      "id": "coke_zero_m",
+      "name": "コカ・コーラゼロ M",
+      "aliases": ["Coke Zero M"],
+      "category": "drink",
+      "calories": 0,
+      "protein_g": 0.0,
+      "fat_g": 0.0,
+      "carbs_g": 0.3,
+      "salt_g": 0.0
+    }
+  ]
+}

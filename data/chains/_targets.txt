@@ -1,0 +1,65 @@
+# MuveEats — チェーン店データ収集ターゲット
+#
+# 形式: slug | 日本語名 | 公式栄養情報ページURL(任意)
+# 優先度の高い順に並べてあります。
+# 完了したら行頭に # を付けてコメントアウトしてください。
+
+# --- ファストフード / バーガー ---
+# mcdonalds       | マクドナルド            | https://www.mcdonalds.co.jp/quality/allergy_Nutrition/nutrient/
+# mos-burger      | モスバーガー            | https://www.mos.jp/menu/
+# kfc             | ケンタッキーフライドチキン | https://www.kfc.co.jp/menu/
+# burger-king     | バーガーキング          |
+# lotteria        | ロッテリア              | https://www.lotteria.jp/quality/eiyou/
+
+# --- 牛丼 / 和食チェーン ---
+# sukiya          | すき家                  | https://www.sukiya.jp/menu/
+# yoshinoya       | 吉野家                  | https://www.yoshinoya.com/menu/
+# matsuya         | 松屋                    | https://www.matsuyafoods.co.jp/menu/
+# nakau           | なか卯                  |
+# ootoya          | 大戸屋                  | https://www.ootoya.com/menu_list/info/nutrition/27186
+# yayoi-ken       | やよい軒                | https://www.yayoiken.com/menu_list/info/13
+
+# --- ファミレス ---
+# saizeriya       | サイゼリヤ              | https://www.saizeriya.co.jp/menu/  [SKIP: 栄養データ非公開、アレルゲンのみ]
+# gusto           | ガスト                  |  [SKIP: Skylarkグループ、栄養データ非公開]
+# cocos           | ココス                  |  [SKIP: ドメイン/CDNアクセス不可]
+# denny           | デニーズ                | https://www.dennys.jp/safety/pdf/nutritive_value_A.pdf
+# joyfull         | ジョイフル              | https://files.joyfull.co.jp/uploads/common/cal.pdf
+
+# --- カフェ ---
+# starbucks       | スターバックス          | https://product.starbucks.co.jp/allergy/json/nutritions.json
+# doutor          | ドトール                | https://www.doutor.co.jp/dcs/allergy/pdf/N-2Foods.pdf
+# tullys          | タリーズ                | https://www.tullys.co.jp/menu/pdf/food.pdf
+# komeda          | コメダ珈琲              | https://www.komeda.co.jp/pdf/ichibutenpoyou.pdf
+
+# --- コンビニ（弁当・おにぎり・パン中心、PB商品） ---
+# seven-eleven    | セブン-イレブン         | https://www.sej.co.jp/products/
+# familymart      | ファミリーマート         | https://www.family.co.jp/goods/safety.html
+# lawson          | ローソン                | https://www.lawson.co.jp/recommend/original/rice/
+
+# --- 中華・ラーメン ---
+# osaka-ohsho     | 大阪王将                | https://www.osaka-ohsho.com/menu/pdf/allergen.pdf
+# gyoza-no-ohsho  | 餃子の王将              |  [SKIP: アレルゲン情報のみ、栄養データ非公開]
+# ringer-hut      | リンガーハット          | https://www.ringerhut.jp/quality/allergy-nutrition_value/pdf/allergy-nutrition_value.pdf
+# hidakaya        | 日高屋                  | https://hidakaya.hiday.co.jp/hits/ja/menu/energy.html
+
+# --- ピザ / イタリアン ---
+# domino          | ドミノ・ピザ            | https://www.dominos.jp/nutritional-pizzas-information
+# pizza-hut       | ピザハット              | https://static.pizzahut.jp/jp/tenant/content/upload_38d46850-9960-4235-ad92-80552df56903.pdf
+
+# --- 寿司 ---
+# sushiro         | スシロー                | https://www.akindo-sushiro.co.jp/menu/menu_detail/?s_id=113
+# kura-zushi      | くら寿司                | https://www.kurasushi.co.jp/common/pdf/kura_allergen.pdf
+# hama-zushi      | はま寿司                | https://images.zensho.co.jp/materials/hama-sushi/allergen/allergen.pdf
+
+# --- その他 ---
+# coco-ichi       | CoCo壱番屋              |
+# kourakuen       | 幸楽苑                  |  [SKIP: アレルゲン情報のみ、カロリーデータ非公開]
+# mister-donut    | ミスタードーナツ        | https://www.misterdonut.jp/m_menu/eiyou/eiyou.pdf
+
+# --- 天ぷら / うどん ---
+# tenya           | 天ぷらてんや            | https://www.tenya.co.jp/tenpuratenya/assets/pdf/allergen_cal_shop.pdf
+# marugame-seimen | 丸亀製麺                | https://www.marugame-seimen.com/menu/  [SKIP: 栄養データ非公開、アレルゲンのみ]
+# royal-host      | ロイヤルホスト          | https://www.royalhost.jp/safety/images/default_allergen_list_260518.pdf
+# coco-ichi       | CoCo壱番屋              | https://www.ichibanya.co.jp/menu/pdf/nutrition.pdf
+# bamiyan         | バーミヤン              |  [SKIP: Skylarkグループ、栄養データ非公開]

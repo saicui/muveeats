@@ -1,0 +1,283 @@
+{
+  "chain_id": "hidakaya",
+  "chain_name": "日高屋",
+  "source_url": "https://hidakaya.hiday.co.jp/hits/ja/menu/energy.html",
+  "fetched_at": "2026-05-26",
+  "items": [
+    {
+      "id": "ramen_chuka_soba",
+      "name": "中華そば",
+      "aliases": ["醤油ラーメン", "ちゅうかそば"],
+      "category": "ramen",
+      "calories": 636,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": 6.4
+    },
+    {
+      "id": "ramen_tonkotsu",
+      "name": "とんこつラーメン",
+      "aliases": ["豚骨ラーメン"],
+      "category": "ramen",
+      "calories": 670,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": 6.9
+    },
+    {
+      "id": "ramen_chuka_charshu",
+      "name": "中華チャーシューメン",
+      "aliases": ["チャーシューメン"],
+      "category": "ramen",
+      "calories": 818,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": 7.2
+    },
+    {
+      "id": "ramen_yasai_tanmen",
+      "name": "野菜たっぷりタンメン",
+      "aliases": ["タンメン", "野菜ラーメン"],
+      "category": "ramen",
+      "calories": 826,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": 8.6
+    },
+    {
+      "id": "ramen_miso",
+      "name": "味噌ラーメン",
+      "aliases": ["みそラーメン"],
+      "category": "ramen",
+      "calories": 940,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": 7.7
+    },
+    {
+      "id": "ramen_karamiso",
+      "name": "秘伝の辛味噌ラーメン",
+      "aliases": ["辛味噌ラーメン"],
+      "category": "ramen",
+      "calories": 1034,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": 7.1
+    },
+    {
+      "id": "ramen_gomoku_ankake",
+      "name": "五目あんかけラーメン",
+      "aliases": ["あんかけラーメン"],
+      "category": "ramen",
+      "calories": 907,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": 6.6
+    },
+    {
+      "id": "ramen_katayaki_soba",
+      "name": "カタヤキソバ",
+      "aliases": ["硬焼きそば", "皿うどん"],
+      "category": "ramen",
+      "calories": 822,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": 5.5
+    },
+    {
+      "id": "ramen_shirumeshi",
+      "name": "汁なしラーメン",
+      "aliases": ["汁なし"],
+      "category": "ramen",
+      "calories": 956,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": 5.7
+    },
+    {
+      "id": "ramen_half",
+      "name": "半ラーメン",
+      "aliases": ["ハーフラーメン"],
+      "category": "ramen",
+      "calories": 324,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": 3.3
+    },
+    {
+      "id": "don_yakitori",
+      "name": "やきとり丼",
+      "aliases": ["焼き鳥丼"],
+      "category": "donburi",
+      "calories": 391,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": 1.7
+    },
+    {
+      "id": "don_chuka",
+      "name": "中華丼",
+      "aliases": ["ちゅうかどん"],
+      "category": "donburi",
+      "calories": 828,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": 4.1
+    },
+    {
+      "id": "don_tenshin",
+      "name": "天津飯",
+      "aliases": ["てんしんはん"],
+      "category": "donburi",
+      "calories": 1008,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": 4.1
+    },
+    {
+      "id": "rice_chahan",
+      "name": "チャーハン",
+      "aliases": ["炒飯"],
+      "category": "rice",
+      "calories": 726,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": 5.6
+    },
+    {
+      "id": "rice_kimchi_chahan",
+      "name": "キムチ炒飯",
+      "aliases": ["キムチチャーハン"],
+      "category": "rice",
+      "calories": 855,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": 9.2
+    },
+    {
+      "id": "stir_shogayaki",
+      "name": "生姜焼き単品",
+      "aliases": ["豚の生姜焼き"],
+      "category": "stir_fry",
+      "calories": 522,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": 3.6
+    },
+    {
+      "id": "stir_yasai_itame",
+      "name": "野菜炒め単品",
+      "aliases": ["野菜炒め"],
+      "category": "stir_fry",
+      "calories": 365,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": 3.2
+    },
+    {
+      "id": "stir_nira_reba",
+      "name": "ニラレバ炒め単品",
+      "aliases": ["ニラレバ"],
+      "category": "stir_fry",
+      "calories": 482,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": 3.9
+    },
+    {
+      "id": "gyoza_6",
+      "name": "餃子（6個）",
+      "aliases": ["餃子6個"],
+      "category": "gyoza",
+      "calories": 322,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": 1.3
+    },
+    {
+      "id": "gyoza_3",
+      "name": "餃子（3個）",
+      "aliases": ["餃子3個"],
+      "category": "gyoza",
+      "calories": 161,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": 0.7
+    },
+    {
+      "id": "side_karaage",
+      "name": "唐揚げ単品",
+      "aliases": ["唐揚げ", "から揚げ"],
+      "category": "side",
+      "calories": 743,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": 3.1
+    },
+    {
+      "id": "side_dragon_chicken",
+      "name": "ドラゴンチキン",
+      "aliases": ["ドラチキ"],
+      "category": "side",
+      "calories": 258,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": 1.3
+    },
+    {
+      "id": "side_harumaki",
+      "name": "五目春巻き",
+      "aliases": ["春巻き"],
+      "category": "side",
+      "calories": 415,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": 1.7
+    },
+    {
+      "id": "side_potato",
+      "name": "皮付きポテトフライ",
+      "aliases": ["ポテトフライ", "フライドポテト"],
+      "category": "side",
+      "calories": 247,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": 1.6
+    },
+    {
+      "id": "side_yakitori",
+      "name": "やきとり（ネギ和え）",
+      "aliases": ["焼き鳥"],
+      "category": "side",
+      "calories": 139,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": 1.7
+    }
+  ]
+}

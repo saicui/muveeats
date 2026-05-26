@@ -1,0 +1,283 @@
+{
+  "chain_id": "osaka-ohsho",
+  "chain_name": "大阪王将",
+  "source_url": "https://www.osaka-ohsho.com/menu/pdf/allergen.pdf",
+  "fetched_at": "2026-05-26",
+  "items": [
+    {
+      "id": "gyoza_3",
+      "name": "元祖焼餃子 3個",
+      "aliases": ["焼餃子", "餃子"],
+      "category": "gyoza",
+      "calories": 201,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": 1.5
+    },
+    {
+      "id": "gyoza_6",
+      "name": "元祖焼餃子 6個",
+      "aliases": ["焼餃子6個"],
+      "category": "gyoza",
+      "calories": 402,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": 3.1
+    },
+    {
+      "id": "ninniku_gyoza",
+      "name": "にんにく肉肉肉餃子",
+      "aliases": ["にんにく餃子"],
+      "category": "gyoza",
+      "calories": 408,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": 2.4
+    },
+    {
+      "id": "shio_gyoza",
+      "name": "うまっ塩餃子",
+      "aliases": ["塩餃子"],
+      "category": "gyoza",
+      "calories": 276,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": 1.3
+    },
+    {
+      "id": "gomoku_chahan",
+      "name": "五目炒飯",
+      "aliases": ["チャーハン", "炒飯"],
+      "category": "rice",
+      "calories": 669,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": 5.8
+    },
+    {
+      "id": "chuka_don",
+      "name": "中華丼",
+      "aliases": ["中華丼"],
+      "category": "rice",
+      "calories": 793,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": 7.4
+    },
+    {
+      "id": "mapo_han",
+      "name": "麻婆飯",
+      "aliases": ["麻婆飯"],
+      "category": "rice",
+      "calories": 996,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": 5.0
+    },
+    {
+      "id": "osaka_curry",
+      "name": "大阪カレー",
+      "aliases": ["カレー"],
+      "category": "rice",
+      "calories": 708,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": 4.5
+    },
+    {
+      "id": "karaage_5",
+      "name": "桜島とりの唐揚げ 5個",
+      "aliases": ["唐揚げ"],
+      "category": "side",
+      "calories": 608,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": 3.1
+    },
+    {
+      "id": "chicken_nanban",
+      "name": "チキン南蛮 4個",
+      "aliases": ["チキン南蛮"],
+      "category": "side",
+      "calories": 712,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": 3.2
+    },
+    {
+      "id": "yuri_ji",
+      "name": "油淋鶏",
+      "aliases": ["ユーリンチー"],
+      "category": "side",
+      "calories": 548,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": 3.2
+    },
+    {
+      "id": "fried_gyoza",
+      "name": "揚げ餃子 5個",
+      "aliases": ["揚げ餃子"],
+      "category": "side",
+      "calories": 503,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": 2.3
+    },
+    {
+      "id": "harumaki",
+      "name": "春巻き（2本）",
+      "aliases": ["春巻き"],
+      "category": "side",
+      "calories": 293,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": 1.0
+    },
+    {
+      "id": "lever_nira",
+      "name": "レバニラ炒め",
+      "aliases": ["レバにら炒め"],
+      "category": "side",
+      "calories": 383,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": 2.7
+    },
+    {
+      "id": "mapo_tofu",
+      "name": "紅油麻婆豆腐",
+      "aliases": ["麻婆豆腐"],
+      "category": "side",
+      "calories": 595,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": 3.5
+    },
+    {
+      "id": "subuta",
+      "name": "酢豚",
+      "aliases": ["酢豚"],
+      "category": "side",
+      "calories": 630,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": 3.6
+    },
+    {
+      "id": "ebi_mayo",
+      "name": "海老マヨネーズ",
+      "aliases": ["エビマヨ"],
+      "category": "side",
+      "calories": 623,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": 1.6
+    },
+    {
+      "id": "chuka_soba",
+      "name": "中華そば",
+      "aliases": ["ラーメン"],
+      "category": "noodle",
+      "calories": 689,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": 7.5
+    },
+    {
+      "id": "tantanmen",
+      "name": "担担麺",
+      "aliases": ["担々麺"],
+      "category": "noodle",
+      "calories": 810,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": 7.6
+    },
+    {
+      "id": "tori_paitan_ramen",
+      "name": "鶏白湯ラーメン",
+      "aliases": ["白湯ラーメン"],
+      "category": "noodle",
+      "calories": 690,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": 9.1
+    },
+    {
+      "id": "tonkotsu_ramen",
+      "name": "とんこつラーメン",
+      "aliases": ["豚骨ラーメン"],
+      "category": "noodle",
+      "calories": 507,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": 6.6
+    },
+    {
+      "id": "yakisoba",
+      "name": "もちもち太麺の炒め焼きそば",
+      "aliases": ["焼きそば"],
+      "category": "noodle",
+      "calories": 573,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": 3.9
+    },
+    {
+      "id": "sara_udon",
+      "name": "皿うどん",
+      "aliases": ["皿うどん"],
+      "category": "noodle",
+      "calories": 725,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": 6.4
+    },
+    {
+      "id": "gohan",
+      "name": "白ご飯",
+      "aliases": ["ライス"],
+      "category": "side",
+      "calories": 362,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": 0.0
+    },
+    {
+      "id": "annin_tofu",
+      "name": "杏仁豆腐",
+      "aliases": ["杏仁豆腐"],
+      "category": "dessert",
+      "calories": 126,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": 0.0
+    }
+  ]
+}

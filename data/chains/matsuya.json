@@ -1,0 +1,239 @@
+{
+  "chain_id": "matsuya",
+  "chain_name": "松屋",
+  "source_url": "https://www.matsuyafoods.co.jp/matsuya/pdf/260224_nutritional_matsuya.pdf",
+  "fetched_at": "2026-05-26",
+  "items": [
+    {
+      "id": "gyumeshi_kobori",
+      "name": "牛めし 小盛",
+      "aliases": ["牛めし小盛"],
+      "category": "gyumeshi",
+      "calories": 507,
+      "protein_g": 13.1,
+      "fat_g": 22.8,
+      "carbs_g": 59.6,
+      "salt_g": 2.6
+    },
+    {
+      "id": "gyumeshi_nami",
+      "name": "牛めし 並盛",
+      "aliases": ["牛めし", "牛飯"],
+      "category": "gyumeshi",
+      "calories": 687,
+      "protein_g": 17.1,
+      "fat_g": 28.9,
+      "carbs_g": 85.5,
+      "salt_g": 3.0
+    },
+    {
+      "id": "gyumeshi_oomori",
+      "name": "牛めし 大盛",
+      "aliases": ["牛めし大盛"],
+      "category": "gyumeshi",
+      "calories": 933,
+      "protein_g": 22.3,
+      "fat_g": 35.9,
+      "carbs_g": 124.3,
+      "salt_g": 3.5
+    },
+    {
+      "id": "gyumeshi_tokumori",
+      "name": "牛めし 特盛",
+      "aliases": ["牛めし特盛"],
+      "category": "gyumeshi",
+      "calories": 1237,
+      "protein_g": 31.0,
+      "fat_g": 56.3,
+      "carbs_g": 145.1,
+      "salt_g": 4.5
+    },
+    {
+      "id": "gyumeshi_atamaohmori",
+      "name": "牛めし あたま大盛",
+      "aliases": ["牛めしあたま大盛"],
+      "category": "gyumeshi",
+      "calories": 765,
+      "protein_g": 19.8,
+      "fat_g": 35.6,
+      "carbs_g": 87.2,
+      "salt_g": 3.5
+    },
+    {
+      "id": "negi_karatama_gyumeshi_nami",
+      "name": "ネギたっぷり旨辛ネギたま牛めし 並盛",
+      "aliases": ["ネギたま牛めし"],
+      "category": "gyumeshi",
+      "calories": 818,
+      "protein_g": 24.7,
+      "fat_g": 36.2,
+      "carbs_g": 94.1,
+      "salt_g": 4.8
+    },
+    {
+      "id": "oroshi_ponzu_gyumeshi_nami",
+      "name": "鬼おろしポン酢牛めし 並盛",
+      "aliases": ["おろしポン酢牛めし"],
+      "category": "gyumeshi",
+      "calories": 714,
+      "protein_g": 18.3,
+      "fat_g": 29.1,
+      "carbs_g": 90.8,
+      "salt_g": 4.5
+    },
+    {
+      "id": "kimchi_gyumeshi_nami",
+      "name": "キムチ牛めし 並盛",
+      "aliases": ["キムチ牛めし"],
+      "category": "gyumeshi",
+      "calories": 736,
+      "protein_g": 18.9,
+      "fat_g": 29.7,
+      "carbs_g": 94.4,
+      "salt_g": 4.8
+    },
+    {
+      "id": "cheese_gyumeshi_nami",
+      "name": "チーズ牛めし 並盛",
+      "aliases": ["チーズ牛めし"],
+      "category": "gyumeshi",
+      "calories": 846,
+      "protein_g": 25.3,
+      "fat_g": 42.3,
+      "carbs_g": 87.1,
+      "salt_g": 3.9
+    },
+    {
+      "id": "negimayo_ra_gyumeshi_nami",
+      "name": "ねぎマヨ辣牛めし 並盛",
+      "aliases": ["ねぎマヨ辣牛めし"],
+      "category": "gyumeshi",
+      "calories": 887,
+      "protein_g": 18.2,
+      "fat_g": 49.8,
+      "carbs_g": 88.2,
+      "salt_g": 3.0
+    },
+    {
+      "id": "gyubibimbap_nami",
+      "name": "牛ビビン丼 並盛",
+      "aliases": ["牛ビビン丼", "ビビン丼"],
+      "category": "don",
+      "calories": 851,
+      "protein_g": 25.1,
+      "fat_g": 37.6,
+      "carbs_g": 98.3,
+      "salt_g": 6.2
+    },
+    {
+      "id": "new_yakiniku_gyumeshi_nami",
+      "name": "新焼き牛めし 並盛",
+      "aliases": ["焼き牛めし"],
+      "category": "gyumeshi",
+      "calories": 800,
+      "protein_g": 25.0,
+      "fat_g": 37.5,
+      "carbs_g": 88.1,
+      "salt_g": 3.6
+    },
+    {
+      "id": "kimkaru_don_nami",
+      "name": "キムカル丼 並盛",
+      "aliases": ["キムカル丼"],
+      "category": "don",
+      "calories": 793,
+      "protein_g": 19.8,
+      "fat_g": 31.4,
+      "carbs_g": 99.7,
+      "salt_g": 5.3
+    },
+    {
+      "id": "tonkaribu_don_nami",
+      "name": "元祖ネギ塩厚切り豚カルビ丼 並盛",
+      "aliases": ["豚カルビ丼"],
+      "category": "don",
+      "calories": 793,
+      "protein_g": 20.9,
+      "fat_g": 36.4,
+      "carbs_g": 86.2,
+      "salt_g": 6.6
+    },
+    {
+      "id": "sogyo_beef_curry",
+      "name": "創業ビーフカレー",
+      "aliases": ["松屋カレー"],
+      "category": "curry",
+      "calories": 769,
+      "protein_g": 17.9,
+      "fat_g": 28.8,
+      "carbs_g": 102.8,
+      "salt_g": 4.8
+    },
+    {
+      "id": "cheese_sogyo_beef_curry",
+      "name": "チーズ創業ビーフカレー",
+      "aliases": ["チーズカレー"],
+      "category": "curry",
+      "calories": 938,
+      "protein_g": 26.3,
+      "fat_g": 42.9,
+      "carbs_g": 104.8,
+      "salt_g": 5.8
+    },
+    {
+      "id": "hamburg_beef_curry",
+      "name": "ハンバーグ創業ビーフカレー",
+      "aliases": ["ハンバーグカレー"],
+      "category": "curry",
+      "calories": 1145,
+      "protein_g": 37.3,
+      "fat_g": 54.1,
+      "carbs_g": 117.1,
+      "salt_g": 6.8
+    },
+    {
+      "id": "gyu_yakiniku_teishoku",
+      "name": "牛焼肉定食",
+      "aliases": ["牛焼肉定食"],
+      "category": "teishoku",
+      "calories": 806,
+      "protein_g": 23.3,
+      "fat_g": 41.3,
+      "carbs_g": 86.5,
+      "salt_g": 2.3
+    },
+    {
+      "id": "karubi_yakiniku_teishoku",
+      "name": "カルビ焼肉定食",
+      "aliases": ["カルビ定食"],
+      "category": "teishoku",
+      "calories": 918,
+      "protein_g": 25.0,
+      "fat_g": 46.0,
+      "carbs_g": 92.2,
+      "salt_g": 3.2
+    },
+    {
+      "id": "aburi_shake_teishoku",
+      "name": "炙り焼鮭定食",
+      "aliases": ["鮭定食"],
+      "category": "teishoku",
+      "calories": 698,
+      "protein_g": 25.7,
+      "fat_g": 24.0,
+      "carbs_g": 91.0,
+      "salt_g": 5.6
+    },
+    {
+      "id": "gyu_yakiniku_pirikara_teishoku",
+      "name": "牛焼肉ピリ辛炒め定食",
+      "aliases": ["ピリ辛牛定食"],
+      "category": "teishoku",
+      "calories": 869,
+      "protein_g": 22.4,
+      "fat_g": 40.4,
+      "carbs_g": 104.2,
+      "salt_g": 5.1
+    }
+  ]
+}

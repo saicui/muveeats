@@ -1,0 +1,283 @@
+{
+  "chain_id": "yayoi-ken",
+  "chain_name": "やよい軒",
+  "source_url": "https://www.yayoiken.com/menu_list/info/13",
+  "fetched_at": "2026-05-26",
+  "items": [
+    {
+      "id": "shogayaki_teishoku",
+      "name": "しょうが焼定食",
+      "aliases": ["生姜焼き定食"],
+      "category": "teishoku",
+      "calories": 717,
+      "protein_g": 26.2,
+      "fat_g": 37.1,
+      "carbs_g": 72.9,
+      "salt_g": 5.0
+    },
+    {
+      "id": "karaage_teishoku",
+      "name": "から揚げ定食",
+      "aliases": ["唐揚げ定食"],
+      "category": "teishoku",
+      "calories": 844,
+      "protein_g": 39.7,
+      "fat_g": 43.4,
+      "carbs_g": 78.6,
+      "salt_g": 6.1
+    },
+    {
+      "id": "toku_karaage_teishoku",
+      "name": "特から揚げ定食",
+      "aliases": ["特唐揚げ定食"],
+      "category": "teishoku",
+      "calories": 992,
+      "protein_g": 51.7,
+      "fat_g": 52.2,
+      "carbs_g": 83.8,
+      "salt_g": 6.9
+    },
+    {
+      "id": "chikinnanban_teishoku",
+      "name": "チキン南蛮定食",
+      "aliases": ["チキン南蛮"],
+      "category": "teishoku",
+      "calories": 843,
+      "protein_g": 27.6,
+      "fat_g": 37.7,
+      "carbs_g": 100.7,
+      "salt_g": 6.3
+    },
+    {
+      "id": "nikuyasai_itame_teishoku",
+      "name": "肉野菜炒め定食",
+      "aliases": ["野菜炒め定食"],
+      "category": "teishoku",
+      "calories": 545,
+      "protein_g": 26.4,
+      "fat_g": 18.6,
+      "carbs_g": 71.4,
+      "salt_g": 5.0
+    },
+    {
+      "id": "hamburg_oroshi_teishoku",
+      "name": "和風おろしハンバーグ定食",
+      "aliases": ["ハンバーグ定食"],
+      "category": "teishoku",
+      "calories": 753,
+      "protein_g": 31.9,
+      "fat_g": 25.8,
+      "carbs_g": 104.5,
+      "salt_g": 6.3
+    },
+    {
+      "id": "demi_hamburg_teishoku",
+      "name": "デミハンバーグ定食",
+      "aliases": ["デミグラスハンバーグ定食"],
+      "category": "teishoku",
+      "calories": 740,
+      "protein_g": 31.7,
+      "fat_g": 26.9,
+      "carbs_g": 97.3,
+      "salt_g": 5.4
+    },
+    {
+      "id": "cut_steak_washoku_teishoku",
+      "name": "カットステーキ定食(和風ソース)",
+      "aliases": ["ステーキ定食"],
+      "category": "teishoku",
+      "calories": 636,
+      "protein_g": 37.0,
+      "fat_g": 17.8,
+      "carbs_g": 84.6,
+      "salt_g": 6.1
+    },
+    {
+      "id": "miso_katsu煮_teishoku",
+      "name": "味噌かつ煮定食",
+      "aliases": ["みそかつ煮定食"],
+      "category": "teishoku",
+      "calories": 845,
+      "protein_g": 40.6,
+      "fat_g": 33.2,
+      "carbs_g": 100.2,
+      "salt_g": 5.9
+    },
+    {
+      "id": "oofun_tori_ten_teishoku",
+      "name": "大分とり天定食",
+      "aliases": ["とり天定食"],
+      "category": "teishoku",
+      "calories": 793,
+      "protein_g": 33.7,
+      "fat_g": 37.0,
+      "carbs_g": 84.9,
+      "salt_g": 6.0
+    },
+    {
+      "id": "saba_shioyaki_teishoku",
+      "name": "サバの塩焼定食",
+      "aliases": ["鯖塩焼定食"],
+      "category": "teishoku",
+      "calories": 686,
+      "protein_g": 32.9,
+      "fat_g": 35.1,
+      "carbs_g": 61.9,
+      "salt_g": 3.8
+    },
+    {
+      "id": "saba_misoni_teishoku",
+      "name": "サバの味噌煮定食",
+      "aliases": ["鯖みそ煮定食"],
+      "category": "teishoku",
+      "calories": 621,
+      "protein_g": 30.4,
+      "fat_g": 24.9,
+      "carbs_g": 71.4,
+      "salt_g": 4.3
+    },
+    {
+      "id": "gingake_shake_teishoku",
+      "name": "銀鮭の塩焼定食",
+      "aliases": ["鮭定食"],
+      "category": "teishoku",
+      "calories": 499,
+      "protein_g": 30.0,
+      "fat_g": 16.8,
+      "carbs_g": 62.9,
+      "salt_g": 4.7
+    },
+    {
+      "id": "shima_hokke_teishoku",
+      "name": "しまほっけ定食",
+      "aliases": ["ほっけ定食"],
+      "category": "teishoku",
+      "calories": 631,
+      "protein_g": 50.7,
+      "fat_g": 21.3,
+      "carbs_g": 61.4,
+      "salt_g": 4.2
+    },
+    {
+      "id": "mapo_nasu_tofu_teishoku",
+      "name": "麻婆茄子豆腐定食",
+      "aliases": ["麻婆定食"],
+      "category": "teishoku",
+      "calories": 708,
+      "protein_g": 30.1,
+      "fat_g": 32.5,
+      "carbs_g": 77.5,
+      "salt_g": 7.2
+    },
+    {
+      "id": "karaage_kobachi_mapo_teishoku",
+      "name": "から揚げ小鉢付麻婆茄子豆腐定食",
+      "aliases": ["から揚げ麻婆定食"],
+      "category": "teishoku",
+      "calories": 876,
+      "protein_g": 42.4,
+      "fat_g": 42.8,
+      "carbs_g": 84.3,
+      "salt_g": 8.8
+    },
+    {
+      "id": "oyakodon",
+      "name": "親子丼",
+      "aliases": ["親子丼定食"],
+      "category": "don",
+      "calories": null,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "katsudon",
+      "name": "カツ丼",
+      "aliases": ["とんかつ丼"],
+      "category": "don",
+      "calories": null,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "akamoku_neba_toro_teishoku",
+      "name": "アカモクねばとろ定食",
+      "aliases": ["ねばとろ定食"],
+      "category": "teishoku",
+      "calories": 438,
+      "protein_g": 20.3,
+      "fat_g": 11.2,
+      "carbs_g": 70.2,
+      "salt_g": 4.1
+    },
+    {
+      "id": "akamoku_tori_ten_teishoku",
+      "name": "アカモクねばとろととり天の定食",
+      "aliases": ["アカモクとり天定食"],
+      "category": "teishoku",
+      "calories": 658,
+      "protein_g": 31.7,
+      "fat_g": 25.7,
+      "carbs_g": 81.4,
+      "salt_g": 5.9
+    },
+    {
+      "id": "karaage_shirofurai_teishoku",
+      "name": "から揚げ&白身フライ定食",
+      "aliases": ["から揚げ白身フライ定食"],
+      "category": "teishoku",
+      "calories": 929,
+      "protein_g": 37.1,
+      "fat_g": 46.8,
+      "carbs_g": 94.8,
+      "salt_g": 6.7
+    },
+    {
+      "id": "4cheese_hamburg_teishoku",
+      "name": "4種のチーズハンバーグ定食",
+      "aliases": ["チーズハンバーグ定食"],
+      "category": "teishoku",
+      "calories": 829,
+      "protein_g": 37.9,
+      "fat_g": 33.9,
+      "carbs_g": 97.7,
+      "salt_g": 5.8
+    },
+    {
+      "id": "mix_toji_teishoku",
+      "name": "ミックスとじ定食",
+      "aliases": ["ミックス丼"],
+      "category": "teishoku",
+      "calories": 838,
+      "protein_g": 40.4,
+      "fat_g": 36.1,
+      "carbs_g": 90.8,
+      "salt_g": 5.9
+    },
+    {
+      "id": "daizu_meat_shogayaki_teishoku",
+      "name": "大豆ミートのしょうが焼定食",
+      "aliases": ["大豆ミート生姜焼定食"],
+      "category": "teishoku",
+      "calories": 611,
+      "protein_g": 21.5,
+      "fat_g": 25.2,
+      "carbs_g": 81.0,
+      "salt_g": 5.4
+    },
+    {
+      "id": "daizu_meat_yasai_itame_teishoku",
+      "name": "大豆ミートの野菜炒め定食",
+      "aliases": ["大豆ミート野菜炒め定食"],
+      "category": "teishoku",
+      "calories": 471,
+      "protein_g": 21.8,
+      "fat_g": 9.5,
+      "carbs_g": 79.9,
+      "salt_g": 4.7
+    }
+  ]
+}

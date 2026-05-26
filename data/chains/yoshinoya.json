@@ -1,0 +1,250 @@
+{
+  "chain_id": "yoshinoya",
+  "chain_name": "吉野家",
+  "source_url": "https://www.yoshinoya.com/pdf/allergy_cc_list/",
+  "fetched_at": "2026-05-26",
+  "items": [
+    {
+      "id": "gyudon_kobori",
+      "name": "牛丼 小盛",
+      "aliases": ["牛丼小盛"],
+      "category": "gyudon",
+      "calories": 488,
+      "protein_g": 15.9,
+      "fat_g": 16.9,
+      "carbs_g": 65.3,
+      "salt_g": 2.1
+    },
+    {
+      "id": "gyudon_nami",
+      "name": "牛丼 並盛",
+      "aliases": ["牛丼"],
+      "category": "gyudon",
+      "calories": 635,
+      "protein_g": 20.0,
+      "fat_g": 20.4,
+      "carbs_g": 89.0,
+      "salt_g": 2.7
+    },
+    {
+      "id": "gyudon_oomori",
+      "name": "牛丼 大盛",
+      "aliases": ["牛丼大盛"],
+      "category": "gyudon",
+      "calories": 846,
+      "protein_g": 25.5,
+      "fat_g": 25.0,
+      "carbs_g": 124.2,
+      "salt_g": 3.4
+    },
+    {
+      "id": "gyudon_tokumori",
+      "name": "牛丼 特盛",
+      "aliases": ["牛丼特盛"],
+      "category": "gyudon",
+      "calories": 1013,
+      "protein_g": 34.5,
+      "fat_g": 38.1,
+      "carbs_g": 127.6,
+      "salt_g": 4.3
+    },
+    {
+      "id": "gyudon_choutokumori",
+      "name": "牛丼 超特盛",
+      "aliases": ["牛丼超特盛"],
+      "category": "gyudon",
+      "calories": 1152,
+      "protein_g": 42.0,
+      "fat_g": 49.1,
+      "carbs_g": 130.3,
+      "salt_g": 5.1
+    },
+    {
+      "id": "butadon_nami",
+      "name": "豚丼 並盛",
+      "aliases": ["豚丼"],
+      "category": "butadon",
+      "calories": 601,
+      "protein_g": 14.4,
+      "fat_g": 18.5,
+      "carbs_g": 88.1,
+      "salt_g": 2.3
+    },
+    {
+      "id": "gyukarubi_don_nami",
+      "name": "牛カルビ丼 並盛",
+      "aliases": ["牛カルビ丼"],
+      "category": "gyudon",
+      "calories": 785,
+      "protein_g": 20.8,
+      "fat_g": 34.0,
+      "carbs_g": 91.5,
+      "salt_g": 2.1
+    },
+    {
+      "id": "unaju_ichimai",
+      "name": "鰻重 一枚盛",
+      "aliases": ["うな重", "鰻重"],
+      "category": "unaju",
+      "calories": 653,
+      "protein_g": 23.4,
+      "fat_g": 15.9,
+      "carbs_g": 99.9,
+      "salt_g": 2.2
+    },
+    {
+      "id": "negishio_butadon_nami",
+      "name": "ねぎ塩豚丼 並盛",
+      "aliases": ["ねぎ塩豚丼"],
+      "category": "butadon",
+      "calories": 657,
+      "protein_g": 14.6,
+      "fat_g": 23.3,
+      "carbs_g": 91.1,
+      "salt_g": 3.4
+    },
+    {
+      "id": "gyusalade_teishoku_nami",
+      "name": "牛皿定食 並盛",
+      "aliases": ["牛皿定食"],
+      "category": "teishoku",
+      "calories": 721,
+      "protein_g": 26.8,
+      "fat_g": 26.0,
+      "carbs_g": 90.2,
+      "salt_g": 3.4
+    },
+    {
+      "id": "gyuzake_teishoku",
+      "name": "牛鮭定食",
+      "aliases": ["牛鮭定食"],
+      "category": "teishoku",
+      "calories": 695,
+      "protein_g": 30.1,
+      "fat_g": 22.8,
+      "carbs_g": 88.4,
+      "salt_g": 4.1
+    },
+    {
+      "id": "gyukarubi_teishoku",
+      "name": "牛カルビ定食",
+      "aliases": ["カルビ定食"],
+      "category": "teishoku",
+      "calories": 948,
+      "protein_g": 27.4,
+      "fat_g": 45.1,
+      "carbs_g": 99.5,
+      "salt_g": 3.8
+    },
+    {
+      "id": "sabamiso_teishoku",
+      "name": "鯖みそ定食",
+      "aliases": ["鯖定食"],
+      "category": "teishoku",
+      "calories": 878,
+      "protein_g": 30.1,
+      "fat_g": 35.6,
+      "carbs_g": 99.2,
+      "salt_g": 7.5
+    },
+    {
+      "id": "natto_teishoku",
+      "name": "納豆定食",
+      "aliases": ["朝定食納豆"],
+      "category": "asateishoku",
+      "calories": 568,
+      "protein_g": 21.3,
+      "fat_g": 10.9,
+      "carbs_g": 91.0,
+      "salt_g": 2.1
+    },
+    {
+      "id": "yakizakana_teishoku_sake",
+      "name": "焼魚定食（鮭）",
+      "aliases": ["焼き魚定食", "朝定食鮭"],
+      "category": "asateishoku",
+      "calories": 527,
+      "protein_g": 21.3,
+      "fat_g": 9.7,
+      "carbs_g": 84.7,
+      "salt_g": 2.7
+    },
+    {
+      "id": "karaage_don_nami",
+      "name": "から揚げ丼 並盛",
+      "aliases": ["から揚げ丼"],
+      "category": "don",
+      "calories": 917,
+      "protein_g": 31.4,
+      "fat_g": 40.0,
+      "carbs_g": 104.6,
+      "salt_g": 2.0
+    },
+    {
+      "id": "gyusuki_nabe_zen_nami",
+      "name": "牛すき鍋膳 並盛",
+      "aliases": ["牛すき鍋膳"],
+      "category": "nabe",
+      "calories": 994,
+      "protein_g": 32.8,
+      "fat_g": 33.2,
+      "carbs_g": 137.9,
+      "salt_g": 7.0
+    },
+    {
+      "id": "karigari_gyukareCCurry_nami",
+      "name": "カリガリ牛カレー 並盛",
+      "aliases": ["吉野家カレー"],
+      "category": "curry",
+      "calories": 683,
+      "protein_g": 17.2,
+      "fat_g": 20.5,
+      "carbs_g": 103.6,
+      "salt_g": 4.0
+    },
+    {
+      "id": "karaage_single",
+      "name": "から揚げ（1個）",
+      "aliases": ["唐揚げ"],
+      "category": "side",
+      "calories": 180,
+      "protein_g": 8.5,
+      "fat_g": 13.1,
+      "carbs_g": 7.1,
+      "salt_g": 0.7
+    },
+    {
+      "id": "gohan_nami",
+      "name": "ご飯 並盛",
+      "aliases": ["ライス"],
+      "category": "side",
+      "calories": 370,
+      "protein_g": 5.5,
+      "fat_g": 0.7,
+      "carbs_g": 81.6,
+      "salt_g": 0.0
+    },
+    {
+      "id": "misoshiru",
+      "name": "みそ汁",
+      "aliases": ["味噌汁"],
+      "category": "side",
+      "calories": 19,
+      "protein_g": 1.2,
+      "fat_g": 0.5,
+      "carbs_g": 2.4,
+      "salt_g": 1.3
+    },
+    {
+      "id": "nama_yasai_salad",
+      "name": "生野菜サラダ",
+      "aliases": ["サラダ"],
+      "category": "salad",
+      "calories": 27,
+      "protein_g": 1.1,
+      "fat_g": 0.2,
+      "carbs_g": 6.2,
+      "salt_g": 0.1
+    }
+  ]
+}

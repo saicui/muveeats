@@ -1,0 +1,195 @@
+{
+  "chain_id": "nakau",
+  "chain_name": "なか卯",
+  "source_url": "https://images.zensho.co.jp/materials/nakau/allergen/nutrition.pdf",
+  "fetched_at": "2026-05-26",
+  "items": [
+    {
+      "id": "oyakodon_kobori",
+      "name": "親子丼 小盛",
+      "aliases": ["親子丼小盛"],
+      "category": "oyakodon",
+      "calories": 535,
+      "protein_g": 28.6,
+      "fat_g": 17.3,
+      "carbs_g": 64.8,
+      "salt_g": 2.2
+    },
+    {
+      "id": "oyakodon_nami",
+      "name": "親子丼 並盛",
+      "aliases": ["親子丼"],
+      "category": "oyakodon",
+      "calories": 673,
+      "protein_g": 31.5,
+      "fat_g": 17.8,
+      "carbs_g": 99.7,
+      "salt_g": 3.1
+    },
+    {
+      "id": "oyakodon_oomori",
+      "name": "親子丼 大盛",
+      "aliases": ["親子丼大盛"],
+      "category": "oyakodon",
+      "calories": 812,
+      "protein_g": 33.5,
+      "fat_g": 18.2,
+      "carbs_g": 127.1,
+      "salt_g": 3.1
+    },
+    {
+      "id": "torotama_oyakodon_nami",
+      "name": "とろたま親子丼 並盛",
+      "aliases": ["とろたま親子丼"],
+      "category": "oyakodon",
+      "calories": 767,
+      "protein_g": 39.2,
+      "fat_g": 24.2,
+      "carbs_g": 99.9,
+      "salt_g": 3.3
+    },
+    {
+      "id": "cheese_oyakodon_nami",
+      "name": "チーズ親子丼 並盛",
+      "aliases": ["チーズ親子丼"],
+      "category": "oyakodon",
+      "calories": 795,
+      "protein_g": 39.7,
+      "fat_g": 27.4,
+      "carbs_g": 100.7,
+      "salt_g": 3.7
+    },
+    {
+      "id": "gyusuki_don_nami",
+      "name": "牛すき丼 並盛",
+      "aliases": ["牛すき丼"],
+      "category": "gyudon",
+      "calories": 630,
+      "protein_g": 15.7,
+      "fat_g": 17.2,
+      "carbs_g": 105.7,
+      "salt_g": 2.9
+    },
+    {
+      "id": "gyusuki_don_tokumori",
+      "name": "牛すき丼 特盛",
+      "aliases": ["牛すき丼特盛"],
+      "category": "gyudon",
+      "calories": 990,
+      "protein_g": 25.9,
+      "fat_g": 33.4,
+      "carbs_g": 142.7,
+      "salt_g": 4.7
+    },
+    {
+      "id": "katsudon_nami",
+      "name": "カツ丼 並盛",
+      "aliases": ["カツ丼"],
+      "category": "katsudon",
+      "calories": 991,
+      "protein_g": 32.8,
+      "fat_g": 40.9,
+      "carbs_g": 123.8,
+      "salt_g": 3.7
+    },
+    {
+      "id": "maguro_tataki_don_nami",
+      "name": "まぐろのたたき丼 並盛",
+      "aliases": ["まぐろたたき丼"],
+      "category": "kaisendon",
+      "calories": 592,
+      "protein_g": 27.1,
+      "fat_g": 9.0,
+      "carbs_g": 99.8,
+      "salt_g": 1.8
+    },
+    {
+      "id": "maguro_yukke_don_nami",
+      "name": "まぐろユッケ丼 並盛",
+      "aliases": ["まぐろユッケ丼"],
+      "category": "kaisendon",
+      "calories": 753,
+      "protein_g": 38.5,
+      "fat_g": 19.1,
+      "carbs_g": 104.1,
+      "salt_g": 3.0
+    },
+    {
+      "id": "salmon_don_nami",
+      "name": "漬け旨サーモン丼 並盛",
+      "aliases": ["サーモン丼"],
+      "category": "kaisendon",
+      "calories": 611,
+      "protein_g": 21.7,
+      "fat_g": 14.3,
+      "carbs_g": 97.0,
+      "salt_g": 1.4
+    },
+    {
+      "id": "ebiten_don_nami",
+      "name": "海老天丼 並盛",
+      "aliases": ["海老天丼"],
+      "category": "tendon",
+      "calories": 817,
+      "protein_g": 17.2,
+      "fat_g": 25.6,
+      "carbs_g": 130.7,
+      "salt_g": 1.9
+    },
+    {
+      "id": "unadon_nami",
+      "name": "うな重 並盛",
+      "aliases": ["うな重", "うなぎ"],
+      "category": "unaju",
+      "calories": 709,
+      "protein_g": 24.5,
+      "fat_g": 21.2,
+      "carbs_g": 105.0,
+      "salt_g": 2.1
+    },
+    {
+      "id": "karadon_nami",
+      "name": "鶏から丼 並盛",
+      "aliases": ["鶏から丼", "から揚げ丼"],
+      "category": "karadon",
+      "calories": 971,
+      "protein_g": 32.8,
+      "fat_g": 36.2,
+      "carbs_g": 130.1,
+      "salt_g": 4.0
+    },
+    {
+      "id": "wafuu_curry_nami",
+      "name": "和風カレー 並盛",
+      "aliases": ["和風カレー"],
+      "category": "curry",
+      "calories": 572,
+      "protein_g": 11.7,
+      "fat_g": 12.6,
+      "carbs_g": 107.4,
+      "salt_g": 3.9
+    },
+    {
+      "id": "wafuu_katsu_curry_nami",
+      "name": "和風カツカレー 並盛",
+      "aliases": ["カツカレー"],
+      "category": "curry",
+      "calories": 1003,
+      "protein_g": 25.6,
+      "fat_g": 43.1,
+      "carbs_g": 130.4,
+      "salt_g": 4.9
+    },
+    {
+      "id": "wafuu_cheese_curry_nami",
+      "name": "和風チーズカレー 並盛",
+      "aliases": ["チーズカレー"],
+      "category": "curry",
+      "calories": 693,
+      "protein_g": 19.9,
+      "fat_g": 22.2,
+      "carbs_g": 108.3,
+      "salt_g": 4.5
+    }
+  ]
+}

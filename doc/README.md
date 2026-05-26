@@ -1,35 +1,63 @@
 # MuveEats Design Handoff
 
-このディレクトリは Claude Design へのデザインハンドオフ用ドキュメントです。
+このディレクトリは Claude Design 〜 Claude Code 間のデザインハンドオフ用ドキュメントです。
 
-## ファイル一覧
+## ディレクトリ構成
 
-| File | 役割 | 読む順 |
+```
+/                          プロジェクトルート
+├── mock-v4.html           v4 (オリジナル / 保存用)
+├── mock-v5.html           v5 (10画面 / 保存用)
+├── mock-v6.html           v6 (保存用)
+├── mock-v7.html           v7 (Claude Design 最新)
+├── landing-page.html      プロダクトの紹介 LP
+└── doc/
+    ├── README.md          (このファイル)
+    ├── design-brief.md    プロダクトの方向性 / トーン / Do's & Don'ts
+    ├── design-system.md   トークン / コンポーネント / スタイル規約
+    ├── screens.md         全画面の仕様（実装済 / 未着手）
+    └── CHANGELOG.md       デザイン側の修正履歴
+```
+
+## 読む順
+
+| 順 | File | 役割 |
 |---|---|---|
-| [design-brief.md](./design-brief.md) | プロダクトの方向性 / トーン / Do's & Don'ts | 1 |
-| [design-system.md](./design-system.md) | トークン / コンポーネント / スタイル規約 | 2 |
-| [screens.md](./screens.md) | 全画面の仕様（実装済 / 未着手） | 3 |
-| [mock-v4.html](./mock-v4.html) | 現状のリファレンス実装（HTML / 単一ファイル） | 4（実物） |
-| [overview.html](./overview.html) | プロジェクト全体の Overview | 補足 |
-| [mock-v3.html](./mock-v3.html), [mock-v2.html](./mock-v2.html), [mock-history.html](./mock-history.html) | 過去のバージョン（参考） | 補足 |
+| 1 | [design-brief.md](./design-brief.md) | プロダクトの方向性 / トーン |
+| 2 | [design-system.md](./design-system.md) | トークン / コンポーネント |
+| 3 | [screens.md](./screens.md) | 全画面の仕様 |
+| 4 | `../mock-v7.html` | 最新リファレンス実装 |
+| 5 | [CHANGELOG.md](./CHANGELOG.md) | v4 → v7 の差分 |
 
 ## 関連データファイル（ルート直下）
 
-- [../data/tags.json](../data/tags.json) — 食事タグの事前定義タクソノミー
-- [../data/chains/](../data/chains/) — チェーン店メニュー栄養データ（収集中）
+- `../data/tags.json` — 食事タグの事前定義タクソノミー
+- `../data/chains/` — チェーン店メニュー栄養データ（収集中）
 
-## ハンドオフ範囲
+## ハンドオフ範囲（v7 時点）
 
-**期待する成果物**:
-1. `screens.md` で ☐ になっている未モック画面の作成
-2. `mock-v4.html` の既存画面のブラッシュアップ提案
-3. インタラクション / 状態バリエーション（ホバー、空状態、ローディング、エラー）の補足
-4. 必要に応じて `design-system.md` のトークン追加（既存命名規則に従う）
+### 完了
+- 既存6画面のトーン微調整（Dark テーマ修正）
+- 設計トークンの整理（`--accent` 撤廃 / `--ai` 追加 / モーション・z-index・余白の補強）
+- Pastel テーマ撤廃（Light/Dark の 2軸構成に）
+- Settings + Goals + AI 相談（Screen 7）
+- Exercise Picker（Screen 8）
+- Meal Detail Sheet（Screen 9） — **編集可**
+- Body Composition Entry Sheet（Screen 10） — **手動入力のみ、外部連携なし**
+- Screen 4 (有酸素) の種目セル整列 + フィールド入力欄の見切れ修正 (v7)
+- プロダクト紹介 LP（`landing-page.html`）
 
-**絶対の制約**:
+### 次フェーズで作る予定
+- Login / Signup
+- Strength History / Cardio History
+- 各画面の空状態 / ローディング / エラー状態のバリエーション
+
+## 絶対の制約
+
 - 絵文字を使わない（SVG アイコンで代替）
 - 3アクセント色構造（eat / move / body）を守る
-- Light / Dark / Pastel の3テーマすべてに対応
+- Light / Dark の 2 テーマすべてに対応
 - max-width 440px のモバイルファースト
+- 体組成計や Apple Health / Google Fit との外部連携は前提にしない（すべて手動記録）
 
 詳細は [design-brief.md](./design-brief.md) を参照してください。

@@ -1,0 +1,283 @@
+{
+  "chain_id": "sushiro",
+  "chain_name": "スシロー",
+  "source_url": "https://www.akindo-sushiro.co.jp/menu/menu_detail/?s_id=113",
+  "fetched_at": "2026-05-26",
+  "items": [
+    {
+      "id": "sushi_maguro",
+      "name": "厳選まぐろ赤身",
+      "aliases": ["まぐろ", "マグロ"],
+      "category": "sushi",
+      "calories": 81,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "sushi_salmon",
+      "name": "サーモン",
+      "aliases": ["鮭", "さけ"],
+      "category": "sushi",
+      "calories": 91,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "sushi_ebi",
+      "name": "えび",
+      "aliases": ["海老", "エビ"],
+      "category": "sushi",
+      "calories": 72,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "sushi_ama_ebi",
+      "name": "甘えび",
+      "aliases": ["甘海老"],
+      "category": "sushi",
+      "calories": 70,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "sushi_ika",
+      "name": "いか",
+      "aliases": ["イカ", "烏賊"],
+      "category": "sushi",
+      "calories": 70,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "sushi_tako",
+      "name": "水たこ",
+      "aliases": ["たこ", "タコ"],
+      "category": "sushi",
+      "calories": 66,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "sushi_tamago",
+      "name": "たまご",
+      "aliases": ["玉子", "卵"],
+      "category": "sushi",
+      "calories": 122,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "sushi_katsuo",
+      "name": "一本釣りかつお",
+      "aliases": ["かつお", "カツオ"],
+      "category": "sushi",
+      "calories": 83,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "sushi_shime_saba",
+      "name": "〆さば",
+      "aliases": ["しめさば", "〆鯖"],
+      "category": "sushi",
+      "calories": 111,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "sushi_onion_salmon",
+      "name": "オニオンサーモン",
+      "aliases": ["サーモンオニオン"],
+      "category": "sushi",
+      "calories": 118,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "sushi_engawa",
+      "name": "えんがわ",
+      "aliases": ["縁側"],
+      "category": "sushi",
+      "calories": 89,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "sushi_ni_anago",
+      "name": "煮あなご",
+      "aliases": ["穴子", "アナゴ"],
+      "category": "sushi",
+      "calories": 88,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "sushi_unagi",
+      "name": "うなぎの蒲焼き",
+      "aliases": ["うなぎ", "鰻"],
+      "category": "sushi",
+      "calories": 102,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "sushi_salmon_avocado",
+      "name": "サーモンアボカド",
+      "aliases": ["サーモンアボカド"],
+      "category": "sushi",
+      "calories": 140,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "sushi_negi_maguro",
+      "name": "ねぎまぐろ軍艦",
+      "aliases": ["ねぎとろ"],
+      "category": "sushi",
+      "calories": 108,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "ramen_maguro_shoyu",
+      "name": "スシロー コク旨まぐろ醤油ラーメン",
+      "aliases": ["まぐろ醤油ラーメン"],
+      "category": "noodle",
+      "calories": 315,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "ramen_tai_hakutou",
+      "name": "スシロー 鯛白湯ラーメン",
+      "aliases": ["鯛白湯ラーメン"],
+      "category": "noodle",
+      "calories": 249,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "ramen_kai_shio",
+      "name": "スシロー 貝塩ラーメン",
+      "aliases": ["貝塩ラーメン"],
+      "category": "noodle",
+      "calories": 247,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "udon_kitsune",
+      "name": "きつねうどん",
+      "aliases": ["きつねうどん"],
+      "category": "noodle",
+      "calories": 315,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "udon_ebi_ten",
+      "name": "えび天うどん",
+      "aliases": ["えびてんうどん"],
+      "category": "noodle",
+      "calories": 257,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "side_potato",
+      "name": "フライドポテト",
+      "aliases": ["ポテト"],
+      "category": "side",
+      "calories": 186,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "side_chawanmushi",
+      "name": "筍の茶碗蒸し",
+      "aliases": ["茶碗蒸し"],
+      "category": "side",
+      "calories": 79,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "side_ika_karaage",
+      "name": "やわらかイカの唐揚げ",
+      "aliases": ["イカ唐揚げ"],
+      "category": "side",
+      "calories": 186,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "dessert_parfait",
+      "name": "ストロベリーバニラパフェ",
+      "aliases": ["パフェ", "いちごパフェ"],
+      "category": "dessert",
+      "calories": 222,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "dessert_coffee_jelly",
+      "name": "コーヒーゼリーほろにが仕立て",
+      "aliases": ["コーヒーゼリー"],
+      "category": "dessert",
+      "calories": 115,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    }
+  ]
+}

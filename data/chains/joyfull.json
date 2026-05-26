@@ -1,0 +1,283 @@
+{
+  "chain_id": "joyfull",
+  "chain_name": "ジョイフル",
+  "source_url": "https://files.joyfull.co.jp/uploads/common/cal.pdf",
+  "fetched_at": "2026-05-26",
+  "items": [
+    {
+      "id": "cheese_hamburg_set",
+      "name": "Joyチーズインハンバーグセット",
+      "aliases": ["チーズハンバーグセット"],
+      "category": "hamburg",
+      "calories": 852,
+      "protein_g": 29.8,
+      "fat_g": 38.3,
+      "carbs_g": 91.0,
+      "salt_g": 2.6
+    },
+    {
+      "id": "carbonara",
+      "name": "濃厚カルボナーラ",
+      "aliases": ["カルボナーラ"],
+      "category": "pasta",
+      "calories": 705,
+      "protein_g": 24.7,
+      "fat_g": 37.9,
+      "carbs_g": 66.0,
+      "salt_g": 4.7
+    },
+    {
+      "id": "mentaiko_pasta",
+      "name": "明太子をたっぷり使ったスパゲティ",
+      "aliases": ["明太子パスタ"],
+      "category": "pasta",
+      "calories": 445,
+      "protein_g": 19.7,
+      "fat_g": 15.3,
+      "carbs_g": 59.0,
+      "salt_g": 3.7
+    },
+    {
+      "id": "bolognese_hamburg_pasta",
+      "name": "5種チーズインハンバーグの鉄板ボロネーゼ",
+      "aliases": ["ボロネーゼ"],
+      "category": "pasta",
+      "calories": 1060,
+      "protein_g": 49.6,
+      "fat_g": 50.3,
+      "carbs_g": 96.8,
+      "salt_g": 5.0
+    },
+    {
+      "id": "saizari_salad",
+      "name": "彩りサラダ",
+      "aliases": ["サラダ"],
+      "category": "salad",
+      "calories": 112,
+      "protein_g": 2.2,
+      "fat_g": 5.7,
+      "carbs_g": 14.1,
+      "salt_g": 1.2
+    },
+    {
+      "id": "grilled_chicken_cold",
+      "name": "グリルチキンの冷製",
+      "aliases": ["グリルチキンサラダ"],
+      "category": "salad",
+      "calories": 212,
+      "protein_g": 14.3,
+      "fat_g": 14.0,
+      "carbs_g": 5.6,
+      "salt_g": 1.3
+    },
+    {
+      "id": "potato_fry",
+      "name": "ポテトフライ",
+      "aliases": ["フライドポテト"],
+      "category": "side",
+      "calories": 436,
+      "protein_g": 4.1,
+      "fat_g": 26.5,
+      "carbs_g": 45.1,
+      "salt_g": 0.5
+    },
+    {
+      "id": "karaage",
+      "name": "ジョイフル塩唐揚げ（2個）",
+      "aliases": ["唐揚げ"],
+      "category": "side",
+      "calories": 261,
+      "protein_g": 11.7,
+      "fat_g": 18.7,
+      "carbs_g": 9.7,
+      "salt_g": 1.1
+    },
+    {
+      "id": "nankostu_karaage",
+      "name": "なんこつ唐揚げ",
+      "aliases": ["なんこつから揚げ"],
+      "category": "side",
+      "calories": 316,
+      "protein_g": 9.9,
+      "fat_g": 22.8,
+      "carbs_g": 18.1,
+      "salt_g": 2.4
+    },
+    {
+      "id": "gyoza",
+      "name": "こだわり餃子（5個）",
+      "aliases": ["餃子"],
+      "category": "side",
+      "calories": 254,
+      "protein_g": 5.3,
+      "fat_g": 15.0,
+      "carbs_g": 24.0,
+      "salt_g": 0.8
+    },
+    {
+      "id": "makuno_uchi_teishoku",
+      "name": "幕の内定食",
+      "aliases": ["幕の内"],
+      "category": "teishoku",
+      "calories": 737,
+      "protein_g": 29.8,
+      "fat_g": 23.8,
+      "carbs_g": 96.3,
+      "salt_g": 4.7
+    },
+    {
+      "id": "nanatane_wateishoku",
+      "name": "七種の和定食",
+      "aliases": ["和定食"],
+      "category": "teishoku",
+      "calories": 599,
+      "protein_g": 26.7,
+      "fat_g": 18.3,
+      "carbs_g": 82.9,
+      "salt_g": 5.3
+    },
+    {
+      "id": "chicken_doria",
+      "name": "チキンドリア",
+      "aliases": ["ドリア"],
+      "category": "rice",
+      "calories": 744,
+      "protein_g": 28.7,
+      "fat_g": 30.0,
+      "carbs_g": 88.5,
+      "salt_g": 3.7
+    },
+    {
+      "id": "osaka_kara_curry",
+      "name": "大阪風あまからカレー（ロースかつ）",
+      "aliases": ["カツカレー"],
+      "category": "rice",
+      "calories": 1125,
+      "protein_g": 29.3,
+      "fat_g": 48.1,
+      "carbs_g": 131.5,
+      "salt_g": 4.0
+    },
+    {
+      "id": "taco_rice",
+      "name": "大豆ミートとサラダ豆の農園タコライス",
+      "aliases": ["タコライス"],
+      "category": "rice",
+      "calories": 561,
+      "protein_g": 26.7,
+      "fat_g": 21.9,
+      "carbs_g": 64.0,
+      "salt_g": 3.2
+    },
+    {
+      "id": "omurice_hamburg",
+      "name": "とろっと玉子のオムライス＆チーズハンバーグ",
+      "aliases": ["オムライス"],
+      "category": "rice",
+      "calories": 928,
+      "protein_g": 33.8,
+      "fat_g": 49.9,
+      "carbs_g": 82.5,
+      "salt_g": 4.7
+    },
+    {
+      "id": "twin_hamburg",
+      "name": "ツインハンバーグ",
+      "aliases": ["ダブルハンバーグ"],
+      "category": "hamburg",
+      "calories": 1157,
+      "protein_g": 52.6,
+      "fat_g": 60.3,
+      "carbs_g": 85.1,
+      "salt_g": 3.9
+    },
+    {
+      "id": "cheese_hamburg",
+      "name": "チーズハンバーグ",
+      "aliases": ["チーズバーグ"],
+      "category": "hamburg",
+      "calories": 648,
+      "protein_g": 29.4,
+      "fat_g": 34.7,
+      "carbs_g": 48.1,
+      "salt_g": 2.8
+    },
+    {
+      "id": "wafu_hamburg",
+      "name": "和風ハンバーグ",
+      "aliases": ["和風バーグ"],
+      "category": "hamburg",
+      "calories": 581,
+      "protein_g": 24.3,
+      "fat_g": 29.1,
+      "carbs_g": 54.2,
+      "salt_g": 3.4
+    },
+    {
+      "id": "pepper_hamburg",
+      "name": "ペッパーハンバーグ",
+      "aliases": ["ペッパーバーグ"],
+      "category": "hamburg",
+      "calories": 585,
+      "protein_g": 25.1,
+      "fat_g": 33.8,
+      "carbs_g": 40.4,
+      "salt_g": 2.7
+    },
+    {
+      "id": "pork_steak_garlic",
+      "name": "肉旨！厚切り豚肩ロースステーキにんにく醤油",
+      "aliases": ["豚ステーキ"],
+      "category": "steak",
+      "calories": 600,
+      "protein_g": 34.6,
+      "fat_g": 26.6,
+      "carbs_g": 54.5,
+      "salt_g": 3.7
+    },
+    {
+      "id": "chicken_nanban_teishoku",
+      "name": "たっぷりタルタルソースのチキン南蛮定食",
+      "aliases": ["チキン南蛮定食"],
+      "category": "teishoku",
+      "calories": 1210,
+      "protein_g": 35.3,
+      "fat_g": 64.7,
+      "carbs_g": 115.7,
+      "salt_g": 4.9
+    },
+    {
+      "id": "tiramisu",
+      "name": "大人の口溶けティラミス",
+      "aliases": ["ティラミス"],
+      "category": "dessert",
+      "calories": 185,
+      "protein_g": 1.4,
+      "fat_g": 12.7,
+      "carbs_g": 16.3,
+      "salt_g": 0.1
+    },
+    {
+      "id": "pancake",
+      "name": "あんバターのふわとろフロマージュパンケーキ",
+      "aliases": ["パンケーキ"],
+      "category": "dessert",
+      "calories": 380,
+      "protein_g": 9.7,
+      "fat_g": 16.8,
+      "carbs_g": 48.4,
+      "salt_g": 0.5
+    },
+    {
+      "id": "cheesecake",
+      "name": "JillさんのN.Y.チーズケーキ",
+      "aliases": ["チーズケーキ", "NYチーズケーキ"],
+      "category": "dessert",
+      "calories": 243,
+      "protein_g": 4.0,
+      "fat_g": 18.5,
+      "carbs_g": 15.5,
+      "salt_g": 0.3
+    }
+  ]
+}

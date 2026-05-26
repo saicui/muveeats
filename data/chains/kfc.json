@@ -1,0 +1,239 @@
+{
+  "chain_id": "kfc",
+  "chain_name": "ケンタッキーフライドチキン",
+  "source_url": "https://assets.ctfassets.net/jax7ylg56usf/3zgh9vHAvLBwmyuhXQaJOO/c1380188d778ace74fdf63d23d7a06bd/240403KFC________________.pdf",
+  "fetched_at": "2026-05-26",
+  "items": [
+    {
+      "id": "original_chicken",
+      "name": "オリジナルチキン",
+      "aliases": ["Original Chicken", "オリチキ"],
+      "category": "chicken",
+      "calories": 218,
+      "protein_g": 16.5,
+      "fat_g": 12.8,
+      "carbs_g": 9.1,
+      "salt_g": 1.5
+    },
+    {
+      "id": "goma_pari_shio_chicken",
+      "name": "ごま油香るパリパリ旨塩チキン",
+      "aliases": ["旨塩チキン"],
+      "category": "chicken",
+      "calories": 243,
+      "protein_g": 16.8,
+      "fat_g": 14.4,
+      "carbs_g": 11.3,
+      "salt_g": 1.7
+    },
+    {
+      "id": "garipepachicken",
+      "name": "ガリぺパチキン",
+      "aliases": ["ガリペパチキン"],
+      "category": "chicken",
+      "calories": 269,
+      "protein_g": 16.9,
+      "fat_g": 17.2,
+      "carbs_g": 11.8,
+      "salt_g": 1.4
+    },
+    {
+      "id": "honekashi_kentucky",
+      "name": "骨なしケンタッキー",
+      "aliases": ["骨なしケンタ"],
+      "category": "chicken",
+      "calories": 191,
+      "protein_g": 20.3,
+      "fat_g": 8.5,
+      "carbs_g": 8.3,
+      "salt_g": 1.7
+    },
+    {
+      "id": "colonel_crispy",
+      "name": "カーネルクリスピー",
+      "aliases": ["Colonel Crispy", "クリスピー"],
+      "category": "chicken",
+      "calories": 119,
+      "protein_g": 6.8,
+      "fat_g": 6.6,
+      "carbs_g": 8.2,
+      "salt_g": 0.6
+    },
+    {
+      "id": "nugget_5pc",
+      "name": "ナゲット 5ピース",
+      "aliases": ["Nugget 5pc", "ナゲット"],
+      "category": "chicken",
+      "calories": 222,
+      "protein_g": 13.3,
+      "fat_g": 13.4,
+      "carbs_g": 11.8,
+      "salt_g": 1.5
+    },
+    {
+      "id": "chicken_fillet_burger",
+      "name": "チキンフィレバーガー",
+      "aliases": ["Chicken Fillet Burger", "フィレバーガー"],
+      "category": "burger",
+      "calories": 398,
+      "protein_g": 24.3,
+      "fat_g": 19.7,
+      "carbs_g": 31.1,
+      "salt_g": 2.4
+    },
+    {
+      "id": "spicy_chicken_fillet_burger",
+      "name": "辛口チキンフィレバーガー",
+      "aliases": ["辛口フィレバーガー"],
+      "category": "burger",
+      "calories": 384,
+      "protein_g": 24.4,
+      "fat_g": 17.8,
+      "carbs_g": 31.9,
+      "salt_g": 2.6
+    },
+    {
+      "id": "cheese_chicken_fillet_burger",
+      "name": "チーズチキンフィレバーガー",
+      "aliases": ["チーズフィレバーガー"],
+      "category": "burger",
+      "calories": 468,
+      "protein_g": 26.8,
+      "fat_g": 25.8,
+      "carbs_g": 32.1,
+      "salt_g": 2.9
+    },
+    {
+      "id": "double_chicken_fillet_burger",
+      "name": "ダブルチキンフィレバーガー",
+      "aliases": ["ダブルフィレバーガー"],
+      "category": "burger",
+      "calories": 615,
+      "protein_g": 44.6,
+      "fat_g": 30.7,
+      "carbs_g": 40.0,
+      "salt_g": 4.2
+    },
+    {
+      "id": "wafuu_katsu_burger",
+      "name": "和風チキンカツバーガー",
+      "aliases": ["チキンカツバーガー"],
+      "category": "burger",
+      "calories": 426,
+      "protein_g": 16.0,
+      "fat_g": 22.3,
+      "carbs_g": 40.5,
+      "salt_g": 2.0
+    },
+    {
+      "id": "salsa_fillet_burger",
+      "name": "サルサフィレバーガー",
+      "aliases": ["Salsa Fillet Burger"],
+      "category": "burger",
+      "calories": 438,
+      "protein_g": 27.1,
+      "fat_g": 21.4,
+      "carbs_g": 34.6,
+      "salt_g": 3.3
+    },
+    {
+      "id": "basil_lemon_twister",
+      "name": "バジルレモンツイスター",
+      "aliases": ["Twister Basil Lemon"],
+      "category": "twister",
+      "calories": 310,
+      "protein_g": 11.3,
+      "fat_g": 15.8,
+      "carbs_g": 31.1,
+      "salt_g": 2.0
+    },
+    {
+      "id": "pepper_mayo_twister",
+      "name": "ペッパーマヨツイスター",
+      "aliases": ["Pepper Mayo Twister"],
+      "category": "twister",
+      "calories": 301,
+      "protein_g": 11.3,
+      "fat_g": 14.5,
+      "carbs_g": 31.7,
+      "salt_g": 1.8
+    },
+    {
+      "id": "teriyaki_twister",
+      "name": "てりやきツイスター",
+      "aliases": ["Teriyaki Twister"],
+      "category": "twister",
+      "calories": 360,
+      "protein_g": 11.6,
+      "fat_g": 18.8,
+      "carbs_g": 35.0,
+      "salt_g": 2.0
+    },
+    {
+      "id": "fries_s",
+      "name": "フライドポテト S",
+      "aliases": ["French Fries S"],
+      "category": "side",
+      "calories": 195,
+      "protein_g": 2.6,
+      "fat_g": 7.8,
+      "carbs_g": 28.7,
+      "salt_g": 1.2
+    },
+    {
+      "id": "fries_l",
+      "name": "フライドポテト L",
+      "aliases": ["French Fries L"],
+      "category": "side",
+      "calories": 390,
+      "protein_g": 5.3,
+      "fat_g": 15.5,
+      "carbs_g": 57.4,
+      "salt_g": 2.4
+    },
+    {
+      "id": "coleslaw_m",
+      "name": "コールスロー M",
+      "aliases": ["Coleslaw M"],
+      "category": "side",
+      "calories": 137,
+      "protein_g": 1.6,
+      "fat_g": 10.2,
+      "carbs_g": 10.3,
+      "salt_g": 0.9
+    },
+    {
+      "id": "biscuit",
+      "name": "ビスケット",
+      "aliases": ["Biscuit"],
+      "category": "side",
+      "calories": 200,
+      "protein_g": 3.2,
+      "fat_g": 11.1,
+      "carbs_g": 21.7,
+      "salt_g": 0.9
+    },
+    {
+      "id": "choco_pie",
+      "name": "チョコパイ",
+      "aliases": ["Choco Pie"],
+      "category": "dessert",
+      "calories": 274,
+      "protein_g": 3.1,
+      "fat_g": 15.7,
+      "carbs_g": 29.0,
+      "salt_g": 0.3
+    },
+    {
+      "id": "chicken_cream_pot_pie",
+      "name": "チキンクリームポットパイ",
+      "aliases": ["Chicken Cream Pot Pie"],
+      "category": "dessert",
+      "calories": 294,
+      "protein_g": 7.8,
+      "fat_g": 15.7,
+      "carbs_g": 29.2,
+      "salt_g": 1.4
+    }
+  ]
+}

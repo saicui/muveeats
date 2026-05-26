@@ -1,0 +1,239 @@
+{
+  "chain_id": "ringer-hut",
+  "chain_name": "リンガーハット",
+  "source_url": "https://www.ringerhut.jp/quality/allergy-nutrition_value/pdf/allergy-nutrition_value.pdf",
+  "fetched_at": "2026-05-26",
+  "items": [
+    {
+      "id": "nagasaki_chanpon",
+      "name": "長崎ちゃんぽん",
+      "aliases": ["ちゃんぽん"],
+      "category": "chanpon",
+      "calories": 611,
+      "protein_g": 24.3,
+      "fat_g": 24.7,
+      "carbs_g": 81.8,
+      "salt_g": 7.4
+    },
+    {
+      "id": "nagasaki_chanpon_men_sukuname",
+      "name": "長崎ちゃんぽん麺少なめ",
+      "aliases": ["ちゃんぽん麺少なめ"],
+      "category": "chanpon",
+      "calories": 465,
+      "protein_g": 18.9,
+      "fat_g": 24.0,
+      "carbs_g": 49.7,
+      "salt_g": 7.2
+    },
+    {
+      "id": "small_chanpon",
+      "name": "スモールちゃんぽん",
+      "aliases": ["スモールサイズちゃんぽん"],
+      "category": "chanpon",
+      "calories": 315,
+      "protein_g": 12.6,
+      "fat_g": 13.0,
+      "carbs_g": 41.3,
+      "salt_g": 4.6
+    },
+    {
+      "id": "nagasaki_chanpon_men_15",
+      "name": "長崎ちゃんぽん(麺増量1.5倍)",
+      "aliases": ["ちゃんぽん麺増量"],
+      "category": "chanpon",
+      "calories": 797,
+      "protein_g": 31.8,
+      "fat_g": 28.3,
+      "carbs_g": 115.1,
+      "salt_g": 11.8
+    },
+    {
+      "id": "genen_chanpon",
+      "name": "減塩ちゃんぽん",
+      "aliases": ["減塩長崎ちゃんぽん"],
+      "category": "chanpon",
+      "calories": 589,
+      "protein_g": 23.1,
+      "fat_g": 22.8,
+      "carbs_g": 81.6,
+      "salt_g": 4.6
+    },
+    {
+      "id": "yasai_chanpon",
+      "name": "野菜たっぷりちゃんぽん",
+      "aliases": ["野菜ちゃんぽん"],
+      "category": "chanpon",
+      "calories": 759,
+      "protein_g": 28.4,
+      "fat_g": 35.7,
+      "carbs_g": 92.0,
+      "salt_g": 9.3
+    },
+    {
+      "id": "pirikara_chanpon",
+      "name": "ピリカラちゃんぽん",
+      "aliases": ["辛口ちゃんぽん"],
+      "category": "chanpon",
+      "calories": 656,
+      "protein_g": 25.4,
+      "fat_g": 28.0,
+      "carbs_g": 83.4,
+      "salt_g": 7.7
+    },
+    {
+      "id": "tori_paitan_chanpon",
+      "name": "鶏白湯長崎ちゃんぽん",
+      "aliases": ["白湯ちゃんぽん"],
+      "category": "chanpon",
+      "calories": 730,
+      "protein_g": 32.2,
+      "fat_g": 33.1,
+      "carbs_g": 84.7,
+      "salt_g": 6.4
+    },
+    {
+      "id": "shoyu_chanpon",
+      "name": "しょうゆちゃんぽん",
+      "aliases": ["醤油ちゃんぽん"],
+      "category": "chanpon",
+      "calories": 637,
+      "protein_g": 24.4,
+      "fat_g": 26.1,
+      "carbs_g": 85.1,
+      "salt_g": 7.8
+    },
+    {
+      "id": "miso_chanpon",
+      "name": "みそちゃんぽん",
+      "aliases": ["味噌ちゃんぽん"],
+      "category": "chanpon",
+      "calories": 655,
+      "protein_g": 26.6,
+      "fat_g": 25.5,
+      "carbs_g": 88.8,
+      "salt_g": 8.0
+    },
+    {
+      "id": "kaisen_chanpon",
+      "name": "海鮮ちゃんぽん",
+      "aliases": ["シーフードちゃんぽん"],
+      "category": "chanpon",
+      "calories": 509,
+      "protein_g": 25.5,
+      "fat_g": 12.5,
+      "carbs_g": 82.0,
+      "salt_g": 7.5
+    },
+    {
+      "id": "premium_nagasaki_chanpon",
+      "name": "プレミアム長崎ちゃんぽん",
+      "aliases": ["プレミアムちゃんぽん"],
+      "category": "chanpon",
+      "calories": 640,
+      "protein_g": 32.6,
+      "fat_g": 23.9,
+      "carbs_g": 82.7,
+      "salt_g": 8.5
+    },
+    {
+      "id": "yakisoba_300",
+      "name": "リンガーハットの焼きそば（麺300g）",
+      "aliases": ["焼きそば"],
+      "category": "yakisoba",
+      "calories": 839,
+      "protein_g": 28.0,
+      "fat_g": 29.4,
+      "carbs_g": 127.3,
+      "salt_g": 6.9
+    },
+    {
+      "id": "nagasaki_sara_udon",
+      "name": "長崎皿うどん",
+      "aliases": ["皿うどん"],
+      "category": "sara_udon",
+      "calories": 728,
+      "protein_g": 18.2,
+      "fat_g": 37.3,
+      "carbs_g": 83.6,
+      "salt_g": 7.5
+    },
+    {
+      "id": "small_sara_udon",
+      "name": "スモール皿うどん",
+      "aliases": ["皿うどん小"],
+      "category": "sara_udon",
+      "calories": 425,
+      "protein_g": 10.2,
+      "fat_g": 19.1,
+      "carbs_g": 54.9,
+      "salt_g": 7.0
+    },
+    {
+      "id": "yasai_sara_udon",
+      "name": "野菜たっぷり皿うどん",
+      "aliases": ["野菜皿うどん"],
+      "category": "sara_udon",
+      "calories": 918,
+      "protein_g": 22.4,
+      "fat_g": 47.6,
+      "carbs_g": 105.5,
+      "salt_g": 10.1
+    },
+    {
+      "id": "gyoza_3",
+      "name": "ぎょうざ（3個）",
+      "aliases": ["餃子3個"],
+      "category": "side",
+      "calories": 119,
+      "protein_g": 2.8,
+      "fat_g": 8.5,
+      "carbs_g": 7.9,
+      "salt_g": 0.4
+    },
+    {
+      "id": "gyoza_5",
+      "name": "ぎょうざ（5個）",
+      "aliases": ["餃子5個"],
+      "category": "side",
+      "calories": 199,
+      "protein_g": 4.7,
+      "fat_g": 14.1,
+      "carbs_g": 13.1,
+      "salt_g": 0.7
+    },
+    {
+      "id": "han_chahan",
+      "name": "半チャーハン",
+      "aliases": ["ミニチャーハン"],
+      "category": "side",
+      "calories": 323,
+      "protein_g": 6.4,
+      "fat_g": 11.6,
+      "carbs_g": 45.7,
+      "salt_g": 2.0
+    },
+    {
+      "id": "rice_100g",
+      "name": "ごはん（100gあたり）",
+      "aliases": ["ライス"],
+      "category": "side",
+      "calories": 156,
+      "protein_g": 2.5,
+      "fat_g": 0.3,
+      "carbs_g": 37.1,
+      "salt_g": 0.0
+    },
+    {
+      "id": "annin_tofu",
+      "name": "杏仁豆腐",
+      "aliases": ["アンニントウフ"],
+      "category": "dessert",
+      "calories": 119,
+      "protein_g": 3.4,
+      "fat_g": 6.0,
+      "carbs_g": 12.9,
+      "salt_g": 0.1
+    }
+  ]
+}

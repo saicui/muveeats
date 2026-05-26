@@ -1,0 +1,239 @@
+{
+  "chain_id": "lawson",
+  "chain_name": "ローソン",
+  "source_url": "https://www.lawson.co.jp/recommend/original/rice/",
+  "fetched_at": "2026-05-26",
+  "items": [
+    {
+      "id": "onigiri_tuna_mayo",
+      "name": "手巻おにぎり シーチキン®マヨネーズ",
+      "aliases": ["ツナマヨおにぎり"],
+      "category": "onigiri",
+      "calories": 226,
+      "protein_g": 4.2,
+      "fat_g": 7.7,
+      "carbs_g": 35.7,
+      "salt_g": 1.18
+    },
+    {
+      "id": "onigiri_ume",
+      "name": "手巻おにぎり 熟成紀州南高梅",
+      "aliases": ["梅おにぎり"],
+      "category": "onigiri",
+      "calories": 169,
+      "protein_g": 3.0,
+      "fat_g": 1.0,
+      "carbs_g": 37.5,
+      "salt_g": 1.62
+    },
+    {
+      "id": "onigiri_shake",
+      "name": "手巻おにぎり 炙り熟成紅鮭",
+      "aliases": ["鮭おにぎり", "しゃけおにぎり"],
+      "category": "onigiri",
+      "calories": 174,
+      "protein_g": 4.8,
+      "fat_g": 1.9,
+      "carbs_g": 35.1,
+      "salt_g": 1.19
+    },
+    {
+      "id": "onigiri_shio",
+      "name": "塩にぎり",
+      "aliases": ["塩おにぎり"],
+      "category": "onigiri",
+      "calories": 173,
+      "protein_g": 2.9,
+      "fat_g": 0.9,
+      "carbs_g": 38.7,
+      "salt_g": 0.70
+    },
+    {
+      "id": "onigiri_konbu",
+      "name": "手巻おにぎり 北海道産日高昆布",
+      "aliases": ["昆布おにぎり"],
+      "category": "onigiri",
+      "calories": 173,
+      "protein_g": 3.5,
+      "fat_g": 0.9,
+      "carbs_g": 38.6,
+      "salt_g": 1.34
+    },
+    {
+      "id": "onigiri_okaka",
+      "name": "味付海苔手巻おにぎり 追い鰹製法おかか",
+      "aliases": ["おかかおにぎり"],
+      "category": "onigiri",
+      "calories": 171,
+      "protein_g": 4.3,
+      "fat_g": 0.9,
+      "carbs_g": 37.2,
+      "salt_g": 1.25
+    },
+    {
+      "id": "onigiri_goma_sake",
+      "name": "胡麻さけおにぎり",
+      "aliases": ["胡麻鮭おにぎり"],
+      "category": "onigiri",
+      "calories": 183,
+      "protein_g": 5.1,
+      "fat_g": 2.2,
+      "carbs_g": 36.4,
+      "salt_g": 1.50
+    },
+    {
+      "id": "onigiri_large_tuna_mayo",
+      "name": "大きなおにぎり シーチキン®マヨネーズ",
+      "aliases": ["大きなツナマヨ"],
+      "category": "onigiri",
+      "calories": 366,
+      "protein_g": 6.8,
+      "fat_g": 11.2,
+      "carbs_g": 60.5,
+      "salt_g": 2.13
+    },
+    {
+      "id": "onigiri_large_shake",
+      "name": "大きなおにぎり 鮭",
+      "aliases": ["大きな鮭おにぎり"],
+      "category": "onigiri",
+      "calories": 283,
+      "protein_g": 7.7,
+      "fat_g": 2.5,
+      "carbs_g": 58.6,
+      "salt_g": 2.00
+    },
+    {
+      "id": "bento_onigiri",
+      "name": "おにぎり弁当",
+      "aliases": ["おにぎり弁当"],
+      "category": "bento",
+      "calories": 496,
+      "protein_g": 17.2,
+      "fat_g": 20.0,
+      "carbs_g": 63.6,
+      "salt_g": 2.94
+    },
+    {
+      "id": "bento_mentai_nori",
+      "name": "明太唐揚のり弁当",
+      "aliases": ["明太のり弁当", "のり弁"],
+      "category": "bento",
+      "calories": 529,
+      "protein_g": 21.0,
+      "fat_g": 18.4,
+      "carbs_g": 71.3,
+      "salt_g": 2.31
+    },
+    {
+      "id": "bento_tori_soboro",
+      "name": "鶏そぼろ弁当",
+      "aliases": ["そぼろ弁当"],
+      "category": "bento",
+      "calories": 341,
+      "protein_g": 15.5,
+      "fat_g": 4.5,
+      "carbs_g": 60.7,
+      "salt_g": 2.17
+    },
+    {
+      "id": "bento_makunouchi",
+      "name": "おかずいろいろ幕の内",
+      "aliases": ["幕の内弁当"],
+      "category": "bento",
+      "calories": 573,
+      "protein_g": 17.0,
+      "fat_g": 20.4,
+      "carbs_g": 82.9,
+      "salt_g": 2.38
+    },
+    {
+      "id": "bento_takenoko",
+      "name": "筍ごはん弁当",
+      "aliases": ["タケノコ弁当"],
+      "category": "bento",
+      "calories": 423,
+      "protein_g": 15.0,
+      "fat_g": 14.3,
+      "carbs_g": 59.9,
+      "salt_g": 2.75
+    },
+    {
+      "id": "bento_menchi_katsu",
+      "name": "おかズドン！トリプルメンチカツ弁当",
+      "aliases": ["メンチカツ弁当", "トリプルメンチ"],
+      "category": "bento",
+      "calories": 1157,
+      "protein_g": 33.7,
+      "fat_g": 51.8,
+      "carbs_g": 142.9,
+      "salt_g": 6.40
+    },
+    {
+      "id": "sandwich_tamago",
+      "name": "たまごサンド",
+      "aliases": ["卵サンド", "玉子サンド"],
+      "category": "sandwich",
+      "calories": 302,
+      "protein_g": 9.3,
+      "fat_g": 19.0,
+      "carbs_g": 24.1,
+      "salt_g": 1.67
+    },
+    {
+      "id": "sandwich_mix",
+      "name": "ミックスサンド",
+      "aliases": ["ミックスサンドイッチ"],
+      "category": "sandwich",
+      "calories": 310,
+      "protein_g": 10.9,
+      "fat_g": 16.8,
+      "carbs_g": 29.5,
+      "salt_g": 1.95
+    },
+    {
+      "id": "sandwich_tuna_tamago",
+      "name": "ツナたまごサンド",
+      "aliases": ["ツナサンド"],
+      "category": "sandwich",
+      "calories": 321,
+      "protein_g": 8.4,
+      "fat_g": 21.0,
+      "carbs_g": 25.1,
+      "salt_g": 1.58
+    },
+    {
+      "id": "sandwich_lettuce",
+      "name": "レタスサンド",
+      "aliases": ["レタスサンドイッチ"],
+      "category": "sandwich",
+      "calories": 216,
+      "protein_g": 8.5,
+      "fat_g": 10.6,
+      "carbs_g": 22.2,
+      "salt_g": 1.92
+    },
+    {
+      "id": "sandwich_ham",
+      "name": "ハムサンド",
+      "aliases": ["ハムサンドイッチ"],
+      "category": "sandwich",
+      "calories": 259,
+      "protein_g": 10.6,
+      "fat_g": 10.4,
+      "carbs_g": 31.4,
+      "salt_g": 2.51
+    },
+    {
+      "id": "sandwich_teriyaki_chicken",
+      "name": "照焼チキンたまごサンド",
+      "aliases": ["照り焼きチキンサンド"],
+      "category": "sandwich",
+      "calories": 235,
+      "protein_g": 12.0,
+      "fat_g": 9.4,
+      "carbs_g": 26.1,
+      "salt_g": 1.99
+    }
+  ]
+}

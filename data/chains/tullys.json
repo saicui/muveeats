@@ -1,0 +1,228 @@
+{
+  "chain_id": "tullys",
+  "chain_name": "タリーズ",
+  "source_url": "https://www.tullys.co.jp/menu/pdf/food.pdf",
+  "fetched_at": "2026-05-26",
+  "items": [
+    {
+      "id": "yasai_salad",
+      "name": "温野菜サラダ",
+      "aliases": ["温野菜サラダ"],
+      "category": "food",
+      "calories": 89,
+      "protein_g": 1.4,
+      "fat_g": 7.1,
+      "carbs_g": 5.0,
+      "salt_g": 0.8
+    },
+    {
+      "id": "english_muffin_tuna_cheese",
+      "name": "イングリッシュマフィン ツナチーズ",
+      "aliases": ["ツナチーズマフィン"],
+      "category": "food",
+      "calories": 273,
+      "protein_g": 9.8,
+      "fat_g": 16.4,
+      "carbs_g": 21.5,
+      "salt_g": 1.2
+    },
+    {
+      "id": "french_toast",
+      "name": "フレンチトースト",
+      "aliases": ["フレンチトースト"],
+      "category": "food",
+      "calories": 246,
+      "protein_g": 7.6,
+      "fat_g": 10.2,
+      "carbs_g": 30.9,
+      "salt_g": 1.1
+    },
+    {
+      "id": "croque_monsieur",
+      "name": "クロックムッシュ",
+      "aliases": ["クロックムッシュ"],
+      "category": "food",
+      "calories": 314,
+      "protein_g": 13.7,
+      "fat_g": 14.8,
+      "carbs_g": 31.5,
+      "salt_g": 1.7
+    },
+    {
+      "id": "ballpark_dog_salsa",
+      "name": "ボールパークドッグ サルサ",
+      "aliases": ["サルサドッグ"],
+      "category": "food",
+      "calories": 369,
+      "protein_g": 10.7,
+      "fat_g": 17.7,
+      "carbs_g": 41.8,
+      "salt_g": 2.3
+    },
+    {
+      "id": "avocado_dog",
+      "name": "ボールパークドッグ アボカド",
+      "aliases": ["アボカドドッグ"],
+      "category": "food",
+      "calories": 412,
+      "protein_g": 11.9,
+      "fat_g": 21.4,
+      "carbs_g": 44.2,
+      "salt_g": 1.9
+    },
+    {
+      "id": "chili_con_carne",
+      "name": "チリコンカン",
+      "aliases": ["チリコンカン"],
+      "category": "food",
+      "calories": 344,
+      "protein_g": 13.0,
+      "fat_g": 15.8,
+      "carbs_g": 37.4,
+      "salt_g": 2.6
+    },
+    {
+      "id": "pizza_quattro_formaggi",
+      "name": "ピッツァ クワトロフォルマッジ",
+      "aliases": ["クワトロフォルマッジ", "チーズピザ"],
+      "category": "food",
+      "calories": 324,
+      "protein_g": 11.8,
+      "fat_g": 11.2,
+      "carbs_g": 44.6,
+      "salt_g": 1.1
+    },
+    {
+      "id": "bolognese",
+      "name": "オリジナルボロネーゼ",
+      "aliases": ["ボロネーゼ", "ミートソースパスタ"],
+      "category": "pasta",
+      "calories": 656,
+      "protein_g": 30.3,
+      "fat_g": 22.5,
+      "carbs_g": 83.4,
+      "salt_g": 3.7
+    },
+    {
+      "id": "setouchi_lemon_pasta",
+      "name": "瀬戸内レモンパスタ",
+      "aliases": ["レモンパスタ"],
+      "category": "pasta",
+      "calories": 566,
+      "protein_g": 15.4,
+      "fat_g": 21.0,
+      "carbs_g": 80.0,
+      "salt_g": 3.9
+    },
+    {
+      "id": "carbonara",
+      "name": "カルボナーラ",
+      "aliases": ["カルボナーラパスタ"],
+      "category": "pasta",
+      "calories": 672,
+      "protein_g": 26.3,
+      "fat_g": 27.0,
+      "carbs_g": 80.9,
+      "salt_g": 3.5
+    },
+    {
+      "id": "tomato_pasta",
+      "name": "トマトパスタ",
+      "aliases": ["トマトソースパスタ"],
+      "category": "pasta",
+      "calories": 597,
+      "protein_g": 22.3,
+      "fat_g": 18.5,
+      "carbs_g": 85.1,
+      "salt_g": 3.0
+    },
+    {
+      "id": "baked_cheesecake",
+      "name": "ベイクドチーズケーキ",
+      "aliases": ["チーズケーキ"],
+      "category": "dessert",
+      "calories": 304,
+      "protein_g": 5.2,
+      "fat_g": 19.5,
+      "carbs_g": 27.1,
+      "salt_g": 0.4
+    },
+    {
+      "id": "blueberry_rare_cheese",
+      "name": "ブルーベリーレアチーズ",
+      "aliases": ["レアチーズケーキ"],
+      "category": "dessert",
+      "calories": 218,
+      "protein_g": 2.4,
+      "fat_g": 11.2,
+      "carbs_g": 26.9,
+      "salt_g": 0.1
+    },
+    {
+      "id": "mille_crepe",
+      "name": "ミルクレープ",
+      "aliases": ["ミルクレープ"],
+      "category": "dessert",
+      "calories": 210,
+      "protein_g": 3.6,
+      "fat_g": 12.5,
+      "carbs_g": 20.9,
+      "salt_g": 0.2
+    },
+    {
+      "id": "lemon_donut",
+      "name": "ハニーとレモンのしっとりドーナツ",
+      "aliases": ["レモンドーナツ"],
+      "category": "bakery",
+      "calories": 308,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "cafe_latte_hot_tall",
+      "name": "カフェラテ HOT Tall",
+      "aliases": ["カフェラテ"],
+      "category": "drink",
+      "calories": 134,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "cafe_mocha_hot_tall",
+      "name": "カフェモカ HOT Tall",
+      "aliases": ["カフェモカ"],
+      "category": "drink",
+      "calories": 304,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "coffee_hot_tall",
+      "name": "本日のコーヒー HOT Tall",
+      "aliases": ["コーヒー"],
+      "category": "drink",
+      "calories": 9,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "iced_coffee_tall",
+      "name": "アイスコーヒー Tall",
+      "aliases": ["アイスコーヒー"],
+      "category": "drink",
+      "calories": 7,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    }
+  ]
+}

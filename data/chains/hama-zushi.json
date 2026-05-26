@@ -1,0 +1,283 @@
+{
+  "chain_id": "hama-zushi",
+  "chain_name": "はま寿司",
+  "source_url": "https://images.zensho.co.jp/materials/hama-sushi/allergen/allergen.pdf",
+  "fetched_at": "2026-05-26",
+  "items": [
+    {
+      "id": "sushi_ginzake",
+      "name": "三陸産大切り銀鮭",
+      "aliases": ["銀鮭", "サーモン"],
+      "category": "sushi",
+      "calories": 56,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "sushi_iwate_beef",
+      "name": "いわて牛五ツ星握り",
+      "aliases": ["牛握り", "ビーフ寿司"],
+      "category": "sushi",
+      "calories": 63,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "sushi_hotate",
+      "name": "北海道噴火湾産大粒ほたて",
+      "aliases": ["ほたて", "帆立"],
+      "category": "sushi",
+      "calories": 39,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "sushi_katsuo",
+      "name": "静岡県産大切り一本釣り七上かつお",
+      "aliases": ["かつお", "カツオ"],
+      "category": "sushi",
+      "calories": 86,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "sushi_ika_garlic",
+      "name": "アカイカ 岩塩ガーリックオニオン",
+      "aliases": ["イカ", "いか"],
+      "category": "sushi",
+      "calories": 77,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "sushi_aka_ebi",
+      "name": "天然赤えび（ぽん酢ジュレのせ）",
+      "aliases": ["赤えび", "あかえび"],
+      "category": "sushi",
+      "calories": 46,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "sushi_ika_ponzu",
+      "name": "いか（ぽん酢ジュレのせ）",
+      "aliases": ["いか", "烏賊"],
+      "category": "sushi",
+      "calories": 70,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "sushi_awabi",
+      "name": "あわび",
+      "aliases": ["鮑", "アワビ"],
+      "category": "sushi",
+      "calories": 30,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "sushi_zuwaigani",
+      "name": "生本ずわいがに",
+      "aliases": ["ずわいがに", "カニ"],
+      "category": "sushi",
+      "calories": 38,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "sushi_wagyu_inari",
+      "name": "和牛そぼろいなり",
+      "aliases": ["いなり", "稲荷"],
+      "category": "sushi",
+      "calories": 103,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "sushi_ebi_fry",
+      "name": "大えびフライ握り",
+      "aliases": ["えびフライ寿司"],
+      "category": "sushi",
+      "calories": 111,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "sushi_honmaguro",
+      "name": "地中海産本鮪頭肉",
+      "aliases": ["本鮪", "まぐろ"],
+      "category": "sushi",
+      "calories": 68,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "sushi_katsuo_gunkan",
+      "name": "かつお軍艦",
+      "aliases": ["かつお軍艦"],
+      "category": "sushi",
+      "calories": 76,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "sushi_otoro_gunkan",
+      "name": "大とろ軍艦",
+      "aliases": ["大とろ", "大トロ"],
+      "category": "sushi",
+      "calories": 123,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "sushi_beef_karubi",
+      "name": "大判黒毛和牛カルビ焼肉風握り",
+      "aliases": ["和牛カルビ"],
+      "category": "sushi",
+      "calories": 162,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "ramen_hokkaido_miso",
+      "name": "北海道味噌バターコーンラーメン",
+      "aliases": ["味噌バターラーメン"],
+      "category": "noodle",
+      "calories": 495,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "ramen_asari_shio",
+      "name": "あさりバター塩ラーメン",
+      "aliases": ["塩ラーメン", "あさりラーメン"],
+      "category": "noodle",
+      "calories": 354,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "ramen_tantanmen",
+      "name": "特製辛味噌担々麺",
+      "aliases": ["担々麺"],
+      "category": "noodle",
+      "calories": 506,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "ramen_tonkotsu_shoyu",
+      "name": "特製とんこつ醤油ラーメン",
+      "aliases": ["豚骨醤油ラーメン"],
+      "category": "noodle",
+      "calories": 383,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "side_kari_potato",
+      "name": "カリカリポテト（焦がしにんにく醤油味）",
+      "aliases": ["カリカリポテト", "フライドポテト"],
+      "category": "side",
+      "calories": 347,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "side_chawanmushi",
+      "name": "2種のチーズのカルボナーラ風茶碗蒸し",
+      "aliases": ["茶碗蒸し"],
+      "category": "side",
+      "calories": 162,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "side_croquette",
+      "name": "北海道十勝コーンコロッケ（2個）",
+      "aliases": ["コーンコロッケ"],
+      "category": "side",
+      "calories": 143,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "side_ebi_fry",
+      "name": "大えびフライ",
+      "aliases": ["えびフライ"],
+      "category": "side",
+      "calories": 242,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "ramen_miso_hokkaido",
+      "name": "濃厚北海道味噌ラーメン",
+      "aliases": ["北海道味噌ラーメン"],
+      "category": "noodle",
+      "calories": 408,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "sushi_ankimo",
+      "name": "あんきも軍艦",
+      "aliases": ["あんきも"],
+      "category": "sushi",
+      "calories": 126,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    }
+  ]
+}

@@ -1,0 +1,173 @@
+{
+  "chain_id": "komeda",
+  "chain_name": "コメダ珈琲",
+  "source_url": "https://www.komeda.co.jp/pdf/ichibutenpoyou.pdf",
+  "fetched_at": "2026-05-26",
+  "items": [
+    {
+      "id": "shironoir_regular",
+      "name": "シロノワール レギュラー",
+      "aliases": ["シロノワール"],
+      "category": "dessert",
+      "calories": 933,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "shironoir_mini",
+      "name": "シロノワール ミニ",
+      "aliases": ["シロノワールミニ"],
+      "category": "dessert",
+      "calories": 556,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "blend_coffee",
+      "name": "ブレンドコーヒー",
+      "aliases": ["コーヒー"],
+      "category": "drink",
+      "calories": 23,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "cafe_au_lait",
+      "name": "カフェオーレ",
+      "aliases": ["カフェオレ"],
+      "category": "drink",
+      "calories": 113,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "ice_coffee",
+      "name": "アイスコーヒー",
+      "aliases": ["アイスコーヒー"],
+      "category": "drink",
+      "calories": 23,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "morning_toast",
+      "name": "厚切りトースト",
+      "aliases": ["トースト", "モーニングトースト"],
+      "category": "morning",
+      "calories": 253,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "ogura_toast",
+      "name": "小倉あんトースト",
+      "aliases": ["小倉トースト"],
+      "category": "morning",
+      "calories": 388,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "mix_sandwich",
+      "name": "ミックストースト",
+      "aliases": ["ミックスサンド"],
+      "category": "food",
+      "calories": 388,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "katsu_sandwich",
+      "name": "カツサンド",
+      "aliases": ["カツサンドイッチ"],
+      "category": "food",
+      "calories": 617,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "hamburger",
+      "name": "コメダハンバーガー",
+      "aliases": ["バーガー"],
+      "category": "food",
+      "calories": 665,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "chicken_sandwich",
+      "name": "チキンバーガー",
+      "aliases": ["チキンサンド"],
+      "category": "food",
+      "calories": 522,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "yasai_salad",
+      "name": "野菜サラダ",
+      "aliases": ["サラダ"],
+      "category": "food",
+      "calories": 80,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "soft_ice",
+      "name": "ソフトクリーム",
+      "aliases": ["ソフトアイス"],
+      "category": "dessert",
+      "calories": 170,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "jelly_choco",
+      "name": "コーヒーゼリー",
+      "aliases": ["珈琲ゼリー"],
+      "category": "dessert",
+      "calories": 170,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    },
+    {
+      "id": "milk",
+      "name": "牛乳",
+      "aliases": ["ミルク"],
+      "category": "drink",
+      "calories": 126,
+      "protein_g": null,
+      "fat_g": null,
+      "carbs_g": null,
+      "salt_g": null
+    }
+  ]
+}
