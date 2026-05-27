@@ -518,13 +518,25 @@ function ExercisePicker({
       <div
         className="sheet"
         onClick={(e) => e.stopPropagation()}
-        style={{ maxHeight: "92vh" }}
+        style={{ maxHeight: "92dvh" }}
       >
         <div className="sheet-handle" />
-        <div style={{ padding: "8px 18px 20px", display: "flex", flexDirection: "column", gap: 12 }}>
-          <div style={{ fontSize: 16, fontWeight: 700 }}>種目を選ぶ</div>
+        <div
+          style={{
+            padding: "8px 18px 20px",
+            display: "flex",
+            flexDirection: "column",
+            gap: 12,
+            flex: 1,
+            minHeight: 0,
+            overflow: "hidden",
+          }}
+        >
+          <div style={{ fontSize: 16, fontWeight: 700, flexShrink: 0 }}>
+            種目を選ぶ
+          </div>
 
-          <div className="search-input">
+          <div className="search-input" style={{ flexShrink: 0 }}>
             <Icon name="search" className="ic-search" />
             <input
               className="input"
@@ -535,7 +547,7 @@ function ExercisePicker({
             />
           </div>
 
-          <div style={{ display: "flex", gap: 5, flexWrap: "wrap" }}>
+          <div style={{ display: "flex", gap: 5, flexWrap: "wrap", flexShrink: 0 }}>
             <button
               className={`tag ${part === "all" ? "selected" : ""}`}
               onClick={() => setPart("all")}
@@ -566,6 +578,7 @@ function ExercisePicker({
                 textAlign: "left",
                 fontFamily: "inherit",
                 color: "var(--ink)",
+                flexShrink: 0,
               }}
             >
               <div style={{ fontSize: 13, fontWeight: 600 }}>
@@ -583,8 +596,10 @@ function ExercisePicker({
               border: "1px solid var(--line)",
               borderRadius: 10,
               overflow: "hidden",
-              maxHeight: "55vh",
+              flex: 1,
+              minHeight: 80,
               overflowY: "auto",
+              WebkitOverflowScrolling: "touch",
             }}
           >
             {list.length === 0 ? (

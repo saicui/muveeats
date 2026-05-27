@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import type { Profile, BodyRecord } from "@/lib/types";
 import { Icon } from "@/app/icons";
+import { ThemePicker } from "@/app/theme";
 
 type Suggestion = {
   kcal: number;
@@ -420,6 +421,14 @@ export function SettingsClient({
           {saving ? "保存中…" : "保存する"}
         </button>
       </form>
+
+      <div className="section-title">表示</div>
+      <div style={{ marginBottom: 18 }}>
+        <ThemePicker />
+        <div style={{ fontSize: 11, color: "var(--muted)", marginTop: 6 }}>
+          システムを選ぶと OS のダークモード設定に追従します
+        </div>
+      </div>
 
       <div className="section-title">機能</div>
       <a

@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { Icon } from "@/app/icons";
 import { LoadingBar, Spinner } from "@/app/components/loading";
 import { TAG_CATEGORIES } from "@/lib/tags";
+import { inferAllTags, inferMacroTags } from "@/lib/auto-tags";
 import type { ChainItem, AnalysisResult } from "@/lib/types";
 
 type Mode = "search" | "photo" | "manual";
@@ -28,19 +29,6 @@ type SelectedItem = {
   aiSuggestedTags: string[];
 };
 
-const GENRE_LABELS = new Set([
-  "バーガー",
-  "牛丼・和食",
-  "カフェ",
-  "寿司",
-  "中華・ラーメン",
-  "ピザ",
-  "ファミレス",
-  "コンビニ",
-  "ファストフード",
-  "その他",
-]);
-
 export default function NewMealPage() {
   const router = useRouter();
   const [mode, setMode] = useState<Mode>("search");
@@ -52,6 +40,17 @@ export default function NewMealPage() {
 
   function pickChain(item: ChainItem) {
     const auto = [...item.chain_genre];
+    const inferred = inferAllTags({
+      nutrition: {
+        name: item.display_name,
+        calories: item.calories,
+        protein_g: item.protein_g,
+        fat_g: item.fat_g,
+        carbs_g: item.carbs_g,
+      },
+      source: "chain",
+      chainGenres: item.chain_genre,
+    });
     setSelected({
       source: "chain",
       name: item.display_name,
@@ -66,12 +65,28 @@ export default function NewMealPage() {
       ai_confidence: null,
       ai_note: null,
       autoGenreTags: auto,
-      aiSuggestedTags: ["外食", "チェーン店"],
+      aiSuggestedTags: inferred,
     });
-    setTags(new Set(["外食", "チェーン店", ...defaultTimingTag()]));
+    setTags(new Set(inferred));
   }
 
   function pickAnalysis(result: AnalysisResult) {
+    // Gemini が返したタグに加えて、PFC からも推測（補完）
+    const macroInferred = inferMacroTags({
+      calories: result.calories,
+      protein_g: result.protein_g,
+      fat_g: result.fat_g,
+      carbs_g: result.carbs_g,
+    });
+    const combined = [
+      ...(result.tags ?? []),
+      ...macroInferred,
+      ...inferAllTags({
+        nutrition: { name: result.name },
+        source: "photo",
+      }),
+    ];
+    const dedup = Array.from(new Set(combined));
     setSelected({
       source: "photo",
       name: result.name,
@@ -86,12 +101,16 @@ export default function NewMealPage() {
       ai_confidence: result.confidence,
       ai_note: result.notes ?? null,
       autoGenreTags: [],
-      aiSuggestedTags: result.tags ?? [],
+      aiSuggestedTags: dedup,
     });
-    setTags(new Set([...(result.tags ?? []), ...defaultTimingTag()]));
+    setTags(new Set(dedup));
   }
 
   function pickManual(p: ManualFields) {
+    const inferred = inferAllTags({
+      nutrition: p,
+      source: "manual",
+    });
     setSelected({
       source: "manual",
       name: p.name,
@@ -106,9 +125,9 @@ export default function NewMealPage() {
       ai_confidence: null,
       ai_note: null,
       autoGenreTags: [],
-      aiSuggestedTags: [],
+      aiSuggestedTags: inferred,
     });
-    setTags(new Set(defaultTimingTag()));
+    setTags(new Set(inferred));
   }
 
   async function save() {
@@ -921,13 +940,4 @@ function isoLocal(d: Date): string {
   const local = new Date(d);
   local.setMinutes(local.getMinutes() - d.getTimezoneOffset());
   return local.toISOString().slice(0, 16);
-}
-
-function defaultTimingTag(): string[] {
-  const h = new Date().getHours();
-  if (h < 10) return ["朝食"];
-  if (h < 14) return ["昼食"];
-  if (h < 17) return ["間食"];
-  if (h < 22) return ["夕食"];
-  return ["夜食"];
 }

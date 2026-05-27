@@ -4,6 +4,7 @@ import Link from "next/link";
 import "./globals.css";
 import { createClient } from "@/lib/supabase/server";
 import { Icon } from "./icons";
+import { THEME_BOOT_SCRIPT } from "./theme";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -39,6 +40,10 @@ export default async function RootLayout({
 
   return (
     <html lang="ja" data-theme="light" className={inter.variable}>
+      <head>
+        {/* FOUC 防止: 初回 paint 前にテーマを適用 */}
+        <script dangerouslySetInnerHTML={{ __html: THEME_BOOT_SCRIPT }} />
+      </head>
       <body>
         <div className="app-shell">
           {userEmail ? (

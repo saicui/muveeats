@@ -470,10 +470,15 @@ select.input {
   border-radius: 20px 20px 0 0;
   width: 100%;
   max-width: 480px;
-  max-height: 85vh;
-  overflow-y: auto;
+  max-height: 85dvh; /* dynamic viewport: iOS の URL バー / キーボードに追従 */
+  display: flex;
+  flex-direction: column;
   box-shadow: var(--shadow-modal);
   animation: sheet-in var(--dur-slow) var(--ease);
+}
+/* fallback for older browsers */
+@supports not (height: 85dvh) {
+  .sheet { max-height: 85vh; }
 }
 @keyframes sheet-in {
   from {
