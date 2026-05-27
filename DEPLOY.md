@@ -64,11 +64,11 @@ git push -u origin main
 | Name | 値 |
 |---|---|
 | `GEMINI_API_KEY` | Google AI Studio で取得した API キー |
-| `GEMINI_MODEL` | `gemini-3.1-flash-light`（推奨 / 2026-05-20 リリース）または `gemini-2.5-flash` |
+| `GEMINI_MODEL` | `gemini-3.1-flash-lite`（推奨 / 2026-05-20 リリース）または `gemini-2.5-flash` |
 | `NEXT_PUBLIC_SUPABASE_URL` | Supabase Dashboard → Settings → API |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | 同上 |
 
-> ℹ️ `gemini-3.1-flash-light` は 2026-05-20 リリースの新世代 Flash 軽量モデル。
+> ℹ️ `gemini-3.1-flash-lite` は 2026-05-20 リリースの新世代 Flash 軽量モデル。
 > 利用できないリージョン / プロジェクトでは `gemini-2.5-flash` にフォールバックしてください。
 
 4. **Deploy** をクリック

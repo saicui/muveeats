@@ -5,7 +5,7 @@ import { TAG_CATEGORIES } from "@/lib/tags";
 
 export const runtime = "nodejs";
 
-const MODEL = process.env.GEMINI_MODEL || "gemini-3.1-flash-light";
+const MODEL = process.env.GEMINI_MODEL || "gemini-3.1-flash-lite";
 
 const TAG_LABELS = TAG_CATEGORIES.filter((c) => c.id !== "genre")
   .flatMap((c) => c.tags.map((t) => t.label));

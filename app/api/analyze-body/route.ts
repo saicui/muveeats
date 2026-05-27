@@ -3,7 +3,7 @@ import { GoogleGenAI, Type } from "@google/genai";
 
 export const runtime = "nodejs";
 
-const MODEL = process.env.GEMINI_MODEL || "gemini-3.1-flash-light";
+const MODEL = process.env.GEMINI_MODEL || "gemini-3.1-flash-lite";
 
 const SYSTEM_PROMPT = `あなたは画像認識のアシスタントです。
 写真は体組成計（タニタ / オムロン / インボディなど）の表示画面です。
