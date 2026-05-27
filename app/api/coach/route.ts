@@ -3,7 +3,7 @@ import { GoogleGenAI, Type } from "@google/genai";
 
 export const runtime = "nodejs";
 
-const MODEL = process.env.GEMINI_MODEL || "gemini-2.5-flash";
+const MODEL = process.env.GEMINI_MODEL || "gemini-3.1-flash-light";
 
 const SYSTEM_PROMPT = `あなたはパーソナルトレーナー兼栄養士です。
 ユーザーの体組成・活動量・目標を踏まえて、1日の推奨カロリーとマクロ栄養素を提案してください。
