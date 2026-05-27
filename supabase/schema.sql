@@ -169,6 +169,60 @@ create policy "exercise_sets_owner_all" on public.exercise_sets
   for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
 
 -- ====================================================================
+-- meal_templates (固定分の食事テンプレート)
+-- 「毎日同じ朝食」などをワンタップで記録するための雛形。
+-- ====================================================================
+create table if not exists public.meal_templates (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references auth.users(id) on delete cascade,
+  label text not null,                  -- "毎朝のオートミール" など
+  default_time text,                    -- "08:00" 等 (HH:MM)。null なら自由
+
+  name text not null,
+  calories numeric,
+  protein_g numeric,
+  fat_g numeric,
+  carbs_g numeric,
+  chain_id text,
+  chain_name text,
+  item_id text,
+  size text,
+  tags text[] not null default '{}',
+
+  enabled boolean not null default true,
+  sort_order integer not null default 0,
+  created_at timestamptz not null default now()
+);
+
+create index if not exists meal_templates_user_idx
+  on public.meal_templates (user_id, sort_order);
+
+grant select, insert, update, delete on public.meal_templates to anon, authenticated;
+alter table public.meal_templates enable row level security;
+
+drop policy if exists "meal_templates_owner_all" on public.meal_templates;
+create policy "meal_templates_owner_all" on public.meal_templates
+  for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
+
+-- ====================================================================
+-- meal_template_skips (テンプレを当日スキップした記録)
+-- ====================================================================
+create table if not exists public.meal_template_skips (
+  user_id uuid not null references auth.users(id) on delete cascade,
+  template_id uuid not null references public.meal_templates(id) on delete cascade,
+  skip_date date not null,
+  created_at timestamptz not null default now(),
+  primary key (user_id, template_id, skip_date)
+);
+
+grant select, insert, update, delete on public.meal_template_skips to anon, authenticated;
+alter table public.meal_template_skips enable row level security;
+
+drop policy if exists "meal_template_skips_owner_all" on public.meal_template_skips;
+create policy "meal_template_skips_owner_all" on public.meal_template_skips
+  for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
+
+-- ====================================================================
 -- body_records (体組成)
 -- ====================================================================
 create table if not exists public.body_records (

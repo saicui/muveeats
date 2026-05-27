@@ -8,9 +8,12 @@ import {
   EXERCISES,
   BODY_PARTS,
   EQUIPMENT_LABELS,
-  findExercise,
+  searchExercises,
+  matchExerciseByName,
+  buildCustomExercise,
 } from "@/lib/exercises";
 import { estimateStrengthKcal } from "@/lib/met";
+import { LoadingBar, Spinner } from "@/app/components/loading";
 import type { Exercise } from "@/lib/types";
 
 type SetInput = {
@@ -31,43 +34,48 @@ export default function NewWorkoutPage() {
   const [blocks, setBlocks] = useState<EntryBlock[]>([]);
   const [showPicker, setShowPicker] = useState(false);
   const [bodyWeight, setBodyWeight] = useState<number | null>(null);
+  const [frequent, setFrequent] = useState<{ id: string; count: number }[]>([]);
   const startRef = useRef<number>(Date.now());
   const [, force] = useState(0);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // 経過時間を 1 秒ごとに更新
+  // 経過時間
   useEffect(() => {
     const t = setInterval(() => force((x) => x + 1), 1000);
     return () => clearInterval(t);
   }, []);
 
-  // 直近の体重を取得 (MET 推定用)
+  // 体重 + よく使う種目
   useEffect(() => {
     (async () => {
       const supabase = createClient();
-      const { data } = await supabase
-        .from("body_records")
-        .select("weight_kg")
-        .not("weight_kg", "is", null)
-        .order("recorded_at", { ascending: false })
-        .limit(1);
-      if (data && data[0]?.weight_kg) setBodyWeight(Number(data[0].weight_kg));
+      const [bodyRes, freqRes] = await Promise.all([
+        supabase
+          .from("body_records")
+          .select("weight_kg")
+          .not("weight_kg", "is", null)
+          .order("recorded_at", { ascending: false })
+          .limit(1),
+        fetch("/api/exercises/frequent").then((r) => r.json()).catch(() => ({ frequent: [] })),
+      ]);
+      if (bodyRes.data && bodyRes.data[0]?.weight_kg) {
+        setBodyWeight(Number(bodyRes.data[0].weight_kg));
+      }
+      if (freqRes?.frequent) setFrequent(freqRes.frequent);
     })();
   }, []);
 
   function addExercise(ex: Exercise) {
-    setBlocks((prev) => [
-      ...prev,
-      { exercise: ex, sets: [emptySet()] },
-    ]);
+    setBlocks((prev) => [...prev, { exercise: ex, sets: [emptySet()] }]);
     setShowPicker(false);
-    // 前回値を非同期で取得
-    void loadPrev(ex.id).then((prev) => {
-      setBlocks((cur) =>
-        cur.map((b) => (b.exercise.id === ex.id && !b.prev ? { ...b, prev } : b)),
-      );
-    });
+    if (!ex.custom) {
+      void loadPrev(ex.id).then((prev) => {
+        setBlocks((cur) =>
+          cur.map((b) => (b.exercise.id === ex.id && !b.prev ? { ...b, prev } : b)),
+        );
+      });
+    }
   }
 
   function updateSet(i: number, j: number, patch: Partial<SetInput>) {
@@ -79,13 +87,11 @@ export default function NewWorkoutPage() {
       ),
     );
   }
-
   function addSet(i: number) {
     setBlocks((prev) =>
       prev.map((b, ix) => (ix === i ? { ...b, sets: [...b.sets, emptySet()] } : b)),
     );
   }
-
   function removeBlock(i: number) {
     setBlocks((prev) => prev.filter((_, ix) => ix !== i));
   }
@@ -174,13 +180,16 @@ export default function NewWorkoutPage() {
   const elapsedSec = Math.floor(((Date.now() - startRef.current) / 1000) % 60);
 
   return (
-    <div>
+    <div style={{ paddingBottom: 120 }}>
+      <LoadingBar active={saving} />
+
       <div
         style={{
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
           marginBottom: 12,
+          gap: 12,
         }}
       >
         <input
@@ -188,7 +197,14 @@ export default function NewWorkoutPage() {
           placeholder="セッション名（例: 胸の日）"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          style={{ flex: 1, marginRight: 12, border: 0, padding: "6px 0", fontSize: 18, fontWeight: 700 }}
+          style={{
+            flex: 1,
+            border: 0,
+            padding: "6px 0",
+            fontSize: 18,
+            fontWeight: 700,
+            background: "transparent",
+          }}
         />
         <div
           style={{
@@ -198,6 +214,7 @@ export default function NewWorkoutPage() {
             color: "var(--move)",
             fontWeight: 600,
             fontSize: 14,
+            flexShrink: 0,
           }}
         >
           <Icon name="clock" size="sm" />
@@ -248,6 +265,7 @@ export default function NewWorkoutPage() {
           type="button"
           className="btn btn-block"
           onClick={() => router.back()}
+          disabled={saving}
         >
           中断
         </button>
@@ -257,7 +275,13 @@ export default function NewWorkoutPage() {
           disabled={saving}
           onClick={finish}
         >
-          {saving ? "保存中…" : "セッション完了"}
+          {saving ? (
+            <>
+              <Spinner /> 保存中…
+            </>
+          ) : (
+            "セッション完了"
+          )}
         </button>
       </div>
 
@@ -265,6 +289,7 @@ export default function NewWorkoutPage() {
         <ExercisePicker
           onPick={addExercise}
           onClose={() => setShowPicker(false)}
+          frequentIds={frequent.map((f) => f.id)}
         />
       )}
     </div>
@@ -320,7 +345,27 @@ function ExerciseBlock({
         }}
       >
         <div>
-          <div style={{ fontWeight: 600, fontSize: 14 }}>{block.exercise.name}</div>
+          <div style={{ fontWeight: 600, fontSize: 14 }}>
+            {block.exercise.name}
+            {block.exercise.custom && (
+              <span
+                style={{
+                  fontSize: 9,
+                  background: "var(--surface-2)",
+                  border: "1px solid var(--line)",
+                  borderRadius: 4,
+                  padding: "1px 5px",
+                  color: "var(--ink-2)",
+                  letterSpacing: "0.06em",
+                  textTransform: "uppercase",
+                  fontWeight: 600,
+                  marginLeft: 6,
+                }}
+              >
+                custom
+              </span>
+            )}
+          </div>
           <div style={{ fontSize: 11, color: "var(--muted)", marginTop: 2 }}>
             {block.prev?.weight_kg
               ? `前回 ${block.prev.weight_kg}kg × ${block.prev.reps ?? "?"}`
@@ -337,7 +382,9 @@ function ExerciseBlock({
         </button>
       </div>
 
-      <table style={{ width: "100%", borderCollapse: "collapse", fontVariantNumeric: "tabular-nums" }}>
+      <table
+        style={{ width: "100%", borderCollapse: "collapse", fontVariantNumeric: "tabular-nums" }}
+      >
         <thead>
           <tr>
             {["SET", "WEIGHT", "REP", "OK"].map((h, ix) => (
@@ -437,44 +484,58 @@ function ExerciseBlock({
 function ExercisePicker({
   onPick,
   onClose,
+  frequentIds,
 }: {
   onPick: (ex: Exercise) => void;
   onClose: () => void;
+  frequentIds: string[];
 }) {
   const [query, setQuery] = useState("");
   const [part, setPart] = useState<"all" | (typeof BODY_PARTS)[number]["id"]>(
     "all",
   );
 
-  const filtered = useMemo(() => {
-    const q = query.trim();
-    return EXERCISES.filter((ex) => {
-      if (part !== "all" && ex.body_part !== part) return false;
-      if (q && !ex.name.includes(q)) return false;
-      return true;
-    });
-  }, [query, part]);
+  // ソート: query が空のときは frequent 順 → 部位順
+  const list = useMemo(() => {
+    let arr = searchExercises(query);
+    if (part !== "all") arr = arr.filter((e) => e.body_part === part);
+    if (!query.trim() && frequentIds.length > 0) {
+      const rank = new Map(frequentIds.map((id, idx) => [id, idx]));
+      arr = [...arr].sort((a, b) => {
+        const ra = rank.has(a.id) ? rank.get(a.id)! : 999;
+        const rb = rank.has(b.id) ? rank.get(b.id)! : 999;
+        return ra - rb;
+      });
+    }
+    return arr;
+  }, [query, part, frequentIds]);
+
+  const exactMatch = useMemo(() => matchExerciseByName(query), [query]);
+  const showCustomCta = query.trim().length > 0 && !exactMatch;
 
   return (
     <div className="sheet-backdrop" onClick={onClose}>
-      <div className="sheet" onClick={(e) => e.stopPropagation()}>
+      <div
+        className="sheet"
+        onClick={(e) => e.stopPropagation()}
+        style={{ maxHeight: "92vh" }}
+      >
         <div className="sheet-handle" />
-        <div style={{ padding: "8px 18px 20px" }}>
-          <div style={{ fontSize: 16, fontWeight: 700, marginBottom: 12 }}>
-            種目を選ぶ
-          </div>
+        <div style={{ padding: "8px 18px 20px", display: "flex", flexDirection: "column", gap: 12 }}>
+          <div style={{ fontSize: 16, fontWeight: 700 }}>種目を選ぶ</div>
 
-          <div className="search-input" style={{ marginBottom: 12 }}>
+          <div className="search-input">
             <Icon name="search" className="ic-search" />
             <input
               className="input"
-              placeholder="種目名で検索"
+              placeholder="種目名 / エイリアスで検索"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
+              autoFocus
             />
           </div>
 
-          <div style={{ display: "flex", gap: 5, marginBottom: 12, flexWrap: "wrap" }}>
+          <div style={{ display: "flex", gap: 5, flexWrap: "wrap" }}>
             <button
               className={`tag ${part === "all" ? "selected" : ""}`}
               onClick={() => setPart("all")}
@@ -492,45 +553,114 @@ function ExercisePicker({
             ))}
           </div>
 
+          {showCustomCta && (
+            <button
+              type="button"
+              onClick={() => onPick(buildCustomExercise(query))}
+              style={{
+                padding: "12px 14px",
+                border: "2px dashed var(--ai)",
+                borderRadius: 10,
+                background: "var(--surface-2)",
+                cursor: "pointer",
+                textAlign: "left",
+                fontFamily: "inherit",
+                color: "var(--ink)",
+              }}
+            >
+              <div style={{ fontSize: 13, fontWeight: 600 }}>
+                「{query}」をカスタム種目として追加
+              </div>
+              <div style={{ fontSize: 11, color: "var(--muted)", marginTop: 2 }}>
+                MET は 4.0 で扱います（その他カテゴリ）
+              </div>
+            </button>
+          )}
+
           <div
             style={{
               background: "var(--surface)",
               border: "1px solid var(--line)",
               borderRadius: 10,
               overflow: "hidden",
-              maxHeight: "50vh",
+              maxHeight: "55vh",
               overflowY: "auto",
             }}
           >
-            {filtered.length === 0 && (
-              <div
-                style={{ padding: 20, textAlign: "center", color: "var(--muted)" }}
-              >
-                該当する種目がありません
+            {list.length === 0 ? (
+              <div style={{ padding: 20, textAlign: "center", color: "var(--muted)", fontSize: 13 }}>
+                該当する種目がありません。{" "}
+                {query.trim() && (
+                  <button
+                    type="button"
+                    onClick={() => onPick(buildCustomExercise(query))}
+                    style={{
+                      background: "transparent",
+                      border: 0,
+                      color: "var(--ink-2)",
+                      textDecoration: "underline",
+                      textUnderlineOffset: 3,
+                      cursor: "pointer",
+                      fontFamily: "inherit",
+                      fontSize: 13,
+                    }}
+                  >
+                    カスタム種目を作る
+                  </button>
+                )}
               </div>
+            ) : (
+              list.map((ex, idx) => {
+                const isFrequent =
+                  !query.trim() && frequentIds.includes(ex.id) && idx < 5;
+                return (
+                  <button
+                    key={ex.id}
+                    onClick={() => onPick(ex)}
+                    style={{
+                      width: "100%",
+                      padding: "12px 14px",
+                      border: 0,
+                      borderBottom: "1px solid var(--line-soft)",
+                      background: "transparent",
+                      color: "var(--ink)",
+                      cursor: "pointer",
+                      textAlign: "left",
+                      fontFamily: "inherit",
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      gap: 12,
+                    }}
+                  >
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{ fontWeight: 600, fontSize: 14 }}>{ex.name}</div>
+                      <div style={{ fontSize: 11, color: "var(--muted)", marginTop: 2 }}>
+                        {EQUIPMENT_LABELS[ex.equipment]} ·{" "}
+                        {BODY_PARTS.find((p) => p.id === ex.body_part)?.label}
+                      </div>
+                    </div>
+                    {isFrequent && (
+                      <span
+                        style={{
+                          fontSize: 9,
+                          padding: "2px 6px",
+                          background: "var(--surface-2)",
+                          border: "1px solid var(--line)",
+                          borderRadius: 4,
+                          color: "var(--ink-2)",
+                          letterSpacing: "0.06em",
+                          textTransform: "uppercase",
+                          fontWeight: 600,
+                        }}
+                      >
+                        よく使う
+                      </span>
+                    )}
+                  </button>
+                );
+              })
             )}
-            {filtered.map((ex) => (
-              <button
-                key={ex.id}
-                onClick={() => onPick(ex)}
-                style={{
-                  width: "100%",
-                  padding: "12px 14px",
-                  border: 0,
-                  borderBottom: "1px solid var(--line-soft)",
-                  background: "transparent",
-                  color: "var(--ink)",
-                  cursor: "pointer",
-                  textAlign: "left",
-                  fontFamily: "inherit",
-                }}
-              >
-                <div style={{ fontWeight: 600, fontSize: 14 }}>{ex.name}</div>
-                <div style={{ fontSize: 11, color: "var(--muted)", marginTop: 2 }}>
-                  {EQUIPMENT_LABELS[ex.equipment]}
-                </div>
-              </button>
-            ))}
           </div>
         </div>
       </div>

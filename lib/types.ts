@@ -128,9 +128,37 @@ export type Profile = {
   updated_at: string;
 };
 
+export type MealTemplate = {
+  id: string;
+  user_id: string;
+  label: string;
+  default_time: string | null;
+  name: string;
+  calories: number | null;
+  protein_g: number | null;
+  fat_g: number | null;
+  carbs_g: number | null;
+  chain_id: string | null;
+  chain_name: string | null;
+  item_id: string | null;
+  size: string | null;
+  tags: string[];
+  enabled: boolean;
+  sort_order: number;
+  created_at: string;
+};
+
+export type MealTemplateSkip = {
+  user_id: string;
+  template_id: string;
+  skip_date: string; // YYYY-MM-DD
+  created_at: string;
+};
+
 export type Exercise = {
   id: string;
   name: string;
+  aliases?: string[];
   body_part:
     | "chest"
     | "back"
@@ -141,4 +169,5 @@ export type Exercise = {
     | "other";
   equipment: "barbell" | "dumbbell" | "machine" | "cable" | "bodyweight" | "other";
   met: number; // 単発種目の代表 MET
+  custom?: boolean; // ユーザーが作ったカスタム種目
 };

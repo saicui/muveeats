@@ -198,7 +198,15 @@ body {
 .app-main {
   flex: 1;
   padding: 20px;
-  padding-bottom: 88px;
+  padding-bottom: calc(120px + env(safe-area-inset-bottom));
+  scroll-padding-bottom: 200px;
+}
+
+/* キーボード表示時にボトムナビを画面外へ退避 (iOS Safari)
+   any input/textarea focus 内では :has() でナビを動かす */
+.app-shell:has(input:focus, textarea:focus, select:focus) .bottom-nav {
+  transform: translateX(-50%) translateY(110%);
+  transition: transform var(--dur-base) var(--ease);
 }
 
 .bottom-nav {
@@ -213,6 +221,7 @@ body {
   background: var(--surface);
   padding: 6px 0 calc(8px + env(safe-area-inset-bottom));
   z-index: var(--z-nav);
+  transition: transform var(--dur-base) var(--ease);
 }
 .bottom-nav a {
   flex: 1;

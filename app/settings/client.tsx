@@ -421,6 +421,23 @@ export function SettingsClient({
         </button>
       </form>
 
+      <div className="section-title">機能</div>
+      <a
+        href="/templates"
+        className="btn btn-block"
+        style={{
+          justifyContent: "space-between",
+          marginBottom: 12,
+          textDecoration: "none",
+        }}
+      >
+        <span style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
+          <Icon name="edit" size="sm" />
+          食事テンプレを管理
+        </span>
+        <Icon name="chevron-right" size="sm" />
+      </a>
+
       <form action="/auth/signout" method="post">
         <button type="submit" className="btn btn-block btn-danger">
           サインアウト

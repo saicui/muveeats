@@ -3,15 +3,22 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import { Icon } from "@/app/icons";
+import { LoadingBar, Spinner } from "@/app/components/loading";
+
+type Mode = "manual" | "photo";
 
 export default function NewBodyRecordPage() {
   const router = useRouter();
+  const [mode, setMode] = useState<Mode>("manual");
   const [recordedAt, setRecordedAt] = useState(() => isoLocal(new Date()));
   const [weight, setWeight] = useState("");
   const [bodyFat, setBodyFat] = useState("");
   const [muscle, setMuscle] = useState("");
   const [visceral, setVisceral] = useState("");
   const [bmr, setBmr] = useState("");
+  const [aiConfidence, setAiConfidence] = useState<number | null>(null);
+  const [aiNote, setAiNote] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -48,108 +55,325 @@ export default function NewBodyRecordPage() {
 
   return (
     <div>
+      <LoadingBar active={saving} />
       <h1 className="page-title">体組成を記録</h1>
-      <p className="page-subtitle">計測した数値を手動で入力</p>
+      <p className="page-subtitle">
+        写真から自動入力 or 数値を直接入力
+      </p>
 
-      <form onSubmit={save}>
-        <div
-          style={{
-            background: "var(--surface)",
-            border: "1px solid var(--line)",
-            borderRadius: 12,
-            overflow: "hidden",
-            marginBottom: 16,
+      <div
+        style={{
+          display: "flex",
+          gap: 4,
+          padding: 3,
+          background: "var(--surface-2)",
+          border: "1px solid var(--line)",
+          borderRadius: 10,
+          marginBottom: 18,
+        }}
+      >
+        <ModeTab active={mode === "photo"} onClick={() => setMode("photo")} icon="camera" label="写真" />
+        <ModeTab active={mode === "manual"} onClick={() => setMode("manual")} icon="edit" label="手動" />
+      </div>
+
+      {mode === "photo" && (
+        <PhotoMode
+          onResult={(r) => {
+            if (r.weight_kg != null) setWeight(String(r.weight_kg));
+            if (r.body_fat_pct != null) setBodyFat(String(r.body_fat_pct));
+            if (r.muscle_kg != null) setMuscle(String(r.muscle_kg));
+            if (r.visceral_fat != null) setVisceral(String(r.visceral_fat));
+            if (r.bmr_kcal != null) setBmr(String(r.bmr_kcal));
+            setAiConfidence(r.confidence);
+            setAiNote(r.note ?? null);
+            setMode("manual");
           }}
-        >
-          <Field label="計測日時">
-            <input
-              className="input"
-              type="datetime-local"
-              value={recordedAt}
-              onChange={(e) => setRecordedAt(e.target.value)}
-              style={{ border: 0, padding: "8px 12px" }}
-            />
-          </Field>
-          <Field label="体重" unit="kg">
-            <input
-              className="input"
-              type="number"
-              step="0.1"
-              inputMode="decimal"
-              value={weight}
-              onChange={(e) => setWeight(e.target.value)}
-              style={{ border: 0, padding: "8px 12px", textAlign: "right" }}
-            />
-          </Field>
-          <Field label="体脂肪率" unit="%">
-            <input
-              className="input"
-              type="number"
-              step="0.1"
-              inputMode="decimal"
-              value={bodyFat}
-              onChange={(e) => setBodyFat(e.target.value)}
-              style={{ border: 0, padding: "8px 12px", textAlign: "right" }}
-            />
-          </Field>
-          <Field label="筋肉量" unit="kg">
-            <input
-              className="input"
-              type="number"
-              step="0.1"
-              inputMode="decimal"
-              value={muscle}
-              onChange={(e) => setMuscle(e.target.value)}
-              style={{ border: 0, padding: "8px 12px", textAlign: "right" }}
-            />
-          </Field>
-          <Field label="内臓脂肪レベル" unit="">
-            <input
-              className="input"
-              type="number"
-              step="0.1"
-              inputMode="decimal"
-              value={visceral}
-              onChange={(e) => setVisceral(e.target.value)}
-              style={{ border: 0, padding: "8px 12px", textAlign: "right" }}
-            />
-          </Field>
-          <Field label="基礎代謝" unit="kcal">
-            <input
-              className="input"
-              type="number"
-              inputMode="numeric"
-              value={bmr}
-              onChange={(e) => setBmr(e.target.value)}
-              style={{ border: 0, padding: "8px 12px", textAlign: "right" }}
-            />
-          </Field>
-        </div>
+        />
+      )}
 
-        {error && (
+      {mode === "manual" && (
+        <form onSubmit={save}>
+          {aiConfidence != null && (
+            <div
+              style={{
+                background: "var(--surface-2)",
+                borderLeft: "3px solid var(--ai)",
+                padding: "8px 10px",
+                fontSize: 12,
+                color: "var(--ink-2)",
+                borderRadius: "0 6px 6px 0",
+                marginBottom: 12,
+              }}
+            >
+              写真から読み取り (自信度{" "}
+              {Math.round(aiConfidence * 100)}%) 値を確認・修正してから保存してください。
+              {aiNote && <div style={{ marginTop: 4 }}>{aiNote}</div>}
+            </div>
+          )}
+
           <div
             style={{
-              padding: "10px 12px",
-              border: "1px solid var(--danger)",
-              color: "var(--danger)",
-              borderRadius: 8,
-              fontSize: 12,
-              marginBottom: 12,
+              background: "var(--surface)",
+              border: "1px solid var(--line)",
+              borderRadius: 12,
+              overflow: "hidden",
+              marginBottom: 16,
             }}
           >
-            {error}
+            <Field label="計測日時">
+              <input
+                className="input"
+                type="datetime-local"
+                value={recordedAt}
+                onChange={(e) => setRecordedAt(e.target.value)}
+                style={{ border: 0, padding: "8px 12px" }}
+              />
+            </Field>
+            <Field label="体重" unit="kg">
+              <input
+                className="input"
+                type="number"
+                step="0.1"
+                inputMode="decimal"
+                value={weight}
+                onChange={(e) => setWeight(e.target.value)}
+                style={{ border: 0, padding: "8px 12px", textAlign: "right" }}
+              />
+            </Field>
+            <Field label="体脂肪率" unit="%">
+              <input
+                className="input"
+                type="number"
+                step="0.1"
+                inputMode="decimal"
+                value={bodyFat}
+                onChange={(e) => setBodyFat(e.target.value)}
+                style={{ border: 0, padding: "8px 12px", textAlign: "right" }}
+              />
+            </Field>
+            <Field label="筋肉量" unit="kg">
+              <input
+                className="input"
+                type="number"
+                step="0.1"
+                inputMode="decimal"
+                value={muscle}
+                onChange={(e) => setMuscle(e.target.value)}
+                style={{ border: 0, padding: "8px 12px", textAlign: "right" }}
+              />
+            </Field>
+            <Field label="内臓脂肪レベル" unit="">
+              <input
+                className="input"
+                type="number"
+                step="0.1"
+                inputMode="decimal"
+                value={visceral}
+                onChange={(e) => setVisceral(e.target.value)}
+                style={{ border: 0, padding: "8px 12px", textAlign: "right" }}
+              />
+            </Field>
+            <Field label="基礎代謝" unit="kcal">
+              <input
+                className="input"
+                type="number"
+                inputMode="numeric"
+                value={bmr}
+                onChange={(e) => setBmr(e.target.value)}
+                style={{ border: 0, padding: "8px 12px", textAlign: "right" }}
+              />
+            </Field>
           </div>
-        )}
 
-        <button
-          type="submit"
-          className="btn btn-primary btn-block"
-          disabled={saving}
-          style={{ padding: 12 }}
+          {error && (
+            <div
+              style={{
+                padding: "10px 12px",
+                border: "1px solid var(--danger)",
+                color: "var(--danger)",
+                borderRadius: 8,
+                fontSize: 12,
+                marginBottom: 12,
+              }}
+            >
+              {error}
+            </div>
+          )}
+
+          <button
+            type="submit"
+            className="btn btn-primary btn-block"
+            disabled={saving}
+            style={{ padding: 12 }}
+          >
+            {saving ? (
+              <>
+                <Spinner /> 保存中…
+              </>
+            ) : (
+              "記録する"
+            )}
+          </button>
+        </form>
+      )}
+    </div>
+  );
+}
+
+function ModeTab({
+  active,
+  onClick,
+  icon,
+  label,
+}: {
+  active: boolean;
+  onClick: () => void;
+  icon: "camera" | "edit";
+  label: string;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className="btn btn-ghost"
+      style={{
+        flex: 1,
+        justifyContent: "center",
+        background: active ? "var(--surface)" : "transparent",
+        color: active ? "var(--ink)" : "var(--muted)",
+        fontWeight: active ? 600 : 500,
+        boxShadow: active ? "0 1px 2px rgba(0,0,0,0.04)" : "none",
+        padding: "8px 12px",
+        fontSize: 12,
+      }}
+    >
+      <Icon name={icon} size="sm" />
+      {label}
+    </button>
+  );
+}
+
+type AnalyzeResult = {
+  weight_kg: number | null;
+  body_fat_pct: number | null;
+  muscle_kg: number | null;
+  visceral_fat: number | null;
+  bmr_kcal: number | null;
+  confidence: number;
+  note?: string | null;
+};
+
+function PhotoMode({ onResult }: { onResult: (r: AnalyzeResult) => void }) {
+  const [file, setFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [analyzing, setAnalyzing] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  function pickFile(f: File | null) {
+    setFile(f);
+    setError(null);
+    if (previewUrl) URL.revokeObjectURL(previewUrl);
+    setPreviewUrl(f ? URL.createObjectURL(f) : null);
+  }
+
+  async function analyze() {
+    if (!file) return;
+    setAnalyzing(true);
+    setError(null);
+    try {
+      const fd = new FormData();
+      fd.append("image", file);
+      const res = await fetch("/api/analyze-body", { method: "POST", body: fd });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.error || "解析に失敗しました");
+      onResult(json);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : String(e));
+    } finally {
+      setAnalyzing(false);
+    }
+  }
+
+  return (
+    <div>
+      <LoadingBar active={analyzing} />
+      <div className="section-title">体組成計の表示画面</div>
+      <label
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: 8,
+          padding: previewUrl ? 8 : 32,
+          border: "2px dashed var(--line)",
+          background: "var(--surface)",
+          borderRadius: 12,
+          cursor: "pointer",
+          marginBottom: 12,
+          minHeight: 200,
+        }}
+      >
+        <input
+          type="file"
+          accept="image/*"
+          capture="environment"
+          style={{ display: "none" }}
+          onChange={(e) => pickFile(e.target.files?.[0] ?? null)}
+        />
+        {previewUrl ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={previewUrl}
+            alt="プレビュー"
+            style={{
+              maxHeight: 280,
+              borderRadius: 8,
+              objectFit: "contain",
+            }}
+          />
+        ) : (
+          <>
+            <Icon name="camera" size="lg" />
+            <div style={{ fontSize: 13, color: "var(--muted)" }}>
+              タップして撮影 / 選択
+            </div>
+            <div style={{ fontSize: 11, color: "var(--muted)", textAlign: "center", maxWidth: 280 }}>
+              タニタ・オムロン・インボディなど。表示画面が明るく写っている方が精度が上がります
+            </div>
+          </>
+        )}
+      </label>
+
+      <button
+        type="button"
+        className="btn btn-primary btn-block"
+        onClick={analyze}
+        disabled={!file || analyzing}
+      >
+        {analyzing ? (
+          <>
+            <Spinner /> 解析中…
+          </>
+        ) : (
+          "数値を読み取る"
+        )}
+      </button>
+
+      {error && (
+        <div
+          style={{
+            marginTop: 12,
+            padding: "10px 12px",
+            border: "1px solid var(--danger)",
+            color: "var(--danger)",
+            borderRadius: 8,
+            fontSize: 12,
+          }}
         >
-          {saving ? "保存中…" : "記録する"}
-        </button>
-      </form>
+          {error}
+        </div>
+      )}
     </div>
   );
 }

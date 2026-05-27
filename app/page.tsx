@@ -1,7 +1,14 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { Icon } from "./icons";
-import type { Meal, Workout, BodyRecord, Profile } from "@/lib/types";
+import type {
+  Meal,
+  Workout,
+  BodyRecord,
+  Profile,
+  MealTemplate,
+} from "@/lib/types";
+import { TemplateQuickPick } from "./templates-quick";
 
 function sumNum(arr: (number | null)[]): number {
   return arr.reduce<number>((acc, v) => acc + (Number(v) || 0), 0);
@@ -18,13 +25,19 @@ export default async function DashboardPage() {
   let body: BodyRecord | null = null;
   let bodyWeekAgo: BodyRecord | null = null;
   let profile: Profile | null = null;
+  let templates: MealTemplate[] = [];
+  let todaySkipIds = new Set<string>();
+  let loggedTemplateIds = new Set<string>();
   let connError: string | null = null;
 
   try {
     const supabase = await createClient();
     const since = new Date();
     since.setDate(since.getDate() - 14);
-    const [r1, r2, r3, r4] = await Promise.all([
+    const todayStart = new Date();
+    todayStart.setHours(0, 0, 0, 0);
+    const todayISO = todayStart.toISOString().slice(0, 10);
+    const [r1, r2, r3, r4, r5, r6] = await Promise.all([
       supabase
         .from("meals")
         .select("*")
@@ -43,6 +56,15 @@ export default async function DashboardPage() {
         .order("recorded_at", { ascending: false })
         .limit(20),
       supabase.from("profiles").select("*").maybeSingle(),
+      supabase
+        .from("meal_templates")
+        .select("*")
+        .eq("enabled", true)
+        .order("sort_order"),
+      supabase
+        .from("meal_template_skips")
+        .select("template_id")
+        .eq("skip_date", todayISO),
     ]);
     if (r1.error) throw r1.error;
     if (r2.error) throw r2.error;
@@ -59,6 +81,20 @@ export default async function DashboardPage() {
         ) ?? null;
     }
     profile = (r4.data ?? null) as Profile | null;
+    if (!r5.error) templates = (r5.data ?? []) as MealTemplate[];
+    if (!r6.error)
+      todaySkipIds = new Set(
+        (r6.data ?? []).map((row: { template_id: string }) => row.template_id),
+      );
+    // 今日すでにテンプレと同じ名前で記録された分も「済」扱いに
+    const todayNames = new Set(
+      meals
+        .filter((m) => new Date(m.eaten_at) >= todayStart)
+        .map((m) => m.name),
+    );
+    loggedTemplateIds = new Set(
+      templates.filter((t) => todayNames.has(t.name)).map((t) => t.id),
+    );
   } catch (e) {
     connError = e instanceof Error ? e.message : JSON.stringify(e);
   }
@@ -206,7 +242,7 @@ export default async function DashboardPage() {
           display: "grid",
           gridTemplateColumns: "repeat(4, 1fr)",
           gap: 8,
-          marginBottom: 22,
+          marginBottom: 16,
         }}
       >
         <QuickAction href="/meals/new" icon="fork" label="食事" />
@@ -214,6 +250,51 @@ export default async function DashboardPage() {
         <QuickAction href="/cardio/new" icon="run" label="有酸素" />
         <QuickAction href="/body/new" icon="scale" label="体組成" />
       </div>
+
+      {/* Templates */}
+      {templates.length > 0 && (
+        <>
+          <div className="section-title">
+            <span>食事テンプレ</span>
+            <Link href="/templates" className="aux" style={{ color: "var(--ink-2)" }}>
+              管理
+            </Link>
+          </div>
+          <TemplateQuickPick
+            templates={templates}
+            initialSkipIds={Array.from(todaySkipIds)}
+            initialLoggedIds={Array.from(loggedTemplateIds)}
+          />
+        </>
+      )}
+      {templates.length === 0 && (
+        <div
+          style={{
+            background: "var(--surface)",
+            border: "1px dashed var(--line)",
+            borderRadius: 10,
+            padding: "14px 16px",
+            marginBottom: 22,
+            fontSize: 12,
+            color: "var(--muted)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: 12,
+          }}
+        >
+          <div>
+            毎日同じ朝食などをテンプレ化するとワンタップで記録できます
+          </div>
+          <Link
+            href="/templates"
+            className="btn"
+            style={{ padding: "6px 10px", fontSize: 12, flexShrink: 0 }}
+          >
+            設定
+          </Link>
+        </div>
+      )}
 
       {/* Recent meals + workouts */}
       <div className="section-title">

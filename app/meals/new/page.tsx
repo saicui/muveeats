@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { Icon } from "@/app/icons";
+import { LoadingBar, Spinner } from "@/app/components/loading";
 import { TAG_CATEGORIES } from "@/lib/tags";
 import type { ChainItem, AnalysisResult } from "@/lib/types";
 
@@ -150,27 +151,31 @@ export default function NewMealPage() {
 
   if (selected) {
     return (
-      <ConfirmStep
-        selected={selected}
-        tags={tags}
-        toggleTag={(label) => {
-          const next = new Set(tags);
-          if (next.has(label)) next.delete(label);
-          else next.add(label);
-          setTags(next);
-        }}
-        eatenAt={eatenAt}
-        setEatenAt={setEatenAt}
-        onBack={() => setSelected(null)}
-        onSave={save}
-        saving={saving}
-        error={error}
-      />
+      <>
+        <LoadingBar active={saving} />
+        <ConfirmStep
+          selected={selected}
+          tags={tags}
+          toggleTag={(label) => {
+            const next = new Set(tags);
+            if (next.has(label)) next.delete(label);
+            else next.add(label);
+            setTags(next);
+          }}
+          eatenAt={eatenAt}
+          setEatenAt={setEatenAt}
+          onBack={() => setSelected(null)}
+          onSave={save}
+          saving={saving}
+          error={error}
+        />
+      </>
     );
   }
 
   return (
     <div>
+      <LoadingBar active={false} />
       <h1 className="page-title">食事を記録</h1>
       <p className="page-subtitle">チェーン店検索 / 写真解析 / 手動入力</p>
 
@@ -851,7 +856,13 @@ function ConfirmStep({
         disabled={saving}
         onClick={onSave}
       >
-        {saving ? "保存中…" : "記録する"}
+        {saving ? (
+          <>
+            <Spinner /> 保存中…
+          </>
+        ) : (
+          "記録する"
+        )}
       </button>
     </div>
   );
