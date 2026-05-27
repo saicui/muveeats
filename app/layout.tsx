@@ -93,9 +93,13 @@ function BottomNav() {
         <Icon name="fork" />
         食事
       </Link>
-      <Link href="/analyze">
-        <Icon name="camera" />
-        解析
+      <Link href="/workouts">
+        <Icon name="dumbbell" />
+        運動
+      </Link>
+      <Link href="/body">
+        <Icon name="scale" />
+        体組成
       </Link>
       <Link href="/history">
         <Icon name="book" />

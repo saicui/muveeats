@@ -108,3 +108,88 @@ drop trigger if exists on_auth_user_created on auth.users;
 create trigger on_auth_user_created
   after insert on auth.users
   for each row execute function public.handle_new_user();
+
+-- ====================================================================
+-- workouts (筋トレ + 有酸素のセッション共通テーブル)
+-- ====================================================================
+create table if not exists public.workouts (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references auth.users(id) on delete cascade,
+  started_at timestamptz not null default now(),
+  ended_at timestamptz,
+  duration_min integer,             -- 終了時に算出 or 手入力
+  kind text not null,               -- 'strength' | 'cardio'
+  title text,                       -- 'チェスト' / '朝ラン' など任意
+  -- cardio 固有
+  cardio_type text,                 -- 'run' | 'walk' | 'bike' | 'other'
+  distance_km numeric,
+  avg_hr integer,
+  intensity text,                   -- 'low' | 'mid' | 'high'
+  -- 集計
+  est_kcal numeric,                 -- MET 法での推定値
+  note text,
+  created_at timestamptz not null default now()
+);
+
+create index if not exists workouts_user_started_idx
+  on public.workouts (user_id, started_at desc);
+
+grant select, insert, update, delete on public.workouts to anon, authenticated;
+alter table public.workouts enable row level security;
+
+drop policy if exists "workouts_owner_all" on public.workouts;
+create policy "workouts_owner_all" on public.workouts
+  for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
+
+-- ====================================================================
+-- exercise_sets (筋トレの個別セット)
+-- ====================================================================
+create table if not exists public.exercise_sets (
+  id uuid primary key default gen_random_uuid(),
+  workout_id uuid not null references public.workouts(id) on delete cascade,
+  user_id uuid not null references auth.users(id) on delete cascade,
+  exercise_id text not null,        -- data/exercises.json の id
+  exercise_name text not null,
+  set_index integer not null,       -- そのセッション内での順序 (1..n)
+  weight_kg numeric,
+  reps integer,
+  recorded_at timestamptz not null default now()
+);
+
+create index if not exists exercise_sets_workout_idx
+  on public.exercise_sets (workout_id, set_index);
+create index if not exists exercise_sets_user_ex_idx
+  on public.exercise_sets (user_id, exercise_id, recorded_at desc);
+
+grant select, insert, update, delete on public.exercise_sets to anon, authenticated;
+alter table public.exercise_sets enable row level security;
+
+drop policy if exists "exercise_sets_owner_all" on public.exercise_sets;
+create policy "exercise_sets_owner_all" on public.exercise_sets
+  for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
+
+-- ====================================================================
+-- body_records (体組成)
+-- ====================================================================
+create table if not exists public.body_records (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references auth.users(id) on delete cascade,
+  recorded_at timestamptz not null default now(),
+  weight_kg numeric,
+  body_fat_pct numeric,
+  muscle_kg numeric,
+  visceral_fat numeric,
+  bmr_kcal integer,
+  note text,
+  created_at timestamptz not null default now()
+);
+
+create index if not exists body_records_user_recorded_idx
+  on public.body_records (user_id, recorded_at desc);
+
+grant select, insert, update, delete on public.body_records to anon, authenticated;
+alter table public.body_records enable row level security;
+
+drop policy if exists "body_records_owner_all" on public.body_records;
+create policy "body_records_owner_all" on public.body_records
+  for all using (auth.uid() = user_id) with check (auth.uid() = user_id);

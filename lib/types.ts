@@ -65,3 +65,80 @@ export type AnalysisResult = {
   notes?: string;
   tags?: string[];
 };
+
+export type WorkoutKind = "strength" | "cardio";
+export type CardioType = "run" | "walk" | "bike" | "other";
+export type Intensity = "low" | "mid" | "high";
+
+export type Workout = {
+  id: string;
+  user_id: string;
+  started_at: string;
+  ended_at: string | null;
+  duration_min: number | null;
+  kind: WorkoutKind;
+  title: string | null;
+  cardio_type: CardioType | null;
+  distance_km: number | null;
+  avg_hr: number | null;
+  intensity: Intensity | null;
+  est_kcal: number | null;
+  note: string | null;
+  created_at: string;
+};
+
+export type ExerciseSet = {
+  id: string;
+  workout_id: string;
+  user_id: string;
+  exercise_id: string;
+  exercise_name: string;
+  set_index: number;
+  weight_kg: number | null;
+  reps: number | null;
+  recorded_at: string;
+};
+
+export type BodyRecord = {
+  id: string;
+  user_id: string;
+  recorded_at: string;
+  weight_kg: number | null;
+  body_fat_pct: number | null;
+  muscle_kg: number | null;
+  visceral_fat: number | null;
+  bmr_kcal: number | null;
+  note: string | null;
+  created_at: string;
+};
+
+export type Profile = {
+  user_id: string;
+  display_name: string | null;
+  sex: "male" | "female" | "other" | null;
+  age: number | null;
+  height_cm: number | null;
+  activity_level: "low" | "mid" | "high" | null;
+  goal: "cut" | "maintain" | "bulk" | null;
+  target_kcal: number | null;
+  target_protein_g: number | null;
+  target_fat_g: number | null;
+  target_carbs_g: number | null;
+  theme: string | null;
+  updated_at: string;
+};
+
+export type Exercise = {
+  id: string;
+  name: string;
+  body_part:
+    | "chest"
+    | "back"
+    | "legs"
+    | "shoulders"
+    | "arms"
+    | "core"
+    | "other";
+  equipment: "barbell" | "dumbbell" | "machine" | "cable" | "bodyweight" | "other";
+  met: number; // 単発種目の代表 MET
+};

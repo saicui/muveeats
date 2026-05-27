@@ -1,0 +1,41 @@
+{
+  "description": "MuveEats 筋トレ種目マスタ。met は Compendium of Physical Activities 等から代表値を取った参考値。消費 kcal の概算用。",
+  "items": [
+    { "id": "bench_press", "name": "ベンチプレス", "body_part": "chest", "equipment": "barbell", "met": 5.0 },
+    { "id": "incline_bench_press", "name": "インクラインベンチプレス", "body_part": "chest", "equipment": "barbell", "met": 5.0 },
+    { "id": "dumbbell_bench_press", "name": "ダンベルベンチプレス", "body_part": "chest", "equipment": "dumbbell", "met": 4.5 },
+    { "id": "incline_dumbbell_press", "name": "インクラインダンベルプレス", "body_part": "chest", "equipment": "dumbbell", "met": 4.5 },
+    { "id": "cable_fly", "name": "ケーブルフライ", "body_part": "chest", "equipment": "cable", "met": 4.0 },
+    { "id": "push_up", "name": "プッシュアップ", "body_part": "chest", "equipment": "bodyweight", "met": 3.8 },
+
+    { "id": "deadlift", "name": "デッドリフト", "body_part": "back", "equipment": "barbell", "met": 6.0 },
+    { "id": "pull_up", "name": "懸垂", "body_part": "back", "equipment": "bodyweight", "met": 5.0 },
+    { "id": "lat_pulldown", "name": "ラットプルダウン", "body_part": "back", "equipment": "cable", "met": 4.0 },
+    { "id": "bent_over_row", "name": "ベントオーバーロウ", "body_part": "back", "equipment": "barbell", "met": 5.0 },
+    { "id": "seated_row", "name": "シーテッドロウ", "body_part": "back", "equipment": "cable", "met": 4.0 },
+
+    { "id": "squat", "name": "スクワット", "body_part": "legs", "equipment": "barbell", "met": 5.5 },
+    { "id": "front_squat", "name": "フロントスクワット", "body_part": "legs", "equipment": "barbell", "met": 5.5 },
+    { "id": "leg_press", "name": "レッグプレス", "body_part": "legs", "equipment": "machine", "met": 4.5 },
+    { "id": "leg_extension", "name": "レッグエクステンション", "body_part": "legs", "equipment": "machine", "met": 4.0 },
+    { "id": "leg_curl", "name": "レッグカール", "body_part": "legs", "equipment": "machine", "met": 4.0 },
+    { "id": "lunge", "name": "ランジ", "body_part": "legs", "equipment": "bodyweight", "met": 4.5 },
+    { "id": "rdl", "name": "ルーマニアンデッドリフト", "body_part": "legs", "equipment": "barbell", "met": 5.5 },
+
+    { "id": "overhead_press", "name": "オーバーヘッドプレス", "body_part": "shoulders", "equipment": "barbell", "met": 5.0 },
+    { "id": "dumbbell_shoulder_press", "name": "ダンベルショルダープレス", "body_part": "shoulders", "equipment": "dumbbell", "met": 4.5 },
+    { "id": "side_raise", "name": "サイドレイズ", "body_part": "shoulders", "equipment": "dumbbell", "met": 3.5 },
+    { "id": "rear_delt_fly", "name": "リアデルトフライ", "body_part": "shoulders", "equipment": "dumbbell", "met": 3.5 },
+
+    { "id": "barbell_curl", "name": "バーベルカール", "body_part": "arms", "equipment": "barbell", "met": 4.0 },
+    { "id": "dumbbell_curl", "name": "ダンベルカール", "body_part": "arms", "equipment": "dumbbell", "met": 3.5 },
+    { "id": "triceps_extension", "name": "トライセプスエクステンション", "body_part": "arms", "equipment": "dumbbell", "met": 3.5 },
+    { "id": "triceps_pushdown", "name": "トライセプスプッシュダウン", "body_part": "arms", "equipment": "cable", "met": 3.5 },
+    { "id": "dip", "name": "ディップス", "body_part": "arms", "equipment": "bodyweight", "met": 5.0 },
+
+    { "id": "plank", "name": "プランク", "body_part": "core", "equipment": "bodyweight", "met": 3.0 },
+    { "id": "crunch", "name": "クランチ", "body_part": "core", "equipment": "bodyweight", "met": 3.5 },
+    { "id": "leg_raise", "name": "レッグレイズ", "body_part": "core", "equipment": "bodyweight", "met": 3.5 },
+    { "id": "ab_wheel", "name": "アブローラー", "body_part": "core", "equipment": "other", "met": 4.0 }
+  ]
+}

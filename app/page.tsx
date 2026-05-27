@@ -1,10 +1,10 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { Icon } from "./icons";
-import type { Meal } from "@/lib/types";
+import type { Meal, Workout, BodyRecord, Profile } from "@/lib/types";
 
-function sum(meals: Meal[], key: keyof Meal): number {
-  return meals.reduce((acc, m) => acc + (Number(m[key]) || 0), 0);
+function sumNum(arr: (number | null)[]): number {
+  return arr.reduce<number>((acc, v) => acc + (Number(v) || 0), 0);
 }
 function startOfDay(d: Date) {
   const x = new Date(d);
@@ -14,37 +14,79 @@ function startOfDay(d: Date) {
 
 export default async function DashboardPage() {
   let meals: Meal[] = [];
+  let workouts: Workout[] = [];
+  let body: BodyRecord | null = null;
+  let bodyWeekAgo: BodyRecord | null = null;
+  let profile: Profile | null = null;
   let connError: string | null = null;
 
   try {
     const supabase = await createClient();
     const since = new Date();
-    since.setDate(since.getDate() - 7);
-    const { data, error } = await supabase
-      .from("meals")
-      .select("*")
-      .gte("eaten_at", since.toISOString())
-      .order("eaten_at", { ascending: false })
-      .limit(100);
-    if (error) throw error;
-    meals = (data ?? []) as Meal[];
+    since.setDate(since.getDate() - 14);
+    const [r1, r2, r3, r4] = await Promise.all([
+      supabase
+        .from("meals")
+        .select("*")
+        .gte("eaten_at", since.toISOString())
+        .order("eaten_at", { ascending: false })
+        .limit(100),
+      supabase
+        .from("workouts")
+        .select("*")
+        .gte("started_at", since.toISOString())
+        .order("started_at", { ascending: false })
+        .limit(50),
+      supabase
+        .from("body_records")
+        .select("*")
+        .order("recorded_at", { ascending: false })
+        .limit(20),
+      supabase.from("profiles").select("*").maybeSingle(),
+    ]);
+    if (r1.error) throw r1.error;
+    if (r2.error) throw r2.error;
+    if (r3.error) throw r3.error;
+    meals = (r1.data ?? []) as Meal[];
+    workouts = (r2.data ?? []) as Workout[];
+    const bodyList = (r3.data ?? []) as BodyRecord[];
+    body = bodyList[0] ?? null;
+    if (body) {
+      const cutoff = new Date(body.recorded_at).getTime() - 7 * 24 * 60 * 60 * 1000;
+      bodyWeekAgo =
+        bodyList.find(
+          (r) => new Date(r.recorded_at).getTime() <= cutoff && r.weight_kg != null,
+        ) ?? null;
+    }
+    profile = (r4.data ?? null) as Profile | null;
   } catch (e) {
-    if (e instanceof Error) connError = e.message;
-    else if (e && typeof e === "object") connError = JSON.stringify(e);
-    else connError = String(e);
+    connError = e instanceof Error ? e.message : JSON.stringify(e);
   }
 
   const today = startOfDay(new Date());
   const todayMeals = meals.filter((m) => new Date(m.eaten_at) >= today);
-  const weekKcal = sum(meals, "calories");
-  const weekDayCount = Math.max(
-    1,
-    Math.min(7, new Set(meals.map((m) => m.eaten_at.slice(0, 10))).size),
+  const todayWorkouts = workouts.filter((w) => new Date(w.started_at) >= today);
+
+  const intake = sumNum(todayMeals.map((m) => m.calories));
+  const burn = sumNum(todayWorkouts.map((w) => w.est_kcal));
+  const intakeP = sumNum(todayMeals.map((m) => m.protein_g));
+  const intakeF = sumNum(todayMeals.map((m) => m.fat_g));
+  const intakeC = sumNum(todayMeals.map((m) => m.carbs_g));
+  const strengthMin = sumNum(
+    todayWorkouts.filter((w) => w.kind === "strength").map((w) => w.duration_min),
   );
-  const todayKcal = sum(todayMeals, "calories");
-  const todayP = sum(todayMeals, "protein_g");
-  const todayF = sum(todayMeals, "fat_g");
-  const todayC = sum(todayMeals, "carbs_g");
+  const cardioMin = sumNum(
+    todayWorkouts.filter((w) => w.kind === "cardio").map((w) => w.duration_min),
+  );
+
+  // ストリーク（記録があった日が連続している日数）
+  const streak = computeStreak(meals, workouts, body ? [body] : []);
+
+  // 7 日ドット
+  const week = buildWeekDots(meals, workouts, [body, bodyWeekAgo].filter(Boolean) as BodyRecord[]);
+
+  const targetKcal = profile?.target_kcal ?? null;
+  const net = intake - burn;
 
   return (
     <div>
@@ -62,7 +104,6 @@ export default async function DashboardPage() {
         <div
           style={{
             padding: "10px 12px",
-            background: "var(--surface)",
             border: "1px solid var(--warn)",
             color: "var(--warn)",
             borderRadius: 8,
@@ -70,79 +111,92 @@ export default async function DashboardPage() {
             marginBottom: 16,
           }}
         >
-          Supabase 接続エラー: {connError}
+          {connError}
         </div>
       )}
 
-      {/* INTAKE / BURN dual */}
+      {/* INTAKE / BURN */}
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 12 }}>
         <SummaryCard
           accent="eat"
           label="INTAKE"
-          value={todayKcal}
+          value={Math.round(intake)}
           unit="kcal"
           meta={[
-            { label: "P", value: Math.round(todayP) },
-            { label: "F", value: Math.round(todayF) },
-            { label: "C", value: Math.round(todayC) },
+            { label: "P", value: Math.round(intakeP) },
+            { label: "F", value: Math.round(intakeF) },
+            { label: "C", value: Math.round(intakeC) },
           ]}
         />
         <SummaryCard
           accent="move"
           label="BURN"
-          value={0}
+          value={Math.round(burn)}
           unit="kcal"
-          meta={[{ label: "実装予定", value: "—" }]}
-          dim
+          meta={[
+            ...(strengthMin
+              ? [{ label: "筋トレ", value: `${strengthMin}分` }]
+              : []),
+            ...(cardioMin ? [{ label: "有酸素", value: `${cardioMin}分` }] : []),
+            ...(!strengthMin && !cardioMin
+              ? [{ label: "未記録", value: "—" }]
+              : []),
+          ]}
         />
       </div>
 
-      {/* Body composition (placeholder) */}
+      {/* Energy balance */}
+      <EnergyBalance
+        intake={intake}
+        burn={burn}
+        net={net}
+        target={targetKcal}
+      />
+
+      {/* Body */}
+      <BodyCard latest={body} weekAgo={bodyWeekAgo} />
+
+      {/* Week strip */}
+      <div className="section-title">直近 7日</div>
       <div
         style={{
-          background: "var(--surface)",
-          border: "1px solid var(--line)",
-          borderRadius: 12,
-          padding: 16,
+          display: "grid",
+          gridTemplateColumns: "repeat(7, 1fr)",
+          gap: 4,
           marginBottom: 18,
         }}
       >
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 8,
-            fontSize: 10,
-            letterSpacing: "0.1em",
-            textTransform: "uppercase",
-            color: "var(--muted)",
-            fontWeight: 600,
-            marginBottom: 8,
-          }}
-        >
-          <span
+        {week.map((d) => (
+          <div
+            key={d.iso}
             style={{
-              width: 8,
-              height: 8,
-              borderRadius: 999,
-              background: "var(--body)",
-            }}
-          />
-          <span>BODY</span>
-          <span
-            style={{
-              marginLeft: "auto",
-              color: "var(--muted)",
-              fontWeight: 500,
-              letterSpacing: 0,
+              background: d.today ? "var(--surface)" : "var(--surface-2)",
+              border: d.today ? "1px solid var(--ink)" : "1px solid var(--line)",
+              borderRadius: 8,
+              padding: "8px 4px",
+              textAlign: "center",
             }}
           >
-            未記録
-          </span>
-        </div>
-        <div style={{ fontSize: 12, color: "var(--muted)" }}>
-          体重・体脂肪率の記録機能は次フェーズで提供します
-        </div>
+            <div
+              style={{
+                fontSize: 10,
+                color: "var(--muted)",
+                fontWeight: 600,
+                letterSpacing: "0.06em",
+                textTransform: "uppercase",
+                marginBottom: 6,
+              }}
+            >
+              {d.dow}
+            </div>
+            <div style={{ display: "flex", justifyContent: "center", gap: 2, height: 14, alignItems: "center" }}>
+              {d.eat && <Dot color="var(--eat)" />}
+              {d.move && <Dot color="var(--move)" />}
+              {d.body && <Dot color="var(--body)" />}
+              {!d.eat && !d.move && !d.body && <Dot empty />}
+            </div>
+          </div>
+        ))}
       </div>
 
       {/* Quick actions */}
@@ -150,80 +204,66 @@ export default async function DashboardPage() {
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(3, 1fr)",
+          gridTemplateColumns: "repeat(4, 1fr)",
           gap: 8,
           marginBottom: 22,
         }}
       >
-        <QuickAction href="/meals/new" icon="fork" label="食事" sub="検索 / 写真" />
-        <QuickAction href="#" icon="dumbbell" label="筋トレ" sub="次フェーズ" disabled />
-        <QuickAction href="#" icon="run" label="有酸素" sub="次フェーズ" disabled />
+        <QuickAction href="/meals/new" icon="fork" label="食事" />
+        <QuickAction href="/workouts/new" icon="dumbbell" label="筋トレ" />
+        <QuickAction href="/cardio/new" icon="run" label="有酸素" />
+        <QuickAction href="/body/new" icon="scale" label="体組成" />
       </div>
 
-      {/* Recent meals */}
+      {/* Recent meals + workouts */}
       <div className="section-title">
         <span>最近の記録</span>
         <Link href="/history" className="aux" style={{ color: "var(--ink-2)" }}>
           すべて見る
         </Link>
       </div>
-      {meals.length === 0 ? (
-        <div
-          style={{
-            padding: "32px 16px",
-            textAlign: "center",
-            background: "var(--surface)",
-            border: "1px dashed var(--line)",
-            borderRadius: 12,
-          }}
-        >
-          <div style={{ fontWeight: 600, marginBottom: 4 }}>
-            まだ記録がありません
-          </div>
-          <div style={{ fontSize: 12, color: "var(--muted)", marginBottom: 12 }}>
-            最初の1食を記録してみましょう
-          </div>
-          <Link href="/meals/new" className="btn btn-primary">
-            食事を記録
-          </Link>
-        </div>
-      ) : (
-        <MealList meals={meals.slice(0, 10)} />
-      )}
+      <RecentList meals={meals.slice(0, 5)} workouts={workouts.slice(0, 5)} body={body} />
 
-      {meals.length > 0 && (
-        <div
-          style={{
-            textAlign: "center",
-            marginTop: 12,
-            fontSize: 11,
-            color: "var(--muted)",
-          }}
-        >
-          7日平均 {Math.round(weekKcal / weekDayCount)} kcal · {meals.length} 件
-        </div>
-      )}
+      <div
+        style={{
+          textAlign: "center",
+          marginTop: 12,
+          fontSize: 11,
+          color: "var(--muted)",
+        }}
+      >
+        {streak > 0 ? `記録ストリーク ${streak} 日` : "記録ストリーク 0 日"}
+      </div>
     </div>
   );
 }
 
-// ============================================================
-// Components
-// ============================================================
+function Dot({ color, empty }: { color?: string; empty?: boolean }) {
+  return (
+    <span
+      style={{
+        width: 6,
+        height: 6,
+        borderRadius: 999,
+        background: empty ? "transparent" : color,
+        border: empty ? "1px solid var(--line)" : "none",
+      }}
+    />
+  );
+}
+
 function SummaryCard({
   accent,
   label,
   value,
   unit,
   meta,
-  dim,
 }: {
   accent: "eat" | "move" | "body";
   label: string;
   value: number | string;
   unit: string;
   meta: { label: string; value: number | string }[];
-  dim?: boolean;
 }) {
   const accentColor =
     accent === "eat" ? "var(--eat)" : accent === "move" ? "var(--move)" : "var(--body)";
@@ -234,7 +274,6 @@ function SummaryCard({
         border: "1px solid var(--line)",
         borderRadius: 12,
         padding: 14,
-        opacity: dim ? 0.6 : 1,
       }}
     >
       <div
@@ -283,16 +322,12 @@ function SummaryCard({
           fontSize: 11,
           color: "var(--muted)",
           marginTop: 8,
+          flexWrap: "wrap",
         }}
       >
         {meta.map((m) => (
           <div key={m.label}>
-            <span
-              style={{
-                textTransform: "uppercase",
-                letterSpacing: "0.08em",
-              }}
-            >
+            <span style={{ textTransform: "uppercase", letterSpacing: "0.08em" }}>
               {m.label}
             </span>{" "}
             <span className="num" style={{ color: "var(--ink)", fontWeight: 600 }}>
@@ -305,22 +340,274 @@ function SummaryCard({
   );
 }
 
+function EnergyBalance({
+  intake,
+  burn,
+  net,
+  target,
+}: {
+  intake: number;
+  burn: number;
+  net: number;
+  target: number | null;
+}) {
+  const cap = Math.max(intake + burn, target ?? 2000, 1500);
+  const intakePct = Math.min(100, (intake / cap) * 100);
+  const burnPct = Math.min(100, (burn / cap) * 100);
+  return (
+    <div
+      style={{
+        background: "var(--surface)",
+        border: "1px solid var(--line)",
+        borderRadius: 12,
+        padding: 16,
+        marginBottom: 12,
+      }}
+    >
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          fontSize: 10,
+          letterSpacing: "0.1em",
+          textTransform: "uppercase",
+          color: "var(--muted)",
+          fontWeight: 600,
+          marginBottom: 10,
+        }}
+      >
+        <span>ENERGY BALANCE</span>
+        {target && (
+          <span>
+            TARGET {target.toLocaleString()}
+          </span>
+        )}
+      </div>
+      <div
+        style={{
+          position: "relative",
+          height: 6,
+          background: "var(--line)",
+          borderRadius: 3,
+          marginBottom: 12,
+          overflow: "hidden",
+        }}
+      >
+        <div
+          style={{
+            position: "absolute",
+            left: 0,
+            top: 0,
+            bottom: 0,
+            width: `${intakePct}%`,
+            background: "var(--eat)",
+          }}
+        />
+        <div
+          style={{
+            position: "absolute",
+            right: 0,
+            top: 0,
+            bottom: 0,
+            width: `${burnPct}%`,
+            background: "var(--move)",
+          }}
+        />
+      </div>
+      <div style={{ display: "flex", justifyContent: "space-between", fontSize: 11 }}>
+        <Legend dotColor="var(--eat)" label="摂取" value={`+${Math.round(intake)}`} />
+        <Legend dotColor="var(--move)" label="消費" value={`−${Math.round(burn)}`} />
+      </div>
+      <div
+        style={{
+          textAlign: "center",
+          fontSize: 12,
+          color: "var(--muted)",
+          marginTop: 12,
+          paddingTop: 12,
+          borderTop: "1px solid var(--line)",
+        }}
+      >
+        純摂取{" "}
+        <span
+          className="num"
+          style={{
+            fontSize: 18,
+            fontWeight: 700,
+            color: "var(--ink)",
+            letterSpacing: "-0.01em",
+          }}
+        >
+          {net >= 0 ? "+" : ""}
+          {Math.round(net)}
+        </span>{" "}
+        kcal
+      </div>
+    </div>
+  );
+}
+
+function Legend({
+  dotColor,
+  label,
+  value,
+}: {
+  dotColor: string;
+  label: string;
+  value: string;
+}) {
+  return (
+    <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+      <span
+        style={{
+          width: 6,
+          height: 6,
+          borderRadius: 999,
+          background: dotColor,
+        }}
+      />
+      <span style={{ color: "var(--muted)" }}>{label}</span>
+      <span className="num" style={{ color: "var(--ink)", fontWeight: 600, marginLeft: 4 }}>
+        {value}
+      </span>
+    </div>
+  );
+}
+
+function BodyCard({
+  latest,
+  weekAgo,
+}: {
+  latest: BodyRecord | null;
+  weekAgo: BodyRecord | null;
+}) {
+  if (!latest) {
+    return (
+      <div
+        style={{
+          background: "var(--surface)",
+          border: "1px solid var(--line)",
+          borderRadius: 12,
+          padding: 16,
+          marginBottom: 18,
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 8,
+            fontSize: 10,
+            letterSpacing: "0.1em",
+            textTransform: "uppercase",
+            color: "var(--muted)",
+            fontWeight: 600,
+            marginBottom: 8,
+          }}
+        >
+          <span style={{ width: 8, height: 8, borderRadius: 999, background: "var(--body)" }} />
+          <span>BODY</span>
+          <span style={{ marginLeft: "auto", color: "var(--muted)", fontWeight: 500, letterSpacing: 0 }}>
+            未記録
+          </span>
+        </div>
+        <div style={{ fontSize: 12, color: "var(--muted)" }}>
+          まだ体組成の記録がありません。
+          <Link href="/body/new" style={{ color: "var(--ink-2)", textDecoration: "underline", textUnderlineOffset: 3, marginLeft: 4 }}>
+            最初の記録を作る →
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  const wDelta =
+    weekAgo?.weight_kg && latest.weight_kg
+      ? Number(latest.weight_kg) - Number(weekAgo.weight_kg)
+      : null;
+
+  return (
+    <Link
+      href="/body"
+      style={{
+        display: "block",
+        background: "var(--surface)",
+        border: "1px solid var(--line)",
+        borderRadius: 12,
+        padding: 16,
+        marginBottom: 18,
+        textDecoration: "none",
+        color: "var(--ink)",
+      }}
+    >
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: 8,
+          fontSize: 10,
+          letterSpacing: "0.1em",
+          textTransform: "uppercase",
+          color: "var(--muted)",
+          fontWeight: 600,
+          marginBottom: 8,
+        }}
+      >
+        <span style={{ width: 8, height: 8, borderRadius: 999, background: "var(--body)" }} />
+        <span>BODY</span>
+        <span style={{ marginLeft: "auto", color: "var(--muted)", fontWeight: 500, letterSpacing: 0 }}>
+          {new Date(latest.recorded_at).toLocaleDateString("ja-JP", {
+            month: "short",
+            day: "numeric",
+          })}
+        </span>
+      </div>
+      <div style={{ display: "flex", gap: 24, alignItems: "baseline" }}>
+        <div>
+          <div className="num" style={{ fontSize: 22, fontWeight: 700 }}>
+            {latest.weight_kg ?? "—"}
+            <span style={{ fontSize: 12, color: "var(--muted)", fontWeight: 500 }}> kg</span>
+          </div>
+          {wDelta != null && (
+            <div
+              className="num"
+              style={{
+                fontSize: 11,
+                fontWeight: 600,
+                marginTop: 2,
+                color: wDelta < 0 ? "var(--eat)" : wDelta > 0 ? "var(--warn)" : "var(--muted)",
+              }}
+            >
+              {wDelta > 0 ? "+" : ""}
+              {wDelta.toFixed(1)} / 7d
+            </div>
+          )}
+        </div>
+        {latest.body_fat_pct != null && (
+          <div>
+            <div className="num" style={{ fontSize: 22, fontWeight: 700 }}>
+              {latest.body_fat_pct}
+              <span style={{ fontSize: 12, color: "var(--muted)", fontWeight: 500 }}> %</span>
+            </div>
+            <div style={{ fontSize: 11, color: "var(--muted)", marginTop: 2 }}>体脂肪</div>
+          </div>
+        )}
+      </div>
+    </Link>
+  );
+}
+
 function QuickAction({
   href,
   icon,
   label,
-  sub,
-  disabled,
 }: {
   href: string;
   icon: "fork" | "dumbbell" | "run" | "scale";
   label: string;
-  sub: string;
-  disabled?: boolean;
 }) {
-  const Comp = disabled ? "div" : Link;
   return (
-    <Comp
+    <Link
       href={href}
       style={{
         background: "var(--surface)",
@@ -328,8 +615,6 @@ function QuickAction({
         borderRadius: 10,
         padding: "12px 8px",
         textAlign: "center",
-        cursor: disabled ? "not-allowed" : "pointer",
-        opacity: disabled ? 0.4 : 1,
         textDecoration: "none",
         color: "var(--ink)",
         display: "block",
@@ -346,12 +631,94 @@ function QuickAction({
         <Icon name={icon} size="lg" />
       </div>
       <div style={{ fontSize: 11, fontWeight: 600 }}>{label}</div>
-      <div style={{ fontSize: 10, color: "var(--muted)", marginTop: 2 }}>{sub}</div>
-    </Comp>
+    </Link>
   );
 }
 
-function MealList({ meals }: { meals: Meal[] }) {
+function RecentList({
+  meals,
+  workouts,
+  body,
+}: {
+  meals: Meal[];
+  workouts: Workout[];
+  body: BodyRecord | null;
+}) {
+  type Row = {
+    id: string;
+    at: string;
+    name: string;
+    meta: string;
+    accent: "eat" | "move" | "body";
+    primary: string;
+    sub?: string;
+  };
+  const rows: Row[] = [
+    ...meals.map<Row>((m) => ({
+      id: `m-${m.id}`,
+      at: m.eaten_at,
+      name: m.name,
+      meta: `${new Date(m.eaten_at).toLocaleTimeString("ja-JP", { timeStyle: "short" })} · ${m.chain_name ?? sourceLabel(m.source)}`,
+      accent: "eat",
+      primary: m.calories != null ? `+${Math.round(Number(m.calories))} kcal` : "—",
+      sub: m.protein_g != null ? `P${m.protein_g} / F${m.fat_g} / C${m.carbs_g}` : undefined,
+    })),
+    ...workouts.map<Row>((w) => ({
+      id: `w-${w.id}`,
+      at: w.started_at,
+      name:
+        w.title ||
+        (w.kind === "strength"
+          ? "筋トレ"
+          : w.cardio_type === "run"
+          ? "ラン"
+          : w.cardio_type === "walk"
+          ? "ウォーク"
+          : w.cardio_type === "bike"
+          ? "バイク"
+          : "有酸素"),
+      meta: `${new Date(w.started_at).toLocaleTimeString("ja-JP", { timeStyle: "short" })} · ${w.kind === "strength" ? "筋トレ" : "有酸素"}${w.duration_min ? ` · ${w.duration_min}分` : ""}`,
+      accent: "move",
+      primary: w.est_kcal != null ? `−${Math.round(Number(w.est_kcal))} kcal` : "—",
+    })),
+    ...(body
+      ? [
+          {
+            id: `b-${body.id}`,
+            at: body.recorded_at,
+            name: `体組成 ${body.weight_kg ?? "—"}kg`,
+            meta: `${new Date(body.recorded_at).toLocaleTimeString("ja-JP", { timeStyle: "short" })} · 手動記録`,
+            accent: "body" as const,
+            primary:
+              body.body_fat_pct != null
+                ? `体脂肪 ${body.body_fat_pct}%`
+                : "—",
+          },
+        ]
+      : []),
+  ]
+    .sort((a, b) => +new Date(b.at) - +new Date(a.at))
+    .slice(0, 8);
+
+  if (rows.length === 0) {
+    return (
+      <div
+        style={{
+          padding: "32px 16px",
+          textAlign: "center",
+          background: "var(--surface)",
+          border: "1px dashed var(--line)",
+          borderRadius: 12,
+        }}
+      >
+        <div style={{ fontWeight: 600, marginBottom: 4 }}>まだ記録がありません</div>
+        <div style={{ fontSize: 12, color: "var(--muted)" }}>
+          上のクイックアクションから最初の1件を記録しましょう
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div
       style={{
@@ -361,66 +728,60 @@ function MealList({ meals }: { meals: Meal[] }) {
         overflow: "hidden",
       }}
     >
-      {meals.map((m) => (
-        <div
-          key={m.id}
-          style={{
-            padding: "12px 14px",
-            borderBottom: "1px solid var(--line-soft)",
-            display: "flex",
-            gap: 12,
-            alignItems: "center",
-          }}
-        >
+      {rows.map((r) => {
+        const accentColor =
+          r.accent === "eat"
+            ? "var(--eat)"
+            : r.accent === "move"
+            ? "var(--move)"
+            : "var(--body)";
+        return (
           <div
+            key={r.id}
             style={{
-              width: 3,
-              height: 32,
-              borderRadius: 2,
-              background: "var(--eat)",
-              flexShrink: 0,
+              padding: "12px 14px",
+              borderBottom: "1px solid var(--line-soft)",
+              display: "flex",
+              gap: 12,
+              alignItems: "center",
             }}
-          />
-          <div style={{ flex: 1, minWidth: 0 }}>
+          >
             <div
               style={{
-                fontWeight: 600,
-                fontSize: 14,
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-                whiteSpace: "nowrap",
+                width: 3,
+                height: 32,
+                borderRadius: 2,
+                background: accentColor,
+                flexShrink: 0,
               }}
-            >
-              {m.name}
-            </div>
-            <div
-              style={{
-                fontSize: 11,
-                color: "var(--muted)",
-                display: "flex",
-                gap: 8,
-                marginTop: 2,
-              }}
-            >
-              <span>{new Date(m.eaten_at).toLocaleString("ja-JP", { dateStyle: "short", timeStyle: "short" })}</span>
-              <span style={{ fontWeight: 600, color: "var(--ink-2)" }}>
-                {m.chain_name ?? sourceLabel(m.source)}
-              </span>
-            </div>
-          </div>
-          <div className="num" style={{ textAlign: "right", flexShrink: 0 }}>
-            <div style={{ fontSize: 14, fontWeight: 700 }}>
-              {m.calories != null ? Math.round(Number(m.calories)) : "—"}
-              <span style={{ fontSize: 11, color: "var(--muted)", marginLeft: 2 }}>kcal</span>
-            </div>
-            {m.protein_g != null && (
-              <div style={{ fontSize: 10, color: "var(--muted)", marginTop: 1 }}>
-                P{m.protein_g} / F{m.fat_g} / C{m.carbs_g}
+            />
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div
+                style={{
+                  fontWeight: 600,
+                  fontSize: 14,
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                {r.name}
               </div>
-            )}
+              <div style={{ fontSize: 11, color: "var(--muted)", marginTop: 2 }}>
+                {r.meta}
+              </div>
+            </div>
+            <div className="num" style={{ textAlign: "right", flexShrink: 0 }}>
+              <div style={{ fontSize: 14, fontWeight: 700 }}>{r.primary}</div>
+              {r.sub && (
+                <div style={{ fontSize: 10, color: "var(--muted)", marginTop: 1 }}>
+                  {r.sub}
+                </div>
+              )}
+            </div>
           </div>
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 }
@@ -431,8 +792,71 @@ function sourceLabel(s: string) {
       return "写真";
     case "chain":
       return "チェーン";
-    case "manual":
     default:
       return "手動";
   }
+}
+
+function buildWeekDots(
+  meals: Meal[],
+  workouts: Workout[],
+  bodyRecords: BodyRecord[],
+) {
+  const result: {
+    iso: string;
+    dow: string;
+    today: boolean;
+    eat: boolean;
+    move: boolean;
+    body: boolean;
+  }[] = [];
+  const today = startOfDay(new Date());
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date(today);
+    d.setDate(today.getDate() - i);
+    const next = new Date(d);
+    next.setDate(d.getDate() + 1);
+    const iso = d.toISOString().slice(0, 10);
+    const eat = meals.some(
+      (m) => new Date(m.eaten_at) >= d && new Date(m.eaten_at) < next,
+    );
+    const move = workouts.some(
+      (w) => new Date(w.started_at) >= d && new Date(w.started_at) < next,
+    );
+    const body = bodyRecords.some(
+      (b) => new Date(b.recorded_at) >= d && new Date(b.recorded_at) < next,
+    );
+    result.push({
+      iso,
+      dow: d.toLocaleDateString("ja-JP", { weekday: "short" }),
+      today: i === 0,
+      eat,
+      move,
+      body,
+    });
+  }
+  return result;
+}
+
+function computeStreak(
+  meals: Meal[],
+  workouts: Workout[],
+  bodyRecords: BodyRecord[],
+): number {
+  const days = new Set<string>();
+  for (const m of meals) days.add(m.eaten_at.slice(0, 10));
+  for (const w of workouts) days.add(w.started_at.slice(0, 10));
+  for (const b of bodyRecords) days.add(b.recorded_at.slice(0, 10));
+  let streak = 0;
+  const d = startOfDay(new Date());
+  while (true) {
+    const iso = d.toISOString().slice(0, 10);
+    if (days.has(iso)) {
+      streak += 1;
+      d.setDate(d.getDate() - 1);
+    } else {
+      break;
+    }
+  }
+  return streak;
 }
