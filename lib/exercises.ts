@@ -24,37 +24,41 @@ export const EQUIPMENT_LABELS: Record<Exercise["equipment"], string> = {
   other: "その他",
 };
 
+// 起動時に1回だけ正規化。検索のたびに toLowerCase を全レコード分計算しない。
+const NORMALIZED = EXERCISES.map((e) => ({
+  ex: e,
+  needle: [e.name, ...(e.aliases ?? [])].map((s) => s.toLowerCase()),
+}));
+const ID_INDEX = new Map(EXERCISES.map((e) => [e.id, e]));
+
 export function findExercise(id: string): Exercise | null {
-  return EXERCISES.find((e) => e.id === id) ?? null;
+  return ID_INDEX.get(id) ?? null;
 }
 
 /**
- * 検索クエリで種目をフィルタする（名前 + エイリアス + 部位ラベルにマッチ）。
+ * 検索クエリで種目をフィルタ (名前 + エイリアスに対する includes マッチ)。
  */
 export function searchExercises(query: string): Exercise[] {
   const q = query.trim().toLowerCase();
   if (!q) return EXERCISES;
-  return EXERCISES.filter((e) => {
-    if (e.name.toLowerCase().includes(q)) return true;
-    if (e.aliases?.some((a) => a.toLowerCase().includes(q))) return true;
-    return false;
-  });
+  const result: Exercise[] = [];
+  for (const { ex, needle } of NORMALIZED) {
+    if (needle.some((n) => n.includes(q))) result.push(ex);
+  }
+  return result;
 }
 
 /**
- * ユーザーが入力した名前から最も近い既存種目を探す（完全一致 + エイリアス）。
+ * ユーザーが入力した名前から最も近い既存種目を探す (完全一致 + エイリアス)。
  * 見つからなければ null を返し、カスタム種目として扱う想定。
  */
 export function matchExerciseByName(name: string): Exercise | null {
   const q = name.trim().toLowerCase();
   if (!q) return null;
-  return (
-    EXERCISES.find(
-      (e) =>
-        e.name.toLowerCase() === q ||
-        e.aliases?.some((a) => a.toLowerCase() === q),
-    ) ?? null
-  );
+  for (const { ex, needle } of NORMALIZED) {
+    if (needle.includes(q)) return ex;
+  }
+  return null;
 }
 
 /**

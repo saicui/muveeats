@@ -50,24 +50,32 @@ export async function POST(req: NextRequest) {
   if (!(file instanceof File)) {
     return NextResponse.json({ error: "画像が見つかりません" }, { status: 400 });
   }
+  // ユーザーが添える補足説明 (例: "ライス少なめ", "親子丼の特盛")。
+  // 写真だけでは判別できない量・調理法のヒントとして使う。
+  const noteRaw = form.get("note");
+  const note = typeof noteRaw === "string" ? noteRaw.trim().slice(0, 200) : "";
 
   const bytes = Buffer.from(await file.arrayBuffer()).toString("base64");
   const mimeType = file.type || "image/jpeg";
 
   const ai = new GoogleGenAI({ apiKey });
 
+  const userParts: Array<
+    { text: string } | { inlineData: { mimeType: string; data: string } }
+  > = [
+    { text: SYSTEM_PROMPT },
+    { inlineData: { mimeType, data: bytes } },
+  ];
+  if (note) {
+    userParts.push({
+      text: `\nユーザーからの補足: ${note}\nこの補足を量・調理法・原材料の判定に最優先で反映してください。`,
+    });
+  }
+
   try {
     const response = await ai.models.generateContent({
       model: MODEL,
-      contents: [
-        {
-          role: "user",
-          parts: [
-            { text: SYSTEM_PROMPT },
-            { inlineData: { mimeType, data: bytes } },
-          ],
-        },
-      ],
+      contents: [{ role: "user", parts: userParts }],
       config: {
         responseMimeType: "application/json",
         responseSchema,

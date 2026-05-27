@@ -9,6 +9,8 @@ import type {
   MealTemplate,
 } from "@/lib/types";
 import { TemplateQuickPick } from "./templates-quick";
+import { Sparkline } from "./components/sparkline";
+import { CoachFeedback } from "./coach-feedback";
 
 function sumNum(arr: (number | null)[]): number {
   return arr.reduce<number>((acc, v) => acc + (Number(v) || 0), 0);
@@ -24,6 +26,7 @@ export default async function DashboardPage() {
   let workouts: Workout[] = [];
   let body: BodyRecord | null = null;
   let bodyWeekAgo: BodyRecord | null = null;
+  let bodyList: BodyRecord[] = [];
   let profile: Profile | null = null;
   let templates: MealTemplate[] = [];
   let todaySkipIds = new Set<string>();
@@ -71,7 +74,7 @@ export default async function DashboardPage() {
     if (r3.error) throw r3.error;
     meals = (r1.data ?? []) as Meal[];
     workouts = (r2.data ?? []) as Workout[];
-    const bodyList = (r3.data ?? []) as BodyRecord[];
+    bodyList = (r3.data ?? []) as BodyRecord[];
     body = bodyList[0] ?? null;
     if (body) {
       const cutoff = new Date(body.recorded_at).getTime() - 7 * 24 * 60 * 60 * 1000;
@@ -120,6 +123,9 @@ export default async function DashboardPage() {
 
   // 7 日ドット
   const week = buildWeekDots(meals, workouts, [body, bodyWeekAgo].filter(Boolean) as BodyRecord[]);
+
+  // 直近 14 日のトレンド (摂取・消費 kcal / 体重)
+  const trend = buildTrend(meals, workouts, bodyList);
 
   const targetKcal = profile?.target_kcal ?? null;
   const net = intake - burn;
@@ -191,6 +197,12 @@ export default async function DashboardPage() {
 
       {/* Body */}
       <BodyCard latest={body} weekAgo={bodyWeekAgo} />
+
+      {/* Trend */}
+      <TrendCard trend={trend} />
+
+      {/* AI フィードバック */}
+      <CoachFeedback />
 
       {/* Week strip */}
       <div className="section-title">直近 7日</div>
@@ -883,6 +895,17 @@ function buildWeekDots(
   workouts: Workout[],
   bodyRecords: BodyRecord[],
 ) {
+  // 各日のローカルタイム ISO を 1 パスで Set 化 (旧実装は 7×N で new Date を走らせていた)。
+  // .slice(0,10) は UTC ベースで深夜帯の日付がズレるのでローカルで計算する。
+  const mealDays = new Set(meals.map((m) => isoDate(new Date(m.eaten_at))));
+  const workoutDays = new Set(
+    workouts.map((w) => isoDate(new Date(w.started_at))),
+  );
+  const bodyDays = new Set(
+    bodyRecords.map((b) => isoDate(new Date(b.recorded_at))),
+  );
+
+  const today = startOfDay(new Date());
   const result: {
     iso: string;
     dow: string;
@@ -891,32 +914,197 @@ function buildWeekDots(
     move: boolean;
     body: boolean;
   }[] = [];
-  const today = startOfDay(new Date());
   for (let i = 6; i >= 0; i--) {
     const d = new Date(today);
     d.setDate(today.getDate() - i);
-    const next = new Date(d);
-    next.setDate(d.getDate() + 1);
-    const iso = d.toISOString().slice(0, 10);
-    const eat = meals.some(
-      (m) => new Date(m.eaten_at) >= d && new Date(m.eaten_at) < next,
-    );
-    const move = workouts.some(
-      (w) => new Date(w.started_at) >= d && new Date(w.started_at) < next,
-    );
-    const body = bodyRecords.some(
-      (b) => new Date(b.recorded_at) >= d && new Date(b.recorded_at) < next,
-    );
+    const iso = isoDate(d);
     result.push({
       iso,
       dow: d.toLocaleDateString("ja-JP", { weekday: "short" }),
       today: i === 0,
-      eat,
-      move,
-      body,
+      eat: mealDays.has(iso),
+      move: workoutDays.has(iso),
+      body: bodyDays.has(iso),
     });
   }
   return result;
+}
+
+/** タイムゾーン補正済み YYYY-MM-DD。toISOString は UTC で日跨ぎするため使わない。 */
+function isoDate(d: Date): string {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${y}-${m}-${day}`;
+}
+
+type Trend = {
+  days: { iso: string; intakeKcal: number | null; burnKcal: number | null; weightKg: number | null }[];
+};
+
+function buildTrend(meals: Meal[], workouts: Workout[], body: BodyRecord[]): Trend {
+  const today = startOfDay(new Date());
+  // 直近 14 日ぶんを集約。データが null の日もエントリは入れて欠損として扱う。
+  const intake: Record<string, number> = {};
+  const burn: Record<string, number> = {};
+  const weight: Record<string, number> = {};
+  for (const m of meals) {
+    const key = isoDate(new Date(m.eaten_at));
+    intake[key] = (intake[key] ?? 0) + (Number(m.calories) || 0);
+  }
+  for (const w of workouts) {
+    const key = isoDate(new Date(w.started_at));
+    burn[key] = (burn[key] ?? 0) + (Number(w.est_kcal) || 0);
+  }
+  // 体重は同日複数件あれば最新値
+  for (const b of body) {
+    if (b.weight_kg == null) continue;
+    const key = isoDate(new Date(b.recorded_at));
+    if (!(key in weight)) weight[key] = Number(b.weight_kg);
+  }
+  const days: Trend["days"] = [];
+  for (let i = 13; i >= 0; i--) {
+    const d = new Date(today);
+    d.setDate(today.getDate() - i);
+    const iso = isoDate(d);
+    days.push({
+      iso,
+      intakeKcal: intake[iso] != null ? intake[iso] : null,
+      burnKcal: burn[iso] != null ? burn[iso] : null,
+      weightKg: weight[iso] ?? null,
+    });
+  }
+  return { days };
+}
+
+function TrendCard({ trend }: { trend: Trend }) {
+  const intakePoints = trend.days.map((d) => d.intakeKcal);
+  const burnPoints = trend.days.map((d) => d.burnKcal);
+  const weightPoints = trend.days.map((d) => d.weightKg);
+  const hasAnyIntake = intakePoints.some((v) => v != null && v > 0);
+  const hasAnyBurn = burnPoints.some((v) => v != null && v > 0);
+  const hasAnyWeight = weightPoints.filter((v) => v != null).length >= 2;
+  if (!hasAnyIntake && !hasAnyBurn && !hasAnyWeight) return null;
+
+  return (
+    <div style={{ marginBottom: 18 }}>
+      <div className="section-title">直近 14日のトレンド</div>
+      <div
+        style={{
+          background: "var(--surface)",
+          border: "1px solid var(--line)",
+          borderRadius: 12,
+          padding: 14,
+          display: "flex",
+          flexDirection: "column",
+          gap: 14,
+        }}
+      >
+        {hasAnyIntake && (
+          <TrendRow
+            label="摂取 kcal"
+            color="var(--eat)"
+            fill="var(--eat)"
+            points={intakePoints}
+            latest={lastNonNull(intakePoints)}
+            unit="kcal"
+          />
+        )}
+        {hasAnyBurn && (
+          <TrendRow
+            label="消費 kcal"
+            color="var(--move)"
+            fill="var(--move)"
+            points={burnPoints}
+            latest={lastNonNull(burnPoints)}
+            unit="kcal"
+          />
+        )}
+        {hasAnyWeight && (
+          <TrendRow
+            label="体重"
+            color="var(--body)"
+            points={weightPoints}
+            latest={lastNonNull(weightPoints)}
+            unit="kg"
+            decimals={1}
+          />
+        )}
+      </div>
+    </div>
+  );
+}
+
+function lastNonNull(arr: (number | null)[]): number | null {
+  for (let i = arr.length - 1; i >= 0; i--) {
+    if (arr[i] != null) return arr[i];
+  }
+  return null;
+}
+
+function TrendRow({
+  label,
+  color,
+  fill,
+  points,
+  latest,
+  unit,
+  decimals = 0,
+}: {
+  label: string;
+  color: string;
+  fill?: string;
+  points: (number | null)[];
+  latest: number | null;
+  unit: string;
+  decimals?: number;
+}) {
+  return (
+    <div>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "baseline",
+          justifyContent: "space-between",
+          marginBottom: 4,
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 6,
+            fontSize: 11,
+            color: "var(--muted)",
+            textTransform: "uppercase",
+            letterSpacing: "0.08em",
+            fontWeight: 600,
+          }}
+        >
+          <span style={{ width: 6, height: 6, borderRadius: 999, background: color }} />
+          {label}
+        </div>
+        <div className="num" style={{ fontSize: 14, fontWeight: 700 }}>
+          {latest != null
+            ? decimals > 0
+              ? latest.toFixed(decimals)
+              : Math.round(latest).toLocaleString()
+            : "—"}
+          <span style={{ fontSize: 10, color: "var(--muted)", marginLeft: 3, fontWeight: 500 }}>
+            {unit}
+          </span>
+        </div>
+      </div>
+      <Sparkline
+        points={points}
+        width={320}
+        height={42}
+        color={color}
+        fill={fill}
+        ariaLabel={`${label}のスパークライン`}
+      />
+    </div>
+  );
 }
 
 function computeStreak(
@@ -925,14 +1113,13 @@ function computeStreak(
   bodyRecords: BodyRecord[],
 ): number {
   const days = new Set<string>();
-  for (const m of meals) days.add(m.eaten_at.slice(0, 10));
-  for (const w of workouts) days.add(w.started_at.slice(0, 10));
-  for (const b of bodyRecords) days.add(b.recorded_at.slice(0, 10));
+  for (const m of meals) days.add(isoDate(new Date(m.eaten_at)));
+  for (const w of workouts) days.add(isoDate(new Date(w.started_at)));
+  for (const b of bodyRecords) days.add(isoDate(new Date(b.recorded_at)));
   let streak = 0;
   const d = startOfDay(new Date());
   while (true) {
-    const iso = d.toISOString().slice(0, 10);
-    if (days.has(iso)) {
+    if (days.has(isoDate(d))) {
       streak += 1;
       d.setDate(d.getDate() - 1);
     } else {

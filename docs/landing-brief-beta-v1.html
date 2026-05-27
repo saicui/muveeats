@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<title>MuveEats — Landing Brief (Beta v.1)</title>
+<meta name="generator" content="MuveEats internal handoff" />
+<style>
+  :root { color-scheme: light dark; }
+  body { font: 14px/1.6 system-ui, -apple-system, "Hiragino Sans", sans-serif; max-width: 880px; margin: 32px auto; padding: 0 20px; color: #111; }
+  h1 { font-size: 28px; letter-spacing: -0.02em; margin-bottom: 4px; }
+  h2 { font-size: 18px; letter-spacing: -0.01em; margin: 28px 0 10px; padding-bottom: 4px; border-bottom: 1px solid #ddd; }
+  h3 { font-size: 14px; margin: 16px 0 6px; color: #555; text-transform: uppercase; letter-spacing: 0.08em; }
+  .pill { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; background: #f0f0ef; color: #555; }
+  .badge-beta { background: #ffe6c7; color: #8a4a00; }
+  ul { padding-left: 20px; margin: 4px 0; }
+  li { margin: 2px 0; }
+  table { border-collapse: collapse; width: 100%; margin: 8px 0; font-size: 13px; }
+  th, td { text-align: left; padding: 6px 10px; border-bottom: 1px solid #eee; vertical-align: top; }
+  th { color: #555; font-weight: 600; background: #fafaf9; }
+  code, kbd { background: #f4f4f3; padding: 1px 5px; border-radius: 4px; font-size: 12px; }
+  .grid { display: grid; gap: 12px; grid-template-columns: 1fr 1fr; }
+  @media (max-width: 600px) { .grid { grid-template-columns: 1fr; } }
+  .card { border: 1px solid #e5e5e3; border-radius: 10px; padding: 14px; background: #fff; }
+  .quote { border-left: 3px solid #c89d68; padding: 4px 0 4px 12px; color: #555; font-style: italic; }
+  .meta { color: #777; font-size: 12px; }
+  .tag { display: inline-block; font-size: 10px; padding: 1px 6px; border: 1px solid #ddd; border-radius: 4px; color: #555; margin-right: 4px; }
+</style>
+</head>
+<body>
+
+<header>
+  <div><span class="pill badge-beta">Beta v.1</span> <span class="pill">Landing Brief</span></div>
+  <h1>MuveEats — 動いて食べて、記録する。</h1>
+  <p class="meta">食事・運動・体組成を一つにまとめる個人ヘルスハブ。Claude Design へのランディング制作ハンドオフ用ブリーフ。</p>
+</header>
+
+<!-- ============================================================ -->
+<h2>1. ポジショニング</h2>
+
+<div class="card">
+  <p><strong>One-liner:</strong> 「食事」「運動」「体組成」をひとつのアプリでシンプルに記録する。AI が記録の手間を肩代わりし、直近の傾向からあなた専用のフィードバックを返す。</p>
+  <p class="quote">"3つのアプリで管理するのをやめた。書く・撮る・選ぶ、どれでも 5 秒。"</p>
+</div>
+
+<h3>競合との違い</h3>
+<ul>
+  <li><strong>記録の分散をやめる</strong>: あすけん (食事) / FitOn (運動) / Apple ヘルスケア (体組成) を 3 つに分けず、1 つにまとめる。</li>
+  <li><strong>AI を「相談相手」ではなく「入力補助」に</strong>: 写真 → 自動で栄養計算、体組成計の表示画面 → 自動で数値抽出。</li>
+  <li><strong>テンプレ × クイック追加</strong>: 毎日同じ朝食 / 胸の日 などをワンタップ。継続のための摩擦を最小化。</li>
+</ul>
+
+<!-- ============================================================ -->
+<h2>2. 強み(ランディングで打ち出したい順)</h2>
+
+<table>
+<thead><tr><th>#</th><th>強み</th><th>具体</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>シンプルに 3 つを 1 つに</td><td>食事 / 運動 (筋トレ + 有酸素) / 体組成を 1 画面のホームで一望。</td></tr>
+<tr><td>2</td><td>AI による記録自動化</td><td>食事写真 → Gemini が栄養素を推定。体組成計の写真 → 数値 OCR。補足文 (「ライス少なめ」等) で精度向上。</td></tr>
+<tr><td>3</td><td>AI フィードバック</td><td>直近 7 日の食事 + 運動 + 体組成 + 目標を集約 → 良い点 / 改善 / 明日のアクションを 1 タップで生成。</td></tr>
+<tr><td>4</td><td>テンプレで継続摩擦ゼロ</td><td>「毎朝のオートミール」「胸の日」を 1 タップ記録。後日記録もサポート。</td></tr>
+<tr><td>5</td><td>32 チェーン店 + 約2000品目</td><td>マック・スタバ・吉野家など主要チェーン店の栄養情報を内蔵 (オフライン検索)。</td></tr>
+<tr><td>6</td><td>純粋にWeb</td><td>インストール不要。スマホでもデスクトップでも同じ URL。ホーム画面追加で PWA 風に。</td></tr>
+</tbody>
+</table>
+
+<!-- ============================================================ -->
+<h2>3. ターゲット</h2>
+<div class="grid">
+  <div class="card">
+    <h3>プライマリ</h3>
+    <ul>
+      <li>20–40 代の<strong>自炊 × ジム勢</strong>。減量 / 筋肥大の目標がある人。</li>
+      <li>あすけん有料に課金するまでではない、でも体重と食事は記録したい層。</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h3>セカンダリ</h3>
+    <ul>
+      <li>外食 / コンビニ多めで PFC を雑に把握したいビジネスパーソン。</li>
+      <li>パーソナルトレーナーに食事報告したいクライアント (CSV エクスポート想定)。</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<h2>4. ランディング推奨セクション構成</h2>
+
+<table>
+<thead><tr><th>順</th><th>セクション</th><th>役割 / コンテンツ案</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>Hero</td><td>キャッチコピー + 3 アイコン (fork / dumbbell / scale) + 主要 CTA「無料で始める」。背景にホーム画面のスクリーンショット。</td></tr>
+<tr><td>2</td><td>"3 つを 1 つに"</td><td>Apple ヘルスケア / あすけん / トレーニング系を別々に開いている図 → MuveEats 1 画面に集約する図。</td></tr>
+<tr><td>3</td><td>AI 記録のデモ</td><td>食事写真 → 栄養素自動入力の GIF / 動画。「写真 1 枚 + 5 秒の補足で完了」。</td></tr>
+<tr><td>4</td><td>AI フィードバック</td><td>カード UI のスクショ。良い点 / 改善 / 明日のアクションが並ぶ画。「数字に意味を持たせる相棒」。</td></tr>
+<tr><td>5</td><td>テンプレ & クイック追加</td><td>「毎朝のオートミール」をホームから 1 タップで記録する短い動画。継続の摩擦を解く。</td></tr>
+<tr><td>6</td><td>スクリーンショット ギャラリー</td><td>ホーム / 食事 / 筋トレ / 体組成 / 履歴 / 設定 の 6 枚。スクロール可能。</td></tr>
+<tr><td>7</td><td>FAQ</td><td>(a) 課金? → Beta は無料 (b) Apple ヘルスケア連携? → ロードマップ (c) データはどこ? → Supabase (d) PWA インストール手順</td></tr>
+<tr><td>8</td><td>CTA + フッター</td><td>「今すぐ記録を始める」+ メール登録。サポート / プライバシー / Twitter リンク。</td></tr>
+</tbody>
+</table>
+
+<h3>コピー候補</h3>
+<ul>
+  <li><strong>Hero:</strong> 「動いて食べて、記録する。」 / 「3 つのアプリを 1 つにまとめた。」 / 「写真を撮るだけで、栄養も体重も。」</li>
+  <li><strong>Sub:</strong> 「食事 / 運動 / 体組成を、ひとつのアプリでシンプルに。AI が記録を手伝ってくれる。」</li>
+  <li><strong>CTA:</strong> 「無料で始める」 / 「サンプルを見る」</li>
+</ul>
+
+<!-- ============================================================ -->
+<h2>5. ビジュアル / ブランド</h2>
+
+<div class="card">
+  <h3>カラー (CSS 変数より抜粋)</h3>
+  <table>
+    <tr><td><code>--ink</code></td><td>#1a1a18 (テキスト)</td></tr>
+    <tr><td><code>--surface</code></td><td>#ffffff / dark: #18181b</td></tr>
+    <tr><td><code>--surface-2</code></td><td>#f5f4f1 (薄ベージュ。クラフト感)</td></tr>
+    <tr><td><code>--eat</code></td><td>#c25a3a (テラコッタ。食事系アクセント)</td></tr>
+    <tr><td><code>--move</code></td><td>#3a6c5c (フォレストグリーン。運動系アクセント)</td></tr>
+    <tr><td><code>--body</code></td><td>#4a5773 (ダルブルー。体組成系アクセント)</td></tr>
+    <tr><td><code>--ai</code></td><td>#8a5cf6 (AI 機能のアクセント)</td></tr>
+    <tr><td><code>--warn</code></td><td>#c8841e</td></tr>
+    <tr><td><code>--danger</code></td><td>#c4474a</td></tr>
+  </table>
+  <h3>フォント</h3>
+  <p>Inter (本文) + 数値は <code>tabular-nums</code> でモノスペース風に。</p>
+  <h3>トーン</h3>
+  <p>クラフト系・余白多め。装飾より情報密度。ピル + 数字 + 細い線。1.5px ストロークのアウトラインアイコン。</p>
+</div>
+
+<!-- ============================================================ -->
+<h2>6. アプリの現在の画面構成 (Beta v.1)</h2>
+
+<div class="grid">
+  <div class="card">
+    <h3>ホーム <span class="tag">/</span></h3>
+    <ul>
+      <li>INTAKE / BURN サマリ (今日)</li>
+      <li>エネルギーバランス (摂取 vs 消費)</li>
+      <li>体重・体脂肪率カード (7日差分)</li>
+      <li>直近 14 日トレンド (摂取/消費/体重 sparkline)</li>
+      <li>AI フィードバック (オンデマンド生成)</li>
+      <li>直近 7 日ドットマトリクス</li>
+      <li>クイック追加 (食事/筋トレ/有酸素/体組成)</li>
+      <li>食事テンプレのワンタップ追加</li>
+      <li>最近の記録 8 件</li>
+      <li>ストリーク (連続記録日数)</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h3>食事 <span class="tag">/meals/new</span></h3>
+    <ul>
+      <li>後日記録の日時指定 (任意)</li>
+      <li>テンプレから記録 (任意)</li>
+      <li>3 モード: 検索 / 写真 / 手動</li>
+      <li>検索: 32 チェーン × 約 2000 品目</li>
+      <li>写真: 補足文 (200 字) で精度向上 / Gemini 解析</li>
+      <li>手動: 名前 + PFC + kcal を直接入力</li>
+      <li>タグ自動推論 (高タンパク / 脂質高め / 朝食 等)</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h3>筋トレ <span class="tag">/workouts/new</span></h3>
+    <ul>
+      <li>セッションタイマー</li>
+      <li>後日記録の日時指定</li>
+      <li>テンプレから開始 (胸の日 / 脚の日 等)</li>
+      <li>種目を追加 → セット (重量×回数) を入力</li>
+      <li>81 種目 + 部位フィルタ + カスタム種目</li>
+      <li>過去の重量を参考表示</li>
+      <li>セッション完了で MET 法による消費 kcal 概算</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h3>有酸素 <span class="tag">/cardio/new</span></h3>
+    <ul>
+      <li>後日記録の終了日時指定</li>
+      <li>種目 (ラン/ウォーク/バイク/その他) + 強度 (低/中/高)</li>
+      <li>時間 + 距離 → ペース自動算出</li>
+      <li>体重と強度から消費 kcal を MET 法で概算</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h3>体組成 <span class="tag">/body, /body/new</span></h3>
+    <ul>
+      <li>体重 / 体脂肪率 / 筋肉量 / 内臓脂肪 / BMR / BMI</li>
+      <li>体組成計の写真 → 数値 OCR (Gemini)</li>
+      <li>体重・体脂肪率の sparkline</li>
+      <li>記録履歴 20 件</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h3>履歴 <span class="tag">/history</span></h3>
+    <ul>
+      <li>食事 + 運動 + 体組成を時系列で統合表示</li>
+      <li>詳細シート (タップで開く)</li>
+      <li>削除可能</li>
+      <li>直近 200 件 (食事) / 100 件 (運動 / 体組成)</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h3>テンプレ管理</h3>
+    <ul>
+      <li>食事テンプレ <code>/templates</code>: 定常分 + 当日スキップ</li>
+      <li>運動テンプレ <code>/workouts/templates</code>: 種目 + セット (重量×回数) のひな型</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h3>設定 <span class="tag">/settings</span></h3>
+    <ul>
+      <li>プロフィール (性別 / 年齢 / 身長 / 活動量 / 目標)</li>
+      <li>目標 kcal + PFC の自動算出 (Mifflin-St Jeor)</li>
+      <li>AI に目標相談 (チャット形式)</li>
+      <li>テーマ切替 (Light / Dark / System)</li>
+      <li>テンプレ管理への導線</li>
+      <li>サインアウト</li>
+      <li>記録を全て削除 (危険ゾーン)</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<h2>7. 技術スタック (参考)</h2>
+
+<table>
+<tr><th>領域</th><th>採用</th></tr>
+<tr><td>Frontend</td><td>Next.js 16 (App Router + Server Components + Turbopack)</td></tr>
+<tr><td>Auth + DB</td><td>Supabase (Postgres + RLS + 認証)</td></tr>
+<tr><td>AI</td><td>Google Gemini 3.1 Flash Lite (画像解析・コーチング・フィードバック)</td></tr>
+<tr><td>Hosting</td><td>Vercel</td></tr>
+<tr><td>Styling</td><td>素の CSS Variables (フレームワークなし)</td></tr>
+<tr><td>State</td><td>React useState + Server Component fetch</td></tr>
+</table>
+
+<!-- ============================================================ -->
+<h2>8. ロードマップ (ランディングに匂わせる用)</h2>
+
+<ul>
+  <li><strong>Beta v.1 (現在):</strong> 食事 / 運動 / 体組成のシンプル統合 + AI 記録 / フィードバック。</li>
+  <li><strong>v.2:</strong> PWA 化 (ホーム画面追加 + オフライン) / CSV エクスポート / 触覚フィードバック。</li>
+  <li><strong>v.3:</strong> Strava 連携 (ラン / バイク自動取り込み) / Apple ヘルスケア XML インポート。</li>
+  <li><strong>v.4:</strong> Capacitor 化で Apple ヘルスケア / Google Health Connect ネイティブ連携。</li>
+</ul>
+
+<!-- ============================================================ -->
+<h2>9. ランディング素材として欲しいもの</h2>
+
+<ul>
+  <li>ホーム画面のスクリーンショット (Light / Dark)</li>
+  <li>食事写真解析の Before/After</li>
+  <li>AI フィードバックの実例 (ダミーで OK)</li>
+  <li>ロゴ画像 (現状はテキストのみ。シンボル含むワードマーク希望)</li>
+  <li>ファビコン / PWA アイコン (192px / 512px)</li>
+  <li>OGP 画像 (1200×630)</li>
+</ul>
+
+<footer class="meta" style="margin-top: 40px; border-top: 1px solid #ddd; padding-top: 12px;">
+  Generated for Claude Design handoff &middot; MuveEats Beta v.1
+</footer>
+
+</body>
+</html>

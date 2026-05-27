@@ -31,6 +31,8 @@ export default function NewCardioPage() {
   const [bodyWeight, setBodyWeight] = useState<number | null>(null);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  // 後日記録 (任意): null なら現在時刻を終了時刻として処理する
+  const [endedAtOverride, setEndedAtOverride] = useState<string | null>(null);
 
   useEffect(() => {
     (async () => {
@@ -78,13 +80,13 @@ export default function NewCardioPage() {
       const { data: auth } = await supabase.auth.getUser();
       if (!auth.user) throw new Error("サインインが必要です");
 
-      const now = new Date();
-      const startedAt = new Date(now.getTime() - Number(duration) * 60000);
+      const endedAt = endedAtOverride ? new Date(endedAtOverride) : new Date();
+      const startedAt = new Date(endedAt.getTime() - Number(duration) * 60000);
 
       const { error } = await supabase.from("workouts").insert({
         user_id: auth.user.id,
         started_at: startedAt.toISOString(),
-        ended_at: now.toISOString(),
+        ended_at: endedAt.toISOString(),
         duration_min: Number(duration),
         kind: "cardio",
         cardio_type: type,
@@ -108,6 +110,8 @@ export default function NewCardioPage() {
     <div>
       <h1 className="page-title">有酸素</h1>
       <p className="page-subtitle">時間 / 距離 / 強度を入力 → MET 法で消費 kcal を概算</p>
+
+      <CardioBackdateField value={endedAtOverride} onChange={setEndedAtOverride} />
 
       <div className="section-title">種目</div>
       <div
@@ -317,6 +321,76 @@ function CalcCell({
           {unit}
         </span>
       </div>
+    </div>
+  );
+}
+
+function CardioBackdateField({
+  value,
+  onChange,
+}: {
+  value: string | null;
+  onChange: (v: string | null) => void;
+}) {
+  const [open, setOpen] = useState(Boolean(value));
+  if (!open) {
+    return (
+      <button
+        type="button"
+        onClick={() => setOpen(true)}
+        style={{
+          background: "transparent",
+          border: 0,
+          color: "var(--muted)",
+          fontSize: 11,
+          padding: "4px 0",
+          cursor: "pointer",
+          fontFamily: "inherit",
+          marginBottom: 12,
+          display: "inline-flex",
+          alignItems: "center",
+          gap: 4,
+        }}
+      >
+        <Icon name="clock" size="sm" />
+        後日記録する場合は終了日時を指定
+      </button>
+    );
+  }
+  const now = new Date();
+  now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+  return (
+    <div
+      style={{
+        background: "var(--surface-2)",
+        border: "1px solid var(--line)",
+        borderRadius: 8,
+        padding: "8px 10px",
+        marginBottom: 14,
+        display: "flex",
+        alignItems: "center",
+        gap: 8,
+      }}
+    >
+      <Icon name="clock" size="sm" />
+      <input
+        type="datetime-local"
+        className="input"
+        value={value ?? now.toISOString().slice(0, 16)}
+        onChange={(e) => onChange(e.target.value)}
+        style={{ flex: 1, padding: "4px 6px", fontSize: 13 }}
+      />
+      <button
+        type="button"
+        onClick={() => {
+          onChange(null);
+          setOpen(false);
+        }}
+        className="header-action"
+        aria-label="後日記録を解除"
+      >
+        <Icon name="close" size="sm" />
+      </button>
     </div>
   );
 }

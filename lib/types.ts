@@ -172,3 +172,33 @@ export type Exercise = {
   met: number; // 単発種目の代表 MET
   custom?: boolean; // ユーザーが作ったカスタム種目
 };
+
+/** strength テンプレの payload。種目ごとに任意数のセットを並べる。 */
+export type StrengthTemplatePayload = {
+  exercises: {
+    exercise_id: string;
+    exercise_name: string;
+    sets: { weight_kg: number | null; reps: number | null }[];
+  }[];
+};
+
+/** cardio テンプレの payload。 */
+export type CardioTemplatePayload = {
+  cardio_type: CardioType;
+  title: string | null;
+  duration_min: number | null;
+  distance_km: number | null;
+  avg_hr: number | null;
+  intensity: Intensity | null;
+};
+
+export type WorkoutTemplate = {
+  id: string;
+  user_id: string;
+  label: string;
+  kind: WorkoutKind;
+  payload: StrengthTemplatePayload | CardioTemplatePayload;
+  enabled: boolean;
+  sort_order: number;
+  created_at: string;
+};

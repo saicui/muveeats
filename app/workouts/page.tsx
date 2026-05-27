@@ -56,6 +56,16 @@ export default async function WorkoutsPage() {
         </div>
       </div>
       <p className="page-subtitle">セッション履歴</p>
+      <div style={{ marginTop: 6, marginBottom: 12 }}>
+        <Link
+          href="/workouts/templates"
+          className="btn"
+          style={{ fontSize: 12, padding: "6px 10px" }}
+        >
+          <Icon name="edit" size="sm" />
+          テンプレを管理 / 開始
+        </Link>
+      </div>
 
       {connError && (
         <div

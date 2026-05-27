@@ -223,6 +223,33 @@ create policy "meal_template_skips_owner_all" on public.meal_template_skips
   for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
 
 -- ====================================================================
+-- workout_templates (筋トレ / 有酸素のテンプレ)
+-- payload は kind に応じて以下を格納:
+--   strength: { exercises: [{ exercise_id, exercise_name, sets: [{ weight_kg, reps }] }] }
+--   cardio:   { cardio_type, duration_min, distance_km, avg_hr, intensity, title }
+-- ====================================================================
+create table if not exists public.workout_templates (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references auth.users(id) on delete cascade,
+  label text not null,
+  kind text not null check (kind in ('strength','cardio')),
+  payload jsonb not null default '{}'::jsonb,
+  enabled boolean not null default true,
+  sort_order integer not null default 0,
+  created_at timestamptz not null default now()
+);
+
+create index if not exists workout_templates_user_idx
+  on public.workout_templates (user_id, sort_order);
+
+grant select, insert, update, delete on public.workout_templates to anon, authenticated;
+alter table public.workout_templates enable row level security;
+
+drop policy if exists "workout_templates_owner_all" on public.workout_templates;
+create policy "workout_templates_owner_all" on public.workout_templates
+  for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
+
+-- ====================================================================
 -- body_records (体組成)
 -- ====================================================================
 create table if not exists public.body_records (

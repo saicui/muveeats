@@ -40,6 +40,49 @@ export function SettingsClient({
   const [chat, setChat] = useState<ChatTurn[]>([]);
   const [message, setMessage] = useState("");
   const [askingAi, setAskingAi] = useState(false);
+  const [purging, setPurging] = useState(false);
+  const [purgeMsg, setPurgeMsg] = useState<string | null>(null);
+
+  async function purgeAll() {
+    const confirmText = "DELETE";
+    const input = window.prompt(
+      `この操作は全データ (食事 / 運動 / 体組成 / テンプレ) を完全に削除します。\n復元できません。\n本当に実行する場合は ${confirmText} と入力してください。`,
+    );
+    if (input !== confirmText) {
+      setPurgeMsg("キャンセルしました");
+      return;
+    }
+    setPurging(true);
+    setPurgeMsg(null);
+    setSaveError(null);
+    try {
+      const supabase = createClient();
+      const { data: auth } = await supabase.auth.getUser();
+      if (!auth.user) throw new Error("サインインが必要です");
+      const uid = auth.user.id;
+      // exercise_sets は workouts の cascade で消えるが念のため明示。
+      // meal_template_skips は meal_templates の cascade。
+      const tables = [
+        "exercise_sets",
+        "meal_template_skips",
+        "meals",
+        "workouts",
+        "body_records",
+        "meal_templates",
+        "workout_templates",
+      ] as const;
+      for (const t of tables) {
+        const { error } = await supabase.from(t).delete().eq("user_id", uid);
+        if (error) throw new Error(`${t}: ${error.message}`);
+      }
+      setPurgeMsg("全データを削除しました");
+      router.refresh();
+    } catch (e) {
+      setSaveError(e instanceof Error ? e.message : String(e));
+    } finally {
+      setPurging(false);
+    }
+  }
 
   function patch<K extends keyof Profile>(k: K, v: Profile[K] | null) {
     setProfile((p) => ({ ...p, [k]: v }));
@@ -436,13 +479,28 @@ export function SettingsClient({
         className="btn btn-block"
         style={{
           justifyContent: "space-between",
+          marginBottom: 8,
+          textDecoration: "none",
+        }}
+      >
+        <span style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
+          <Icon name="fork" size="sm" />
+          食事テンプレを管理
+        </span>
+        <Icon name="chevron-right" size="sm" />
+      </a>
+      <a
+        href="/workouts/templates"
+        className="btn btn-block"
+        style={{
+          justifyContent: "space-between",
           marginBottom: 12,
           textDecoration: "none",
         }}
       >
         <span style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
-          <Icon name="edit" size="sm" />
-          食事テンプレを管理
+          <Icon name="dumbbell" size="sm" />
+          運動テンプレを管理
         </span>
         <Icon name="chevron-right" size="sm" />
       </a>
@@ -452,6 +510,61 @@ export function SettingsClient({
           サインアウト
         </button>
       </form>
+
+      <div
+        style={{
+          marginTop: 24,
+          paddingTop: 18,
+          borderTop: "1px solid var(--line)",
+        }}
+      >
+        <div
+          style={{
+            fontSize: 10,
+            color: "var(--muted)",
+            textTransform: "uppercase",
+            letterSpacing: "0.1em",
+            fontWeight: 600,
+            marginBottom: 8,
+          }}
+        >
+          危険ゾーン
+        </div>
+        <button
+          type="button"
+          onClick={purgeAll}
+          disabled={purging}
+          className="btn btn-block"
+          style={{
+            color: "var(--danger)",
+            borderColor: "var(--danger)",
+            background: "transparent",
+            justifyContent: "center",
+          }}
+        >
+          {purging ? "削除中…" : "記録を全て削除"}
+        </button>
+        <div
+          style={{
+            fontSize: 11,
+            color: "var(--muted)",
+            marginTop: 6,
+          }}
+        >
+          食事 / 運動 / 体組成 / テンプレすべてを削除します。アカウントは残ります。
+        </div>
+        {purgeMsg && (
+          <div
+            style={{
+              marginTop: 8,
+              fontSize: 12,
+              color: purgeMsg.includes("削除しました") ? "var(--eat)" : "var(--muted)",
+            }}
+          >
+            {purgeMsg}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

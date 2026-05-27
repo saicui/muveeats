@@ -6,7 +6,7 @@
  *         <Icon name="search" size="sm" />
  */
 
-type IconName =
+export type IconName =
   | "menu"
   | "close"
   | "plus"

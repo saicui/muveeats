@@ -8,7 +8,7 @@ import { Icon } from "@/app/icons";
 import { LoadingBar, Spinner } from "@/app/components/loading";
 import { TAG_CATEGORIES } from "@/lib/tags";
 import { inferAllTags, inferMacroTags } from "@/lib/auto-tags";
-import type { ChainItem, AnalysisResult } from "@/lib/types";
+import type { ChainItem, AnalysisResult, MealTemplate } from "@/lib/types";
 
 type Mode = "search" | "photo" | "manual";
 
@@ -37,6 +37,62 @@ export default function NewMealPage() {
   const [eatenAt, setEatenAt] = useState(() => isoLocal(new Date()));
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [templates, setTemplates] = useState<MealTemplate[]>([]);
+  const [showTemplatePicker, setShowTemplatePicker] = useState(false);
+
+  // 食事テンプレ一覧の取得
+  useEffect(() => {
+    (async () => {
+      const supabase = createClient();
+      const { data } = await supabase
+        .from("meal_templates")
+        .select("*")
+        .eq("enabled", true)
+        .order("sort_order");
+      setTemplates((data ?? []) as MealTemplate[]);
+    })();
+  }, []);
+
+  function pickTemplate(t: MealTemplate) {
+    const inferred = inferAllTags({
+      nutrition: {
+        name: t.name,
+        calories: t.calories,
+        protein_g: t.protein_g,
+        fat_g: t.fat_g,
+        carbs_g: t.carbs_g,
+      },
+      source: t.chain_id ? "chain" : "manual",
+    });
+    const combined = Array.from(new Set([...(t.tags ?? []), ...inferred]));
+    setSelected({
+      source: t.chain_id ? "chain" : "manual",
+      name: t.name,
+      size: t.size ? [t.size] : [],
+      chain_id: t.chain_id,
+      chain_name: t.chain_name,
+      item_id: t.item_id,
+      calories: t.calories,
+      protein_g: t.protein_g,
+      fat_g: t.fat_g,
+      carbs_g: t.carbs_g,
+      ai_confidence: null,
+      ai_note: null,
+      autoGenreTags: [],
+      aiSuggestedTags: combined,
+    });
+    setTags(new Set(combined));
+    // default_time があれば今日のその時刻を eatenAt に
+    if (t.default_time) {
+      const [hh, mm] = t.default_time.split(":").map(Number);
+      if (!isNaN(hh) && !isNaN(mm)) {
+        const d = new Date();
+        d.setHours(hh, mm, 0, 0);
+        setEatenAt(isoLocal(d));
+      }
+    }
+    setShowTemplatePicker(false);
+  }
 
   function pickChain(item: ChainItem) {
     const auto = [...item.chain_genre];
@@ -198,11 +254,178 @@ export default function NewMealPage() {
       <h1 className="page-title">食事を記録</h1>
       <p className="page-subtitle">チェーン店検索 / 写真解析 / 手動入力</p>
 
+      <MealBackdateField value={eatenAt} onChange={setEatenAt} />
+
+      {templates.length > 0 && (
+        <button
+          type="button"
+          className="btn btn-block"
+          onClick={() => setShowTemplatePicker(true)}
+          style={{
+            marginBottom: 12,
+            justifyContent: "center",
+            background: "var(--surface)",
+          }}
+        >
+          <Icon name="grid" size="sm" />
+          テンプレから記録
+        </button>
+      )}
+
       <ModeTabs mode={mode} setMode={setMode} />
 
       {mode === "search" && <ChainSearchStep onPick={pickChain} />}
       {mode === "photo" && <PhotoStep onResult={pickAnalysis} />}
       {mode === "manual" && <ManualStep onSubmit={pickManual} />}
+
+      {showTemplatePicker && (
+        <MealTemplatePickSheet
+          templates={templates}
+          onPick={pickTemplate}
+          onClose={() => setShowTemplatePicker(false)}
+        />
+      )}
+    </div>
+  );
+}
+
+// ============================================================
+// 後日記録の日時フィールド
+// ============================================================
+function MealBackdateField({
+  value,
+  onChange,
+}: {
+  value: string;
+  onChange: (v: string) => void;
+}) {
+  const now = new Date();
+  const valueDate = new Date(value);
+  const isNow = Math.abs(valueDate.getTime() - now.getTime()) < 60_000;
+  const [open, setOpen] = useState(!isNow);
+  if (!open) {
+    return (
+      <button
+        type="button"
+        onClick={() => setOpen(true)}
+        style={{
+          background: "transparent",
+          border: 0,
+          color: "var(--muted)",
+          fontSize: 11,
+          padding: "4px 0",
+          cursor: "pointer",
+          fontFamily: "inherit",
+          marginBottom: 8,
+          display: "inline-flex",
+          alignItems: "center",
+          gap: 4,
+        }}
+      >
+        <Icon name="clock" size="sm" />
+        後日記録する場合は日時を指定
+      </button>
+    );
+  }
+  return (
+    <div
+      style={{
+        background: "var(--surface-2)",
+        border: "1px solid var(--line)",
+        borderRadius: 8,
+        padding: "8px 10px",
+        marginBottom: 12,
+        display: "flex",
+        alignItems: "center",
+        gap: 8,
+      }}
+    >
+      <Icon name="clock" size="sm" />
+      <input
+        type="datetime-local"
+        className="input"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        style={{ flex: 1, padding: "4px 6px", fontSize: 13 }}
+      />
+      <button
+        type="button"
+        onClick={() => {
+          onChange(isoLocal(new Date()));
+          setOpen(false);
+        }}
+        className="header-action"
+        aria-label="現在時刻に戻す"
+      >
+        <Icon name="close" size="sm" />
+      </button>
+    </div>
+  );
+}
+
+// ============================================================
+// 食事テンプレ選択シート
+// ============================================================
+function MealTemplatePickSheet({
+  templates,
+  onPick,
+  onClose,
+}: {
+  templates: MealTemplate[];
+  onPick: (t: MealTemplate) => void;
+  onClose: () => void;
+}) {
+  return (
+    <div className="sheet-backdrop" onClick={onClose}>
+      <div
+        className="sheet"
+        onClick={(e) => e.stopPropagation()}
+        style={{ maxHeight: "70dvh" }}
+      >
+        <div className="sheet-handle" />
+        <div
+          style={{
+            padding: "8px 18px 20px",
+            display: "flex",
+            flexDirection: "column",
+            gap: 8,
+          }}
+        >
+          <div style={{ fontSize: 16, fontWeight: 700, marginBottom: 6 }}>
+            テンプレから記録
+          </div>
+          {templates.map((t) => (
+            <button
+              key={t.id}
+              type="button"
+              onClick={() => onPick(t)}
+              style={{
+                padding: "12px 14px",
+                border: "1px solid var(--line)",
+                borderRadius: 10,
+                background: "var(--surface)",
+                cursor: "pointer",
+                textAlign: "left",
+                fontFamily: "inherit",
+                color: "var(--ink)",
+              }}
+            >
+              <div style={{ fontSize: 13, fontWeight: 600 }}>{t.label}</div>
+              <div
+                style={{
+                  fontSize: 11,
+                  color: "var(--muted)",
+                  marginTop: 2,
+                }}
+              >
+                {t.name}
+                {t.default_time ? ` · ${t.default_time}` : ""}
+                {t.calories ? ` · ${Math.round(t.calories)} kcal` : ""}
+              </div>
+            </button>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
@@ -478,6 +701,7 @@ function ChainSearchStep({ onPick }: { onPick: (item: ChainItem) => void }) {
 function PhotoStep({ onResult }: { onResult: (r: AnalysisResult) => void }) {
   const [file, setFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [note, setNote] = useState("");
   const [analyzing, setAnalyzing] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -495,6 +719,7 @@ function PhotoStep({ onResult }: { onResult: (r: AnalysisResult) => void }) {
     try {
       const fd = new FormData();
       fd.append("image", file);
+      if (note.trim()) fd.append("note", note.trim());
       const res = await fetch("/api/analyze-meal", { method: "POST", body: fd });
       const json = await res.json();
       if (!res.ok) throw new Error(json.error || "解析に失敗しました");
@@ -551,6 +776,39 @@ function PhotoStep({ onResult }: { onResult: (r: AnalysisResult) => void }) {
             </div>
           </>
         )}
+      </label>
+
+      <label
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: 4,
+          marginBottom: 12,
+        }}
+      >
+        <span
+          style={{
+            fontSize: 10,
+            textTransform: "uppercase",
+            letterSpacing: "0.1em",
+            color: "var(--muted)",
+            fontWeight: 600,
+          }}
+        >
+          補足 (任意)
+        </span>
+        <textarea
+          className="input"
+          placeholder="例: ライス少なめ / 親子丼の特盛 / ドレッシング別添"
+          value={note}
+          onChange={(e) => setNote(e.target.value)}
+          rows={2}
+          maxLength={200}
+          style={{ resize: "vertical", fontFamily: "inherit" }}
+        />
+        <span style={{ fontSize: 10, color: "var(--muted)" }}>
+          量や調理法のヒントを書くと精度が上がります ({note.length}/200)
+        </span>
       </label>
 
       <button

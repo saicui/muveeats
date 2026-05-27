@@ -5,6 +5,7 @@ import "./globals.css";
 import { createClient } from "@/lib/supabase/server";
 import { Icon } from "./icons";
 import { THEME_BOOT_SCRIPT } from "./theme";
+import { BottomNav } from "./bottom-nav";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -84,37 +85,6 @@ function AppHeader({ email }: { email: string }) {
         </form>
       </div>
     </header>
-  );
-}
-
-function BottomNav() {
-  return (
-    <nav className="bottom-nav">
-      <Link href="/" className="active">
-        <Icon name="home" />
-        ホーム
-      </Link>
-      <Link href="/meals/new">
-        <Icon name="fork" />
-        食事
-      </Link>
-      <Link href="/workouts">
-        <Icon name="dumbbell" />
-        運動
-      </Link>
-      <Link href="/body">
-        <Icon name="scale" />
-        体組成
-      </Link>
-      <Link href="/history">
-        <Icon name="book" />
-        履歴
-      </Link>
-      <Link href="/settings">
-        <Icon name="settings" />
-        設定
-      </Link>
-    </nav>
   );
 }
 

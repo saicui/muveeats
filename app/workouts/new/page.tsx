@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { Icon } from "@/app/icons";
 import {
@@ -11,10 +11,15 @@ import {
   searchExercises,
   matchExerciseByName,
   buildCustomExercise,
+  findExercise,
 } from "@/lib/exercises";
 import { estimateStrengthKcal } from "@/lib/met";
 import { LoadingBar, Spinner } from "@/app/components/loading";
-import type { Exercise } from "@/lib/types";
+import type {
+  Exercise,
+  StrengthTemplatePayload,
+  WorkoutTemplate,
+} from "@/lib/types";
 
 type SetInput = {
   weight: string;
@@ -30,15 +35,78 @@ type EntryBlock = {
 
 export default function NewWorkoutPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const templateId = searchParams.get("template");
   const [title, setTitle] = useState("");
   const [blocks, setBlocks] = useState<EntryBlock[]>([]);
   const [showPicker, setShowPicker] = useState(false);
+  const [showTemplatePicker, setShowTemplatePicker] = useState(false);
+  const [templates, setTemplates] = useState<WorkoutTemplate[]>([]);
   const [bodyWeight, setBodyWeight] = useState<number | null>(null);
   const [frequent, setFrequent] = useState<{ id: string; count: number }[]>([]);
   const startRef = useRef<number>(Date.now());
+  // 後日記録モード: 指定があれば finish() でこの日時を使う
+  const [recordOverride, setRecordOverride] = useState<string | null>(null);
   const [, force] = useState(0);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const templateLoadedRef = useRef(false);
+
+  // テンプレ一覧の取得 (ボタンから選択するため & テンプレ指定時にも使う)
+  useEffect(() => {
+    (async () => {
+      const supabase = createClient();
+      const { data } = await supabase
+        .from("workout_templates")
+        .select("*")
+        .eq("kind", "strength")
+        .order("sort_order");
+      setTemplates((data ?? []) as WorkoutTemplate[]);
+    })();
+  }, []);
+
+  // テンプレを現在のセッションに展開。?template= 指定時とシート選択時の両方から呼ぶ。
+  function applyTemplate(t: WorkoutTemplate) {
+    if (t.kind !== "strength") return;
+    setTitle(t.label);
+    const payload = t.payload as StrengthTemplatePayload;
+    const newBlocks: EntryBlock[] = payload.exercises.map((ex) => ({
+      exercise:
+        findExercise(ex.exercise_id) ?? buildCustomExercise(ex.exercise_name),
+      sets: ex.sets.map((s) => ({
+        weight: s.weight_kg != null ? String(s.weight_kg) : "",
+        reps: s.reps != null ? String(s.reps) : "",
+        done: false,
+      })),
+    }));
+    setBlocks(newBlocks);
+    for (const ex of payload.exercises) {
+      void loadPrev(ex.exercise_id).then((prev) => {
+        setBlocks((cur) =>
+          cur.map((b) =>
+            b.exercise.id === ex.exercise_id && !b.prev ? { ...b, prev } : b,
+          ),
+        );
+      });
+    }
+    setShowTemplatePicker(false);
+  }
+
+  // ?template=<id> 指定時の自動展開 (起動 1 度だけ、テンプレ一覧と独立に取得)
+  useEffect(() => {
+    if (!templateId || templateLoadedRef.current) return;
+    templateLoadedRef.current = true;
+    (async () => {
+      const supabase = createClient();
+      const { data } = await supabase
+        .from("workout_templates")
+        .select("*")
+        .eq("id", templateId)
+        .single();
+      if (data) applyTemplate(data as WorkoutTemplate);
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [templateId]);
 
   // 経過時間
   useEffect(() => {
@@ -108,8 +176,14 @@ export default function NewWorkoutPage() {
       const { data: auth } = await supabase.auth.getUser();
       if (!auth.user) throw new Error("サインインが必要です");
 
-      const startedAt = new Date(startRef.current);
-      const endedAt = new Date();
+      // 後日記録: recordOverride が指定されていればそれを開始時刻に、
+      // 所要時間は (現在 - 元の startRef) で記録。記録時刻 = 指定日時。
+      const startedAt = recordOverride
+        ? new Date(recordOverride)
+        : new Date(startRef.current);
+      const endedAt = recordOverride
+        ? new Date(startedAt.getTime() + (Date.now() - startRef.current))
+        : new Date();
       const durationMin = Math.max(
         1,
         Math.round((endedAt.getTime() - startedAt.getTime()) / 60000),
@@ -144,6 +218,7 @@ export default function NewWorkoutPage() {
         set_index: number;
         weight_kg: number | null;
         reps: number | null;
+        recorded_at?: string;
       }[] = [];
 
       let setIndex = 0;
@@ -156,6 +231,8 @@ export default function NewWorkoutPage() {
             user_id: auth.user.id,
             exercise_id: b.exercise.id,
             exercise_name: b.exercise.name,
+            // 後日記録の場合は recorded_at をセッション時刻に揃える (default は now())
+            ...(recordOverride ? { recorded_at: startedAt.toISOString() } : {}),
             set_index: setIndex,
             weight_kg: s.weight ? Number(s.weight) : null,
             reps: s.reps ? Number(s.reps) : null,
@@ -225,6 +302,9 @@ export default function NewWorkoutPage() {
         </div>
       </div>
 
+      {/* 後日記録 (任意) */}
+      <BackdateField value={recordOverride} onChange={setRecordOverride} />
+
       {blocks.map((b, i) => (
         <ExerciseBlock
           key={`${b.exercise.id}-${i}`}
@@ -235,15 +315,28 @@ export default function NewWorkoutPage() {
         />
       ))}
 
-      <button
-        type="button"
-        className="btn btn-block"
-        onClick={() => setShowPicker(true)}
-        style={{ borderStyle: "dashed", padding: 14, marginTop: blocks.length ? 0 : 8 }}
-      >
-        <Icon name="plus" size="sm" />
-        種目を追加
-      </button>
+      <div style={{ display: "flex", gap: 8, marginTop: blocks.length ? 0 : 8 }}>
+        <button
+          type="button"
+          className="btn btn-block"
+          onClick={() => setShowPicker(true)}
+          style={{ borderStyle: "dashed", padding: 14 }}
+        >
+          <Icon name="plus" size="sm" />
+          種目を追加
+        </button>
+        {templates.length > 0 && (
+          <button
+            type="button"
+            className="btn btn-block"
+            onClick={() => setShowTemplatePicker(true)}
+            style={{ padding: 14, flexShrink: 0, flexBasis: 140 }}
+          >
+            <Icon name="grid" size="sm" />
+            テンプレ
+          </button>
+        )}
+      </div>
 
       {error && (
         <div
@@ -292,6 +385,175 @@ export default function NewWorkoutPage() {
           frequentIds={frequent.map((f) => f.id)}
         />
       )}
+
+      {showTemplatePicker && (
+        <TemplatePickSheet
+          templates={templates}
+          onPick={applyTemplate}
+          onClose={() => setShowTemplatePicker(false)}
+        />
+      )}
+    </div>
+  );
+}
+
+// ============================================================
+// 後日記録の日時フィールド
+// ============================================================
+function BackdateField({
+  value,
+  onChange,
+}: {
+  value: string | null;
+  onChange: (v: string | null) => void;
+}) {
+  const [open, setOpen] = useState(Boolean(value));
+  if (!open) {
+    return (
+      <button
+        type="button"
+        onClick={() => setOpen(true)}
+        style={{
+          background: "transparent",
+          border: 0,
+          color: "var(--muted)",
+          fontSize: 11,
+          padding: "4px 0",
+          cursor: "pointer",
+          fontFamily: "inherit",
+          marginBottom: 8,
+          display: "inline-flex",
+          alignItems: "center",
+          gap: 4,
+        }}
+      >
+        <Icon name="clock" size="sm" />
+        後日記録する場合は日時を指定
+      </button>
+    );
+  }
+  return (
+    <div
+      style={{
+        background: "var(--surface-2)",
+        border: "1px solid var(--line)",
+        borderRadius: 8,
+        padding: "8px 10px",
+        marginBottom: 10,
+        display: "flex",
+        alignItems: "center",
+        gap: 8,
+      }}
+    >
+      <Icon name="clock" size="sm" />
+      <input
+        type="datetime-local"
+        className="input"
+        value={value ?? localNow()}
+        onChange={(e) => onChange(e.target.value)}
+        style={{ flex: 1, padding: "4px 6px", fontSize: 13 }}
+      />
+      <button
+        type="button"
+        onClick={() => {
+          onChange(null);
+          setOpen(false);
+        }}
+        className="header-action"
+        aria-label="後日記録を解除"
+      >
+        <Icon name="close" size="sm" />
+      </button>
+    </div>
+  );
+}
+
+function localNow(): string {
+  const d = new Date();
+  d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
+  return d.toISOString().slice(0, 16);
+}
+
+// ============================================================
+// テンプレ選択シート
+// ============================================================
+function TemplatePickSheet({
+  templates,
+  onPick,
+  onClose,
+}: {
+  templates: WorkoutTemplate[];
+  onPick: (t: WorkoutTemplate) => void;
+  onClose: () => void;
+}) {
+  return (
+    <div className="sheet-backdrop" onClick={onClose}>
+      <div
+        className="sheet"
+        onClick={(e) => e.stopPropagation()}
+        style={{ maxHeight: "70dvh" }}
+      >
+        <div className="sheet-handle" />
+        <div
+          style={{
+            padding: "8px 18px 20px",
+            display: "flex",
+            flexDirection: "column",
+            gap: 8,
+          }}
+        >
+          <div style={{ fontSize: 16, fontWeight: 700, marginBottom: 6 }}>
+            テンプレから開始
+          </div>
+          {templates.length === 0 ? (
+            <div style={{ fontSize: 12, color: "var(--muted)" }}>
+              まだテンプレがありません
+            </div>
+          ) : (
+            templates.map((t) => {
+              const p = t.payload as StrengthTemplatePayload;
+              const summary = p.exercises
+                .map((e) => e.exercise_name)
+                .slice(0, 3)
+                .join("・");
+              const more =
+                p.exercises.length > 3 ? ` 他${p.exercises.length - 3}` : "";
+              return (
+                <button
+                  key={t.id}
+                  type="button"
+                  onClick={() => onPick(t)}
+                  style={{
+                    padding: "12px 14px",
+                    border: "1px solid var(--line)",
+                    borderRadius: 10,
+                    background: "var(--surface)",
+                    cursor: "pointer",
+                    textAlign: "left",
+                    fontFamily: "inherit",
+                    color: "var(--ink)",
+                  }}
+                >
+                  <div style={{ fontSize: 13, fontWeight: 600 }}>{t.label}</div>
+                  <div
+                    style={{
+                      fontSize: 11,
+                      color: "var(--muted)",
+                      marginTop: 2,
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    {summary || "(種目なし)"}
+                    {more}
+                  </div>
+                </button>
+              );
+            })
+          )}
+        </div>
+      </div>
     </div>
   );
 }
@@ -518,7 +780,7 @@ function ExercisePicker({
       <div
         className="sheet"
         onClick={(e) => e.stopPropagation()}
-        style={{ maxHeight: "92dvh" }}
+        style={{ height: "92dvh" }}
       >
         <div className="sheet-handle" />
         <div
