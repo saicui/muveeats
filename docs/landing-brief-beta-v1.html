@@ -42,9 +42,9 @@
   <p class="quote">"3つのアプリで管理するのをやめた。書く・撮る・選ぶ、どれでも 5 秒。"</p>
 </div>
 
-<h3>競合との違い</h3>
+<h3>このプロダクトの立ち位置</h3>
 <ul>
-  <li><strong>記録の分散をやめる</strong>: あすけん (食事) / FitOn (運動) / Apple ヘルスケア (体組成) を 3 つに分けず、1 つにまとめる。</li>
+  <li><strong>記録の分散をやめる</strong>: 食事記録アプリ・運動記録アプリ・体組成アプリを別々に開かず、1 つにまとめる。</li>
   <li><strong>AI を「相談相手」ではなく「入力補助」に</strong>: 写真 → 自動で栄養計算、体組成計の表示画面 → 自動で数値抽出。</li>
   <li><strong>テンプレ × クイック追加</strong>: 毎日同じ朝食 / 胸の日 などをワンタップ。継続のための摩擦を最小化。</li>
 </ul>
@@ -56,10 +56,10 @@
 <thead><tr><th>#</th><th>強み</th><th>具体</th></tr></thead>
 <tbody>
 <tr><td>1</td><td>シンプルに 3 つを 1 つに</td><td>食事 / 運動 (筋トレ + 有酸素) / 体組成を 1 画面のホームで一望。</td></tr>
-<tr><td>2</td><td>AI による記録自動化</td><td>食事写真 → Gemini が栄養素を推定。体組成計の写真 → 数値 OCR。補足文 (「ライス少なめ」等) で精度向上。</td></tr>
+<tr><td>2</td><td>AI による記録自動化</td><td>食事写真 → AI が栄養素を推定。体組成計の写真 → 数値 OCR。補足文 (「ライス少なめ」等) で精度向上。</td></tr>
 <tr><td>3</td><td>AI フィードバック</td><td>直近 7 日の食事 + 運動 + 体組成 + 目標を集約 → 良い点 / 改善 / 明日のアクションを 1 タップで生成。</td></tr>
 <tr><td>4</td><td>テンプレで継続摩擦ゼロ</td><td>「毎朝のオートミール」「胸の日」を 1 タップ記録。後日記録もサポート。</td></tr>
-<tr><td>5</td><td>32 チェーン店 + 約2000品目</td><td>マック・スタバ・吉野家など主要チェーン店の栄養情報を内蔵 (オフライン検索)。</td></tr>
+<tr><td>5</td><td>主要チェーン店 + 多数の品目</td><td>国内の主要外食・カフェ・牛丼・ピザ・コンビニなどの栄養情報を内蔵 (オフライン検索)。</td></tr>
 <tr><td>6</td><td>純粋にWeb</td><td>インストール不要。スマホでもデスクトップでも同じ URL。ホーム画面追加で PWA 風に。</td></tr>
 </tbody>
 </table>
@@ -71,7 +71,7 @@
     <h3>プライマリ</h3>
     <ul>
       <li>20–40 代の<strong>自炊 × ジム勢</strong>。減量 / 筋肥大の目標がある人。</li>
-      <li>あすけん有料に課金するまでではない、でも体重と食事は記録したい層。</li>
+      <li>有料の食事記録アプリに課金するまでではない、でも体重と食事は記録したい層。</li>
     </ul>
   </div>
   <div class="card">
@@ -90,12 +90,12 @@
 <thead><tr><th>順</th><th>セクション</th><th>役割 / コンテンツ案</th></tr></thead>
 <tbody>
 <tr><td>1</td><td>Hero</td><td>キャッチコピー + 3 アイコン (fork / dumbbell / scale) + 主要 CTA「無料で始める」。背景にホーム画面のスクリーンショット。</td></tr>
-<tr><td>2</td><td>"3 つを 1 つに"</td><td>Apple ヘルスケア / あすけん / トレーニング系を別々に開いている図 → MuveEats 1 画面に集約する図。</td></tr>
+<tr><td>2</td><td>"3 つを 1 つに"</td><td>体組成 / 食事 / 運動の 3 アプリを別々に開いている図 → MuveEats 1 画面に集約する図。</td></tr>
 <tr><td>3</td><td>AI 記録のデモ</td><td>食事写真 → 栄養素自動入力の GIF / 動画。「写真 1 枚 + 5 秒の補足で完了」。</td></tr>
 <tr><td>4</td><td>AI フィードバック</td><td>カード UI のスクショ。良い点 / 改善 / 明日のアクションが並ぶ画。「数字に意味を持たせる相棒」。</td></tr>
 <tr><td>5</td><td>テンプレ & クイック追加</td><td>「毎朝のオートミール」をホームから 1 タップで記録する短い動画。継続の摩擦を解く。</td></tr>
 <tr><td>6</td><td>スクリーンショット ギャラリー</td><td>ホーム / 食事 / 筋トレ / 体組成 / 履歴 / 設定 の 6 枚。スクロール可能。</td></tr>
-<tr><td>7</td><td>FAQ</td><td>(a) 課金? → Beta は無料 (b) Apple ヘルスケア連携? → ロードマップ (c) データはどこ? → Supabase (d) PWA インストール手順</td></tr>
+<tr><td>7</td><td>FAQ</td><td>(a) 課金? → Beta は無料 (b) ヘルスケア連携? → ロードマップで対応予定 (c) データはどこに? → 暗号化済みクラウドに保管 (d) ホーム画面追加の手順</td></tr>
 <tr><td>8</td><td>CTA + フッター</td><td>「今すぐ記録を始める」+ メール登録。サポート / プライバシー / Twitter リンク。</td></tr>
 </tbody>
 </table>
@@ -124,7 +124,7 @@
     <tr><td><code>--danger</code></td><td>#c4474a</td></tr>
   </table>
   <h3>フォント</h3>
-  <p>Inter (本文) + 数値は <code>tabular-nums</code> でモノスペース風に。</p>
+  <p>サンセリフ (本文 / Inter 系) + 数値は <code>tabular-nums</code> でモノスペース風に。</p>
   <h3>トーン</h3>
   <p>クラフト系・余白多め。装飾より情報密度。ピル + 数字 + 細い線。1.5px ストロークのアウトラインアイコン。</p>
 </div>
@@ -155,7 +155,7 @@
       <li>テンプレから記録 (任意)</li>
       <li>3 モード: 検索 / 写真 / 手動</li>
       <li>検索: 32 チェーン × 約 2000 品目</li>
-      <li>写真: 補足文 (200 字) で精度向上 / Gemini 解析</li>
+      <li>写真: 補足文 (200 字) で精度向上 / AI 解析</li>
       <li>手動: 名前 + PFC + kcal を直接入力</li>
       <li>タグ自動推論 (高タンパク / 脂質高め / 朝食 等)</li>
     </ul>
@@ -185,7 +185,7 @@
     <h3>体組成 <span class="tag">/body, /body/new</span></h3>
     <ul>
       <li>体重 / 体脂肪率 / 筋肉量 / 内臓脂肪 / BMR / BMI</li>
-      <li>体組成計の写真 → 数値 OCR (Gemini)</li>
+      <li>体組成計の写真 → 数値 OCR (AI)</li>
       <li>体重・体脂肪率の sparkline</li>
       <li>記録履歴 20 件</li>
     </ul>
@@ -223,12 +223,13 @@
 <!-- ============================================================ -->
 <h2>7. 技術スタック (参考)</h2>
 
+<p class="meta">※ ランディングページ本体には固有名詞を出さない方針。以下は内部参照のみ。</p>
 <table>
 <tr><th>領域</th><th>採用</th></tr>
-<tr><td>Frontend</td><td>Next.js 16 (App Router + Server Components + Turbopack)</td></tr>
-<tr><td>Auth + DB</td><td>Supabase (Postgres + RLS + 認証)</td></tr>
-<tr><td>AI</td><td>Google Gemini 3.1 Flash Lite (画像解析・コーチング・フィードバック)</td></tr>
-<tr><td>Hosting</td><td>Vercel</td></tr>
+<tr><td>Frontend</td><td>モダン React フレームワーク (Server Components ベース)</td></tr>
+<tr><td>Auth + DB</td><td>マネージド Postgres + 行レベルセキュリティ (RLS)</td></tr>
+<tr><td>AI</td><td>マルチモーダル LLM (画像解析・コーチング・フィードバック)</td></tr>
+<tr><td>Hosting</td><td>エッジ配信対応 CDN</td></tr>
 <tr><td>Styling</td><td>素の CSS Variables (フレームワークなし)</td></tr>
 <tr><td>State</td><td>React useState + Server Component fetch</td></tr>
 </table>
@@ -239,8 +240,8 @@
 <ul>
   <li><strong>Beta v.1 (現在):</strong> 食事 / 運動 / 体組成のシンプル統合 + AI 記録 / フィードバック。</li>
   <li><strong>v.2:</strong> PWA 化 (ホーム画面追加 + オフライン) / CSV エクスポート / 触覚フィードバック。</li>
-  <li><strong>v.3:</strong> Strava 連携 (ラン / バイク自動取り込み) / Apple ヘルスケア XML インポート。</li>
-  <li><strong>v.4:</strong> Capacitor 化で Apple ヘルスケア / Google Health Connect ネイティブ連携。</li>
+  <li><strong>v.3:</strong> 外部フィットネスサービス連携 (ラン / バイクの自動取り込み) / ヘルスケアアプリのデータインポート。</li>
+  <li><strong>v.4:</strong> モバイルアプリ化 (ネイティブのヘルスケア連携対応)。</li>
 </ul>
 
 <!-- ============================================================ -->

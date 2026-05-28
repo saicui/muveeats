@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { Icon } from "@/app/icons";
 import {
@@ -302,6 +303,17 @@ export default function NewWorkoutPage() {
         </div>
       </div>
 
+      <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 8 }}>
+        <Link
+          href="/cardio/new"
+          className="btn"
+          style={{ padding: "5px 10px", fontSize: 11 }}
+        >
+          <Icon name="run" size="sm" />
+          有酸素
+        </Link>
+      </div>
+
       {/* 後日記録 (任意) */}
       <BackdateField value={recordOverride} onChange={setRecordOverride} />
 
@@ -577,6 +589,8 @@ async function loadPrev(
 }
 
 // ============================================================
+const REST_PRESETS = [60, 90, 180] as const;
+
 function ExerciseBlock({
   block,
   onUpdateSet,
@@ -588,6 +602,48 @@ function ExerciseBlock({
   onAddSet: () => void;
   onRemove: () => void;
 }) {
+  // 種目開始時刻 (ローカル)。「開始」ボタンで started を立て、セット入力を活性化する。
+  const [started, setStarted] = useState(false);
+  // レストタイマー: rest が null でなければカウントダウン中
+  const [rest, setRest] = useState<{ endsAt: number; preset: number } | null>(null);
+  const [, force] = useState(0);
+
+  useEffect(() => {
+    if (!rest) return;
+    const t = setInterval(() => force((x) => x + 1), 500);
+    return () => clearInterval(t);
+  }, [rest]);
+
+  const restRemaining = rest ? Math.max(0, Math.ceil((rest.endsAt - Date.now()) / 1000)) : 0;
+  // レスト終了でブザー (ブラウザ振動)
+  useEffect(() => {
+    if (rest && restRemaining === 0) {
+      if (typeof navigator !== "undefined" && navigator.vibrate) {
+        navigator.vibrate([180, 80, 180]);
+      }
+      setRest(null);
+    }
+  }, [rest, restRemaining]);
+
+  // 「完了」を done=false → true にしたとき、デフォルト 90 秒のレストを起動
+  function handleSetDoneToggle(j: number, currentDone: boolean) {
+    onUpdateSet(j, { done: !currentDone });
+    if (!currentDone) {
+      // セット完了 → レスト開始
+      setRest({ endsAt: Date.now() + 90_000, preset: 90 });
+    }
+  }
+
+  function adjustRest(deltaSec: number) {
+    setRest((r) =>
+      r ? { ...r, endsAt: r.endsAt + deltaSec * 1000 } : null,
+    );
+  }
+
+  function setRestPreset(sec: number) {
+    setRest({ endsAt: Date.now() + sec * 1000, preset: sec });
+  }
+
   return (
     <div
       style={{
@@ -596,6 +652,7 @@ function ExerciseBlock({
         borderRadius: 12,
         padding: 14,
         marginBottom: 12,
+        opacity: started ? 1 : 0.85,
       }}
     >
       <div
@@ -634,15 +691,37 @@ function ExerciseBlock({
               : "前回データなし"}
           </div>
         </div>
-        <button
-          type="button"
-          onClick={onRemove}
-          className="header-action"
-          aria-label="種目を削除"
-        >
-          <Icon name="trash" size="sm" />
-        </button>
+        <div style={{ display: "flex", gap: 6 }}>
+          {!started && (
+            <button
+              type="button"
+              onClick={() => setStarted(true)}
+              className="btn btn-primary"
+              style={{ padding: "5px 10px", fontSize: 11 }}
+            >
+              開始
+            </button>
+          )}
+          <button
+            type="button"
+            onClick={onRemove}
+            className="header-action"
+            aria-label="種目を削除"
+          >
+            <Icon name="trash" size="sm" />
+          </button>
+        </div>
       </div>
+
+      {rest && (
+        <RestPanel
+          remaining={restRemaining}
+          preset={rest.preset}
+          onAdjust={adjustRest}
+          onPreset={setRestPreset}
+          onSkip={() => setRest(null)}
+        />
+      )}
 
       <table
         style={{ width: "100%", borderCollapse: "collapse", fontVariantNumeric: "tabular-nums" }}
@@ -706,7 +785,7 @@ function ExerciseBlock({
               <td style={{ padding: "4px", textAlign: "center" }}>
                 <button
                   type="button"
-                  onClick={() => onUpdateSet(j, { done: !s.done })}
+                  onClick={() => handleSetDoneToggle(j, s.done)}
                   aria-label="完了"
                   style={{
                     width: 28,
@@ -738,6 +817,112 @@ function ExerciseBlock({
         <Icon name="plus" size="sm" />
         セットを追加
       </button>
+    </div>
+  );
+}
+
+// ============================================================
+// レストタイマーパネル
+// ============================================================
+function RestPanel({
+  remaining,
+  preset,
+  onAdjust,
+  onPreset,
+  onSkip,
+}: {
+  remaining: number;
+  preset: number;
+  onAdjust: (deltaSec: number) => void;
+  onPreset: (sec: number) => void;
+  onSkip: () => void;
+}) {
+  const m = Math.floor(remaining / 60);
+  const s = remaining % 60;
+  return (
+    <div
+      style={{
+        background: "var(--surface-2)",
+        border: "1px solid var(--move)",
+        borderRadius: 10,
+        padding: 12,
+        marginBottom: 10,
+        display: "flex",
+        flexDirection: "column",
+        gap: 8,
+      }}
+    >
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <div
+          style={{
+            fontSize: 10,
+            color: "var(--muted)",
+            textTransform: "uppercase",
+            letterSpacing: "0.1em",
+            fontWeight: 600,
+          }}
+        >
+          REST
+        </div>
+        <div
+          className="num"
+          style={{
+            fontSize: 28,
+            fontWeight: 700,
+            color: "var(--move)",
+            letterSpacing: "-0.02em",
+          }}
+        >
+          {String(m).padStart(2, "0")}:{String(s).padStart(2, "0")}
+        </div>
+      </div>
+      <div style={{ display: "flex", gap: 5, flexWrap: "wrap" }}>
+        {REST_PRESETS.map((sec) => (
+          <button
+            key={sec}
+            type="button"
+            onClick={() => onPreset(sec)}
+            className={`tag ${preset === sec ? "selected" : ""}`}
+            style={{ fontSize: 11 }}
+          >
+            {sec}秒
+          </button>
+        ))}
+        <button
+          type="button"
+          onClick={() => onAdjust(15)}
+          className="tag"
+          style={{ fontSize: 11 }}
+        >
+          +15
+        </button>
+        <button
+          type="button"
+          onClick={() => onAdjust(-15)}
+          className="tag"
+          style={{ fontSize: 11 }}
+        >
+          −15
+        </button>
+        <button
+          type="button"
+          onClick={onSkip}
+          className="btn"
+          style={{
+            padding: "3px 10px",
+            fontSize: 11,
+            marginLeft: "auto",
+          }}
+        >
+          スキップ
+        </button>
+      </div>
     </div>
   );
 }

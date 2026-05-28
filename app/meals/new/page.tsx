@@ -10,7 +10,7 @@ import { TAG_CATEGORIES } from "@/lib/tags";
 import { inferAllTags, inferMacroTags } from "@/lib/auto-tags";
 import type { ChainItem, AnalysisResult, MealTemplate } from "@/lib/types";
 
-type Mode = "search" | "photo" | "manual";
+type Mode = "search" | "photo" | "manual" | "consult";
 
 type SelectedItem = {
   source: "chain" | "photo" | "manual";
@@ -277,6 +277,7 @@ export default function NewMealPage() {
       {mode === "search" && <ChainSearchStep onPick={pickChain} />}
       {mode === "photo" && <PhotoStep onResult={pickAnalysis} />}
       {mode === "manual" && <ManualStep onSubmit={pickManual} />}
+      {mode === "consult" && <ConsultStep onResult={pickAnalysis} />}
 
       {showTemplatePicker && (
         <MealTemplatePickSheet
@@ -434,10 +435,11 @@ function MealTemplatePickSheet({
 // Mode tabs
 // ============================================================
 function ModeTabs({ mode, setMode }: { mode: Mode; setMode: (m: Mode) => void }) {
-  const tabs: { id: Mode; label: string; icon: "search" | "camera" | "edit" }[] = [
+  const tabs: { id: Mode; label: string; icon: "search" | "camera" | "edit" | "bot" }[] = [
     { id: "search", label: "検索", icon: "search" },
     { id: "photo", label: "写真", icon: "camera" },
     { id: "manual", label: "手動", icon: "edit" },
+    { id: "consult", label: "AI相談", icon: "bot" },
   ];
   return (
     <div
@@ -849,6 +851,188 @@ type ManualFields = {
   fat_g: number | null;
   carbs_g: number | null;
 };
+
+// ============================================================
+// AI 相談モード: 自由文 + ジャンル + 任意画像で概算
+// ============================================================
+const CONSULT_GENRES = [
+  "居酒屋",
+  "焼肉",
+  "寿司",
+  "中華",
+  "イタリアン",
+  "フレンチ",
+  "ラーメン",
+  "焼鳥",
+  "コース料理",
+  "ビュッフェ",
+  "宴会",
+  "その他",
+];
+
+function ConsultStep({ onResult }: { onResult: (r: AnalysisResult) => void }) {
+  const [genre, setGenre] = useState<string>("居酒屋");
+  const [description, setDescription] = useState("");
+  const [file, setFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  function pickFile(f: File | null) {
+    setFile(f);
+    if (previewUrl) URL.revokeObjectURL(previewUrl);
+    setPreviewUrl(f ? URL.createObjectURL(f) : null);
+  }
+
+  async function estimate() {
+    if (!description.trim() && !file) {
+      setError("内容を書くか、メニュー画像を添付してください");
+      return;
+    }
+    setLoading(true);
+    setError(null);
+    try {
+      const fd = new FormData();
+      fd.append("genre", genre);
+      fd.append("description", description);
+      if (file) fd.append("image", file);
+      const res = await fetch("/api/estimate-meal", { method: "POST", body: fd });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.error || "失敗しました");
+      onResult(json);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : String(e));
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  return (
+    <div>
+      <div
+        style={{
+          background: "var(--surface-2)",
+          border: "1px solid var(--line)",
+          borderRadius: 10,
+          padding: 10,
+          marginBottom: 12,
+          fontSize: 11,
+          color: "var(--muted)",
+          lineHeight: 1.5,
+        }}
+      >
+        飲み会・コース料理・外食でカロリーが分かりにくい時に。
+        ジャンル選択 + 食べた / 飲んだ内容を書くだけで AI が概算します。
+        メニュー画像があるとより正確になります。
+      </div>
+
+      <div className="section-title">ジャンル</div>
+      <div style={{ display: "flex", gap: 5, flexWrap: "wrap", marginBottom: 14 }}>
+        {CONSULT_GENRES.map((g) => (
+          <button
+            key={g}
+            type="button"
+            onClick={() => setGenre(g)}
+            className={`tag ${genre === g ? "selected" : ""}`}
+          >
+            {g}
+          </button>
+        ))}
+      </div>
+
+      <div className="section-title">内容を書く</div>
+      <textarea
+        className="input"
+        placeholder="例: 居酒屋で 3 時間。ビール中ジョッキ 3 杯、ハイボール 2 杯、唐揚げ、刺身盛り、シーザーサラダ、〆にラーメン半玉"
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
+        rows={5}
+        maxLength={500}
+        style={{
+          resize: "vertical",
+          fontFamily: "inherit",
+          marginBottom: 4,
+        }}
+      />
+      <div style={{ fontSize: 10, color: "var(--muted)", marginBottom: 14 }}>
+        {description.length}/500
+      </div>
+
+      <div className="section-title">メニュー画像 (任意)</div>
+      <label
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: 8,
+          padding: previewUrl ? 8 : 22,
+          border: "2px dashed var(--line)",
+          background: "var(--surface)",
+          borderRadius: 12,
+          cursor: "pointer",
+          marginBottom: 14,
+          minHeight: previewUrl ? 0 : 120,
+        }}
+      >
+        <input
+          type="file"
+          accept="image/*"
+          style={{ display: "none" }}
+          onChange={(e) => pickFile(e.target.files?.[0] ?? null)}
+        />
+        {previewUrl ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={previewUrl}
+            alt="メニュー"
+            style={{ maxHeight: 200, borderRadius: 8, objectFit: "contain" }}
+          />
+        ) : (
+          <>
+            <Icon name="camera" size="lg" />
+            <div style={{ fontSize: 12, color: "var(--muted)" }}>
+              メニュー表 / 伝票 / 料理写真をタップで添付
+            </div>
+          </>
+        )}
+      </label>
+
+      <button
+        type="button"
+        className="btn btn-primary btn-block"
+        onClick={estimate}
+        disabled={loading}
+      >
+        {loading ? (
+          <>
+            <Spinner /> AI が概算中…
+          </>
+        ) : (
+          <>
+            <Icon name="bot" size="sm" />
+            概算する
+          </>
+        )}
+      </button>
+
+      {error && (
+        <div
+          style={{
+            marginTop: 12,
+            padding: "10px 12px",
+            border: "1px solid var(--danger)",
+            color: "var(--danger)",
+            borderRadius: 8,
+            fontSize: 12,
+          }}
+        >
+          {error}
+        </div>
+      )}
+    </div>
+  );
+}
 
 function ManualStep({ onSubmit }: { onSubmit: (p: ManualFields) => void }) {
   const [name, setName] = useState("");

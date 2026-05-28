@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { Icon } from "@/app/icons";
 import { estimateCardioKcal } from "@/lib/met";
@@ -108,7 +109,23 @@ export default function NewCardioPage() {
 
   return (
     <div>
-      <h1 className="page-title">有酸素</h1>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "baseline",
+        }}
+      >
+        <h1 className="page-title">有酸素</h1>
+        <Link
+          href="/workouts/new"
+          className="btn"
+          style={{ padding: "6px 10px", fontSize: 12 }}
+        >
+          <Icon name="dumbbell" size="sm" />
+          筋トレ
+        </Link>
+      </div>
       <p className="page-subtitle">時間 / 距離 / 強度を入力 → MET 法で消費 kcal を概算</p>
 
       <CardioBackdateField value={endedAtOverride} onChange={setEndedAtOverride} />

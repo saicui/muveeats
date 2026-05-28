@@ -90,6 +90,69 @@ export function HistoryClient({
     setSelected(null);
   }
 
+  // 履歴アイテムをテンプレ化する
+  async function templatize(e: Entry): Promise<string | null> {
+    const supabase = createClient();
+    const { data: auth } = await supabase.auth.getUser();
+    if (!auth.user) return "サインインが必要です";
+    if (e.kind === "meal") {
+      const m = e.data;
+      const label = window.prompt(
+        "テンプレ名を入力してください",
+        m.name.slice(0, 30),
+      );
+      if (!label) return null;
+      const { error } = await supabase.from("meal_templates").insert({
+        user_id: auth.user.id,
+        label,
+        name: m.name,
+        calories: m.calories,
+        protein_g: m.protein_g,
+        fat_g: m.fat_g,
+        carbs_g: m.carbs_g,
+        chain_id: m.chain_id,
+        chain_name: m.chain_name,
+        item_id: m.item_id,
+        size: m.size,
+        tags: m.tags ?? [],
+      });
+      if (error) return error.message;
+      return null;
+    }
+    if (e.kind === "workout" && e.data.kind === "strength") {
+      const w = e.data;
+      const label = window.prompt(
+        "テンプレ名を入力してください",
+        w.title || "胸の日",
+      );
+      if (!label) return null;
+      // 種目ごとに集約
+      const grouped = new Map<
+        string,
+        { exercise_id: string; exercise_name: string; sets: { weight_kg: number | null; reps: number | null }[] }
+      >();
+      for (const s of e.sets) {
+        const cur = grouped.get(s.exercise_id) ?? {
+          exercise_id: s.exercise_id,
+          exercise_name: s.exercise_name,
+          sets: [],
+        };
+        cur.sets.push({ weight_kg: s.weight_kg, reps: s.reps });
+        grouped.set(s.exercise_id, cur);
+      }
+      const payload = { exercises: Array.from(grouped.values()) };
+      const { error } = await supabase.from("workout_templates").insert({
+        user_id: auth.user.id,
+        label,
+        kind: "strength",
+        payload,
+      });
+      if (error) return error.message;
+      return null;
+    }
+    return "この記録はテンプレ化できません";
+  }
+
   return (
     <div>
       <h1 className="page-title">履歴</h1>
@@ -226,6 +289,15 @@ export function HistoryClient({
           entry={selected}
           onClose={() => setSelected(null)}
           onDelete={() => removeEntry(selected)}
+          onTemplatize={async () => {
+            const err = await templatize(selected);
+            if (err) {
+              alert(err);
+            } else {
+              alert("テンプレに追加しました");
+              setSelected(null);
+            }
+          }}
         />
       )}
     </div>
@@ -341,11 +413,18 @@ function DetailSheet({
   entry,
   onClose,
   onDelete,
+  onTemplatize,
 }: {
   entry: Entry;
   onClose: () => void;
   onDelete: () => void;
+  onTemplatize: () => void;
 }) {
+  // テンプレ化できる: 食事すべて / 筋トレ (strength) のみ
+  const canTemplatize =
+    entry.kind === "meal" ||
+    (entry.kind === "workout" && entry.data.kind === "strength");
+
   return (
     <div className="sheet-backdrop" onClick={onClose}>
       <div className="sheet" onClick={(e) => e.stopPropagation()}>
@@ -356,7 +435,19 @@ function DetailSheet({
             <WorkoutDetail workout={entry.data} sets={entry.sets} />
           )}
           {entry.kind === "body" && <BodyDetail rec={entry.data} />}
-          <div style={{ display: "flex", gap: 8, marginTop: 16 }}>
+
+          {canTemplatize && (
+            <button
+              className="btn btn-block"
+              style={{ marginTop: 16, justifyContent: "center" }}
+              onClick={onTemplatize}
+            >
+              <Icon name="plus" size="sm" />
+              テンプレに追加
+            </button>
+          )}
+
+          <div style={{ display: "flex", gap: 8, marginTop: canTemplatize ? 8 : 16 }}>
             <button
               className="btn btn-danger"
               style={{ flex: 1, justifyContent: "center" }}
