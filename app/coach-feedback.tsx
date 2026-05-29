@@ -89,7 +89,7 @@ export function CoachFeedback() {
             border: "1px solid var(--danger)",
             color: "var(--danger)",
             borderRadius: 8,
-            fontSize: 12,
+            fontSize: 14,
           }}
         >
           {error}
@@ -110,7 +110,7 @@ export function CoachFeedback() {
         >
           <div
             style={{
-              fontSize: 15,
+              fontSize: 16,
               fontWeight: 700,
               letterSpacing: "-0.01em",
               lineHeight: 1.4,
@@ -123,7 +123,7 @@ export function CoachFeedback() {
           <Block label="明日のアクション" color="var(--ai)" text={data.action} />
           <div
             style={{
-              fontSize: 10,
+              fontSize: 12,
               color: "var(--muted)",
               borderTop: "1px solid var(--line)",
               paddingTop: 8,
@@ -150,7 +150,7 @@ function Block({
     <div>
       <div
         style={{
-          fontSize: 10,
+          fontSize: 12,
           color: "var(--muted)",
           textTransform: "uppercase",
           letterSpacing: "0.1em",
@@ -164,7 +164,7 @@ function Block({
         <span style={{ width: 6, height: 6, borderRadius: 999, background: color }} />
         {label}
       </div>
-      <div style={{ fontSize: 13, lineHeight: 1.6 }}>{text}</div>
+      <div style={{ fontSize: 15, lineHeight: 1.6 }}>{text}</div>
     </div>
   );
 }

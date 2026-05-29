@@ -225,7 +225,7 @@ export function HistoryClient({
             border: "1px solid var(--warn)",
             color: "var(--warn)",
             borderRadius: 8,
-            fontSize: 12,
+            fontSize: 14,
             marginBottom: 16,
           }}
         >
@@ -290,17 +290,17 @@ export function HistoryClient({
                 }}
               >
                 <div>
-                  <span style={{ fontWeight: 700, fontSize: 14 }}>
+                  <span style={{ fontWeight: 700, fontSize: 16 }}>
                     {date.toLocaleDateString("ja-JP", {
                       month: "long",
                       day: "numeric",
                     })}
                   </span>
-                  <span style={{ fontSize: 11, color: "var(--muted)", marginLeft: 6 }}>
+                  <span style={{ fontSize: 13, color: "var(--muted)", marginLeft: 6 }}>
                     {date.toLocaleDateString("ja-JP", { weekday: "short" })}
                   </span>
                 </div>
-                <div className="num" style={{ fontSize: 11, color: "var(--muted)" }}>
+                <div className="num" style={{ fontSize: 13, color: "var(--muted)" }}>
                   摂取{" "}
                   <span style={{ color: "var(--ink)", fontWeight: 600 }}>
                     {Math.round(intake)}
@@ -458,7 +458,7 @@ function EntryRow({
         <div
           style={{
             fontWeight: 600,
-            fontSize: 14,
+            fontSize: 16,
             overflow: "hidden",
             textOverflow: "ellipsis",
             whiteSpace: "nowrap",
@@ -466,14 +466,14 @@ function EntryRow({
         >
           {name}
         </div>
-        <div style={{ fontSize: 11, color: "var(--muted)", marginTop: 2 }}>
+        <div style={{ fontSize: 13, color: "var(--muted)", marginTop: 2 }}>
           {meta}
         </div>
       </div>
       <div className="num" style={{ textAlign: "right", flexShrink: 0 }}>
-        <div style={{ fontSize: 14, fontWeight: 700 }}>{primary}</div>
+        <div style={{ fontSize: 16, fontWeight: 700 }}>{primary}</div>
         {sub && (
-          <div style={{ fontSize: 10, color: "var(--muted)" }}>{sub}</div>
+          <div style={{ fontSize: 12, color: "var(--muted)" }}>{sub}</div>
         )}
       </div>
     </button>
@@ -649,7 +649,7 @@ function EditNum({
         borderBottom: "1px solid var(--line-soft)",
       }}
     >
-      <span style={{ fontSize: 13, color: "var(--ink-2)" }}>{label}</span>
+      <span style={{ fontSize: 15, color: "var(--ink-2)" }}>{label}</span>
       <input
         className="input num"
         type="number"
@@ -682,7 +682,7 @@ function EditText({
         borderBottom: "1px solid var(--line-soft)",
       }}
     >
-      <span style={{ fontSize: 13, color: "var(--ink-2)", flexShrink: 0 }}>{label}</span>
+      <span style={{ fontSize: 15, color: "var(--ink-2)", flexShrink: 0 }}>{label}</span>
       <input
         className="input"
         value={value}
@@ -711,7 +711,7 @@ function EditActions({
             border: "1px solid var(--danger)",
             color: "var(--danger)",
             borderRadius: 8,
-            fontSize: 12,
+            fontSize: 14,
             marginTop: 12,
           }}
         >
@@ -743,7 +743,7 @@ function EditActions({
 
 function EditTitle() {
   return (
-    <div style={{ fontSize: 16, fontWeight: 700, marginBottom: 10 }}>記録を編集</div>
+    <div style={{ fontSize: 17, fontWeight: 700, marginBottom: 10 }}>記録を編集</div>
   );
 }
 
@@ -841,7 +841,7 @@ function WorkoutEdit({
       )}
       <EditNum label="消費 kcal" value={kcal} onChange={setKcal} />
       <div style={{ marginTop: 12 }}>
-        <div style={{ fontSize: 13, color: "var(--ink-2)", marginBottom: 4 }}>メモ</div>
+        <div style={{ fontSize: 15, color: "var(--ink-2)", marginBottom: 4 }}>メモ</div>
         <textarea
           className="input"
           rows={2}
@@ -934,7 +934,7 @@ function ActivityEdit({
       <EditNum label="消費 kcal" value={kcal} onChange={setKcal} />
       <EditNum label="移動距離 (km)" value={distance} onChange={setDistance} />
       <div style={{ marginTop: 12 }}>
-        <div style={{ fontSize: 13, color: "var(--ink-2)", marginBottom: 4 }}>メモ</div>
+        <div style={{ fontSize: 15, color: "var(--ink-2)", marginBottom: 4 }}>メモ</div>
         <textarea
           className="input"
           rows={2}
@@ -961,7 +961,7 @@ function MealDetail({ meal }: { meal: Meal }) {
       </div>
       <div
         style={{
-          fontSize: 11,
+          fontSize: 13,
           color: "var(--muted)",
           marginBottom: 14,
           display: "flex",
@@ -1008,7 +1008,7 @@ function MealDetail({ meal }: { meal: Meal }) {
           >
             <div
               style={{
-                fontSize: 9,
+                fontSize: 11,
                 textTransform: "uppercase",
                 letterSpacing: "0.1em",
                 color: "var(--muted)",
@@ -1019,7 +1019,7 @@ function MealDetail({ meal }: { meal: Meal }) {
             </div>
             <div
               className="num"
-              style={{ fontSize: 17, fontWeight: 700, marginTop: 4 }}
+              style={{ fontSize: 18, fontWeight: 700, marginTop: 4 }}
             >
               {meal[k] != null ? Math.round(Number(meal[k])) : "—"}
             </div>
@@ -1043,7 +1043,7 @@ function MealDetail({ meal }: { meal: Meal }) {
             background: "var(--surface-2)",
             borderLeft: "3px solid var(--ai)",
             padding: "8px 10px",
-            fontSize: 12,
+            fontSize: 14,
             color: "var(--ink-2)",
             borderRadius: "0 6px 6px 0",
           }}
@@ -1082,7 +1082,7 @@ function WorkoutDetail({
             ? "バイク"
             : "有酸素")}
       </div>
-      <div style={{ fontSize: 11, color: "var(--muted)", marginTop: 4, marginBottom: 14 }}>
+      <div style={{ fontSize: 13, color: "var(--muted)", marginTop: 4, marginBottom: 14 }}>
         {fmtDateTime(workout.started_at)}
         {workout.duration_min ? ` · ${workout.duration_min}分` : ""}
         {workout.distance_km ? ` · ${workout.distance_km}km` : ""}
@@ -1095,8 +1095,8 @@ function WorkoutDetail({
 
       {Array.from(groups.entries()).map(([exId, list]) => (
         <div key={exId} style={{ marginBottom: 10 }}>
-          <div style={{ fontSize: 13, fontWeight: 600 }}>{list[0].exercise_name}</div>
-          <div className="num" style={{ fontSize: 11, color: "var(--muted)", marginTop: 2 }}>
+          <div style={{ fontSize: 15, fontWeight: 600 }}>{list[0].exercise_name}</div>
+          <div className="num" style={{ fontSize: 13, color: "var(--muted)", marginTop: 2 }}>
             {list.map((s) => `${s.weight_kg ?? "—"}kg × ${s.reps ?? "—"}`).join("  ·  ")}
           </div>
         </div>
@@ -1108,7 +1108,7 @@ function WorkoutDetail({
             background: "var(--surface-2)",
             borderLeft: "3px solid var(--ai)",
             padding: "8px 10px",
-            fontSize: 12,
+            fontSize: 14,
             color: "var(--ink-2)",
             borderRadius: "0 6px 6px 0",
             marginTop: 12,
@@ -1132,7 +1132,7 @@ function BodyDetail({ rec }: { rec: BodyRecord }) {
   return (
     <>
       <div style={{ fontSize: 18, fontWeight: 700 }}>体組成</div>
-      <div style={{ fontSize: 11, color: "var(--muted)", marginTop: 4, marginBottom: 14 }}>
+      <div style={{ fontSize: 13, color: "var(--muted)", marginTop: 4, marginBottom: 14 }}>
         {fmtDateTime(rec.recorded_at)} · 手動記録
       </div>
       <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
@@ -1148,7 +1148,7 @@ function BodyDetail({ rec }: { rec: BodyRecord }) {
                 background: "var(--surface-2)",
                 border: "1px solid var(--line)",
                 borderRadius: 8,
-                fontSize: 13,
+                fontSize: 15,
               }}
             >
               <span style={{ color: "var(--muted)" }}>{k}</span>
@@ -1171,7 +1171,7 @@ function ActivityDetail({ rec }: { rec: ActivityRecord }) {
   return (
     <>
       <div style={{ fontSize: 18, fontWeight: 700 }}>歩数・活動</div>
-      <div style={{ fontSize: 11, color: "var(--muted)", marginTop: 4, marginBottom: 14 }}>
+      <div style={{ fontSize: 13, color: "var(--muted)", marginTop: 4, marginBottom: 14 }}>
         {fmtDateTime(rec.recorded_at)} · {rec.source === "photo" ? "写真記録" : "手動記録"}
         {rec.ai_confidence != null && (
           <span style={{ color: "var(--ai)", marginLeft: 6 }}>
@@ -1190,7 +1190,7 @@ function ActivityDetail({ rec }: { rec: ActivityRecord }) {
               background: "var(--surface-2)",
               border: "1px solid var(--line)",
               borderRadius: 8,
-              fontSize: 13,
+              fontSize: 15,
             }}
           >
             <span style={{ color: "var(--muted)" }}>{k}</span>
@@ -1206,7 +1206,7 @@ function ActivityDetail({ rec }: { rec: ActivityRecord }) {
             background: "var(--surface-2)",
             borderLeft: "3px solid var(--move)",
             padding: "8px 10px",
-            fontSize: 12,
+            fontSize: 14,
             color: "var(--ink-2)",
             borderRadius: "0 6px 6px 0",
             marginTop: 12,
@@ -1221,7 +1221,7 @@ function ActivityDetail({ rec }: { rec: ActivityRecord }) {
             background: "var(--surface-2)",
             borderLeft: "3px solid var(--ai)",
             padding: "8px 10px",
-            fontSize: 12,
+            fontSize: 14,
             color: "var(--ink-2)",
             borderRadius: "0 6px 6px 0",
             marginTop: 8,

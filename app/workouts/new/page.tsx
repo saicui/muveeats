@@ -291,7 +291,7 @@ export default function NewWorkoutPage() {
             gap: 6,
             color: "var(--move)",
             fontWeight: 600,
-            fontSize: 14,
+            fontSize: 16,
             flexShrink: 0,
           }}
         >
@@ -351,7 +351,7 @@ export default function NewWorkoutPage() {
             border: "1px solid var(--danger)",
             color: "var(--danger)",
             borderRadius: 8,
-            fontSize: 12,
+            fontSize: 14,
           }}
         >
           {error}
@@ -422,7 +422,7 @@ function BackdateField({
           background: "transparent",
           border: 0,
           color: "var(--muted)",
-          fontSize: 11,
+          fontSize: 13,
           padding: "4px 0",
           cursor: "pointer",
           fontFamily: "inherit",
@@ -456,7 +456,7 @@ function BackdateField({
         className="input"
         value={value ?? localNow()}
         onChange={(e) => onChange(e.target.value)}
-        style={{ flex: 1, padding: "4px 6px", fontSize: 13 }}
+        style={{ flex: 1, padding: "4px 6px", fontSize: 15 }}
       />
       <button
         type="button"
@@ -507,11 +507,11 @@ function TemplatePickSheet({
             gap: 8,
           }}
         >
-          <div style={{ fontSize: 16, fontWeight: 700, marginBottom: 6 }}>
+          <div style={{ fontSize: 17, fontWeight: 700, marginBottom: 6 }}>
             テンプレから開始
           </div>
           {templates.length === 0 ? (
-            <div style={{ fontSize: 12, color: "var(--muted)" }}>
+            <div style={{ fontSize: 14, color: "var(--muted)" }}>
               まだテンプレがありません
             </div>
           ) : (
@@ -539,10 +539,10 @@ function TemplatePickSheet({
                     color: "var(--ink)",
                   }}
                 >
-                  <div style={{ fontSize: 13, fontWeight: 600 }}>{t.label}</div>
+                  <div style={{ fontSize: 15, fontWeight: 600 }}>{t.label}</div>
                   <div
                     style={{
-                      fontSize: 11,
+                      fontSize: 13,
                       color: "var(--muted)",
                       marginTop: 2,
                       overflow: "hidden",
@@ -657,12 +657,12 @@ function ExerciseBlock({
         }}
       >
         <div>
-          <div style={{ fontWeight: 600, fontSize: 14 }}>
+          <div style={{ fontWeight: 600, fontSize: 16 }}>
             {block.exercise.name}
             {block.exercise.custom && (
               <span
                 style={{
-                  fontSize: 9,
+                  fontSize: 11,
                   background: "var(--surface-2)",
                   border: "1px solid var(--line)",
                   borderRadius: 4,
@@ -678,7 +678,7 @@ function ExerciseBlock({
               </span>
             )}
           </div>
-          <div style={{ fontSize: 11, color: "var(--muted)", marginTop: 2 }}>
+          <div style={{ fontSize: 13, color: "var(--muted)", marginTop: 2 }}>
             {block.prev?.weight_kg
               ? `前回 ${block.prev.weight_kg}kg × ${block.prev.reps ?? "?"}`
               : "前回データなし"}
@@ -690,7 +690,7 @@ function ExerciseBlock({
               type="button"
               onClick={() => setStarted(true)}
               className="btn btn-primary"
-              style={{ padding: "5px 10px", fontSize: 11 }}
+              style={{ padding: "5px 10px", fontSize: 13 }}
             >
               開始
             </button>
@@ -725,7 +725,7 @@ function ExerciseBlock({
               <th
                 key={h}
                 style={{
-                  fontSize: 10,
+                  fontSize: 12,
                   fontWeight: 600,
                   color: "var(--muted)",
                   textTransform: "uppercase",
@@ -750,7 +750,7 @@ function ExerciseBlock({
                   textAlign: "center",
                   fontWeight: 600,
                   color: "var(--muted)",
-                  fontSize: 12,
+                  fontSize: 14,
                 }}
               >
                 {j + 1}
@@ -762,7 +762,7 @@ function ExerciseBlock({
                   placeholder="kg"
                   value={s.weight}
                   onChange={(e) => onUpdateSet(j, { weight: e.target.value })}
-                  style={{ padding: "6px 8px", fontSize: 13 }}
+                  style={{ padding: "6px 8px", fontSize: 15 }}
                 />
               </td>
               <td style={{ padding: "4px 4px" }}>
@@ -772,7 +772,7 @@ function ExerciseBlock({
                   placeholder="rep"
                   value={s.reps}
                   onChange={(e) => onUpdateSet(j, { reps: e.target.value })}
-                  style={{ padding: "6px 8px", fontSize: 13 }}
+                  style={{ padding: "6px 8px", fontSize: 15 }}
                 />
               </td>
               <td style={{ padding: "4px", textAlign: "center" }}>
@@ -805,7 +805,7 @@ function ExerciseBlock({
         type="button"
         className="btn btn-block"
         onClick={onAddSet}
-        style={{ marginTop: 8, fontSize: 12 }}
+        style={{ marginTop: 8, fontSize: 14 }}
       >
         <Icon name="plus" size="sm" />
         セットを追加
@@ -854,7 +854,7 @@ function RestPanel({
       >
         <div
           style={{
-            fontSize: 10,
+            fontSize: 12,
             color: "var(--muted)",
             textTransform: "uppercase",
             letterSpacing: "0.1em",
@@ -882,7 +882,7 @@ function RestPanel({
             type="button"
             onClick={() => onPreset(sec)}
             className={`tag ${preset === sec ? "selected" : ""}`}
-            style={{ fontSize: 11 }}
+            style={{ fontSize: 13 }}
           >
             {sec / 60}分
           </button>
@@ -891,7 +891,7 @@ function RestPanel({
           type="button"
           onClick={() => onAdjust(15)}
           className="tag"
-          style={{ fontSize: 11 }}
+          style={{ fontSize: 13 }}
         >
           +15
         </button>
@@ -899,7 +899,7 @@ function RestPanel({
           type="button"
           onClick={() => onAdjust(-15)}
           className="tag"
-          style={{ fontSize: 11 }}
+          style={{ fontSize: 13 }}
         >
           −15
         </button>
@@ -909,7 +909,7 @@ function RestPanel({
           className="btn btn-primary"
           style={{
             padding: "3px 14px",
-            fontSize: 11,
+            fontSize: 13,
             marginLeft: "auto",
           }}
         >
@@ -972,7 +972,7 @@ function ExercisePicker({
             overflow: "hidden",
           }}
         >
-          <div style={{ fontSize: 16, fontWeight: 700, flexShrink: 0 }}>
+          <div style={{ fontSize: 17, fontWeight: 700, flexShrink: 0 }}>
             種目を選ぶ
           </div>
 
@@ -1021,10 +1021,10 @@ function ExercisePicker({
                 flexShrink: 0,
               }}
             >
-              <div style={{ fontSize: 13, fontWeight: 600 }}>
+              <div style={{ fontSize: 15, fontWeight: 600 }}>
                 「{query}」をカスタム種目として追加
               </div>
-              <div style={{ fontSize: 11, color: "var(--muted)", marginTop: 2 }}>
+              <div style={{ fontSize: 13, color: "var(--muted)", marginTop: 2 }}>
                 MET は 4.0 で扱います（その他カテゴリ）
               </div>
             </button>
@@ -1043,7 +1043,7 @@ function ExercisePicker({
             }}
           >
             {list.length === 0 ? (
-              <div style={{ padding: 20, textAlign: "center", color: "var(--muted)", fontSize: 13 }}>
+              <div style={{ padding: 20, textAlign: "center", color: "var(--muted)", fontSize: 15 }}>
                 該当する種目がありません。{" "}
                 {query.trim() && (
                   <button
@@ -1057,7 +1057,7 @@ function ExercisePicker({
                       textUnderlineOffset: 3,
                       cursor: "pointer",
                       fontFamily: "inherit",
-                      fontSize: 13,
+                      fontSize: 15,
                     }}
                   >
                     カスタム種目を作る
@@ -1089,8 +1089,8 @@ function ExercisePicker({
                     }}
                   >
                     <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{ fontWeight: 600, fontSize: 14 }}>{ex.name}</div>
-                      <div style={{ fontSize: 11, color: "var(--muted)", marginTop: 2 }}>
+                      <div style={{ fontWeight: 600, fontSize: 16 }}>{ex.name}</div>
+                      <div style={{ fontSize: 13, color: "var(--muted)", marginTop: 2 }}>
                         {EQUIPMENT_LABELS[ex.equipment]} ·{" "}
                         {BODY_PARTS.find((p) => p.id === ex.body_part)?.label}
                       </div>
@@ -1098,7 +1098,7 @@ function ExercisePicker({
                     {isFrequent && (
                       <span
                         style={{
-                          fontSize: 9,
+                          fontSize: 11,
                           padding: "2px 6px",
                           background: "var(--surface-2)",
                           border: "1px solid var(--line)",

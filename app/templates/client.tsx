@@ -214,7 +214,7 @@ export function TemplatesClient({
             border: "1px solid var(--warn)",
             color: "var(--warn)",
             borderRadius: 8,
-            fontSize: 12,
+            fontSize: 14,
             marginBottom: 16,
           }}
         >
@@ -229,7 +229,7 @@ export function TemplatesClient({
             border: "1px solid var(--eat)",
             color: "var(--eat)",
             borderRadius: 8,
-            fontSize: 12,
+            fontSize: 14,
             marginBottom: 16,
           }}
         >
@@ -243,7 +243,7 @@ export function TemplatesClient({
             border: "1px solid var(--danger)",
             color: "var(--danger)",
             borderRadius: 8,
-            fontSize: 12,
+            fontSize: 14,
             marginBottom: 16,
           }}
         >
@@ -264,7 +264,7 @@ export function TemplatesClient({
           <div style={{ fontWeight: 600, marginBottom: 4 }}>
             まだテンプレがありません
           </div>
-          <div style={{ fontSize: 12, color: "var(--muted)", marginBottom: 12 }}>
+          <div style={{ fontSize: 14, color: "var(--muted)", marginBottom: 12 }}>
             毎日同じ朝食などを登録しておくと便利です
           </div>
           <button className="btn btn-primary" onClick={() => setEditing({})}>
@@ -295,12 +295,12 @@ export function TemplatesClient({
                 }}
               >
                 <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ fontWeight: 600, fontSize: 14 }}>
+                  <div style={{ fontWeight: 600, fontSize: 16 }}>
                     {t.label}
                     {skipped && (
                       <span
                         style={{
-                          fontSize: 9,
+                          fontSize: 11,
                           padding: "1px 6px",
                           background: "var(--surface-2)",
                           border: "1px solid var(--line)",
@@ -318,7 +318,7 @@ export function TemplatesClient({
                   </div>
                   <div
                     style={{
-                      fontSize: 11,
+                      fontSize: 13,
                       color: "var(--muted)",
                       marginTop: 2,
                     }}
@@ -333,7 +333,7 @@ export function TemplatesClient({
                   className="btn"
                   onClick={() => toggleSkip(t)}
                   disabled={busy}
-                  style={{ padding: "6px 10px", fontSize: 12 }}
+                  style={{ padding: "6px 10px", fontSize: 14 }}
                 >
                   {skipped ? "戻す" : "今日休む"}
                 </button>
@@ -342,7 +342,7 @@ export function TemplatesClient({
                   className="btn btn-primary"
                   onClick={() => logNow(t)}
                   disabled={busy || skipped}
-                  style={{ padding: "6px 10px", fontSize: 12 }}
+                  style={{ padding: "6px 10px", fontSize: 14 }}
                 >
                   {busyId === t.id ? <Spinner size={12} /> : "記録"}
                 </button>
@@ -402,7 +402,7 @@ function TemplateEditor({
       <div className="sheet" onClick={(e) => e.stopPropagation()}>
         <div className="sheet-handle" />
         <div style={{ padding: "8px 18px 20px", display: "flex", flexDirection: "column", gap: 12 }}>
-          <div style={{ fontSize: 16, fontWeight: 700 }}>
+          <div style={{ fontSize: 17, fontWeight: 700 }}>
             {t.id ? "テンプレを編集" : "新規テンプレ"}
           </div>
 
@@ -523,7 +523,7 @@ function FormField({
     <label style={{ display: "flex", flexDirection: "column", gap: 4 }}>
       <span
         style={{
-          fontSize: 10,
+          fontSize: 12,
           textTransform: "uppercase",
           letterSpacing: "0.1em",
           color: "var(--muted)",

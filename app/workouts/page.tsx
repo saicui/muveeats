@@ -73,7 +73,7 @@ export default async function WorkoutsPage() {
             border: "1px solid var(--warn)",
             color: "var(--warn)",
             borderRadius: 8,
-            fontSize: 12,
+            fontSize: 14,
             marginBottom: 16,
           }}
         >
@@ -92,7 +92,7 @@ export default async function WorkoutsPage() {
           }}
         >
           <div style={{ fontWeight: 600, marginBottom: 4 }}>記録がありません</div>
-          <div style={{ fontSize: 12, color: "var(--muted)" }}>
+          <div style={{ fontSize: 14, color: "var(--muted)" }}>
             筋トレ・有酸素のどちらかから記録を始めましょう
           </div>
         </div>
@@ -146,8 +146,8 @@ function RecordChoice({
       >
         <Icon name={icon} size="lg" />
       </span>
-      <div style={{ fontSize: 14, fontWeight: 700 }}>{label}</div>
-      <div style={{ fontSize: 10, color: "var(--muted)" }}>{sub}</div>
+      <div style={{ fontSize: 16, fontWeight: 700 }}>{label}</div>
+      <div style={{ fontSize: 12, color: "var(--muted)" }}>{sub}</div>
     </Link>
   );
 }
@@ -200,7 +200,7 @@ function WorkoutCard({
             }}
           />
           <div>
-            <div style={{ fontWeight: 700, fontSize: 14 }}>
+            <div style={{ fontWeight: 700, fontSize: 16 }}>
               {workout.title ||
                 (isStrength
                   ? "筋トレ"
@@ -212,7 +212,7 @@ function WorkoutCard({
                   ? "バイク"
                   : "有酸素")}
             </div>
-            <div style={{ fontSize: 11, color: "var(--muted)" }}>
+            <div style={{ fontSize: 13, color: "var(--muted)" }}>
               {date.toLocaleDateString("ja-JP", {
                 month: "short",
                 day: "numeric",
@@ -227,7 +227,7 @@ function WorkoutCard({
             </div>
           </div>
         </div>
-        <div className="num" style={{ fontSize: 13, color: "var(--move)", fontWeight: 600 }}>
+        <div className="num" style={{ fontSize: 15, color: "var(--move)", fontWeight: 600 }}>
           {workout.est_kcal ? `−${workout.est_kcal} kcal` : "—"}
         </div>
       </div>
@@ -236,10 +236,10 @@ function WorkoutCard({
         <div style={{ padding: "8px 14px 12px" }}>
           {Array.from(groups.entries()).map(([exId, list]) => (
             <div key={exId} style={{ marginTop: 6 }}>
-              <div style={{ fontSize: 12, fontWeight: 600, marginBottom: 2 }}>
+              <div style={{ fontSize: 14, fontWeight: 600, marginBottom: 2 }}>
                 {list[0].exercise_name}
               </div>
-              <div className="num" style={{ fontSize: 11, color: "var(--muted)" }}>
+              <div className="num" style={{ fontSize: 13, color: "var(--muted)" }}>
                 {list
                   .map((s) => `${s.weight_kg ?? "—"}kg×${s.reps ?? "—"}`)
                   .join("  ·  ")}

@@ -42,7 +42,7 @@ export function Sparkline({
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          fontSize: 11,
+          fontSize: 13,
           color: "var(--muted)",
         }}
       >

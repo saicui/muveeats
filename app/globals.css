@@ -87,7 +87,7 @@ body {
 body {
   font-family: "Inter", -apple-system, BlinkMacSystemFont, "Hiragino Sans",
     "Noto Sans JP", "Yu Gothic", sans-serif;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
   font-feature-settings: "cv01", "cv02", "cv03";
@@ -162,14 +162,14 @@ body {
   gap: 12px;
 }
 .app-header .brand {
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 700;
   letter-spacing: -0.01em;
   color: var(--ink);
   text-decoration: none;
 }
 .app-header .header-meta {
-  font-size: 11px;
+  font-size: 13px;
   color: var(--muted);
 }
 
@@ -186,7 +186,7 @@ body {
   min-height: 36px;
   justify-content: center;
   font-family: inherit;
-  font-size: 12px;
+  font-size: 14px;
   transition: background var(--dur-fast) var(--ease);
   text-decoration: none;
 }
@@ -228,7 +228,7 @@ body {
   text-decoration: none;
   padding: 6px 4px;
   color: var(--muted);
-  font-size: 10px;
+  font-size: 12px;
   letter-spacing: 0.04em;
   display: flex;
   flex-direction: column;
@@ -270,13 +270,13 @@ body {
   margin: 0 0 2px;
 }
 .page-subtitle {
-  font-size: 12px;
+  font-size: 14px;
   color: var(--muted);
   margin: 0 0 22px;
   letter-spacing: 0.02em;
 }
 .section-title {
-  font-size: 10px;
+  font-size: 12px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--muted);
@@ -287,7 +287,7 @@ body {
   justify-content: space-between;
 }
 .section-title .aux {
-  font-size: 11px;
+  font-size: 13px;
   color: var(--muted);
   text-transform: none;
   letter-spacing: 0;
@@ -303,7 +303,7 @@ body {
    ============================================================ */
 .btn {
   font-family: inherit;
-  font-size: 13px;
+  font-size: 15px;
   padding: 10px 14px;
   border: 1px solid var(--line);
   background: var(--surface);
@@ -365,7 +365,7 @@ select.input {
   border-radius: 8px;
   background: var(--surface);
   color: var(--ink);
-  font-size: 14px;
+  font-size: 16px;
   font-family: inherit;
 }
 .input:focus {
@@ -408,7 +408,7 @@ select.input {
    Tags
    ============================================================ */
 .tag {
-  font-size: 11px;
+  font-size: 13px;
   padding: 3px 10px;
   background: var(--surface-2);
   border: 1px solid var(--line);
@@ -449,7 +449,7 @@ select.input {
 }
 
 .size-tag {
-  font-size: 10px;
+  font-size: 12px;
   padding: 1px 7px;
   background: var(--surface);
   border: 1px solid var(--line);
@@ -459,7 +459,7 @@ select.input {
 }
 
 .official-tag {
-  font-size: 9px;
+  font-size: 11px;
   padding: 1px 6px;
   background: var(--surface-2);
   border: 1px solid var(--line);

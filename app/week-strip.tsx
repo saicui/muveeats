@@ -48,7 +48,7 @@ export function WeekStrip({ days }: { days: WeekDay[] }) {
           >
             <div
               style={{
-                fontSize: 10,
+                fontSize: 12,
                 color: "var(--muted)",
                 fontWeight: 600,
                 letterSpacing: "0.06em",
@@ -91,7 +91,7 @@ function DaySheet({ day, onClose }: { day: WeekDay; onClose: () => void }) {
         <div className="sheet-handle" />
         <div style={{ padding: "8px 18px 22px" }}>
           <div style={{ fontSize: 18, fontWeight: 700 }}>{day.label}</div>
-          <div style={{ fontSize: 11, color: "var(--muted)", marginTop: 4, marginBottom: 16 }}>
+          <div style={{ fontSize: 13, color: "var(--muted)", marginTop: 4, marginBottom: 16 }}>
             その日のサマリー
           </div>
 
@@ -104,7 +104,7 @@ function DaySheet({ day, onClose }: { day: WeekDay; onClose: () => void }) {
                 border: "1px dashed var(--line)",
                 borderRadius: 10,
                 color: "var(--muted)",
-                fontSize: 13,
+                fontSize: 15,
               }}
             >
               この日の記録はありません
@@ -124,7 +124,7 @@ function DaySheet({ day, onClose }: { day: WeekDay; onClose: () => void }) {
               >
                 <div
                   style={{
-                    fontSize: 10,
+                    fontSize: 12,
                     color: "var(--muted)",
                     textTransform: "uppercase",
                     letterSpacing: "0.1em",
@@ -139,7 +139,7 @@ function DaySheet({ day, onClose }: { day: WeekDay; onClose: () => void }) {
                   style={{ fontSize: 30, fontWeight: 700, letterSpacing: "-0.02em" }}
                 >
                   {net.toLocaleString()}
-                  <span style={{ fontSize: 13, color: "var(--muted)", fontWeight: 500 }}>
+                  <span style={{ fontSize: 15, color: "var(--muted)", fontWeight: 500 }}>
                     {" "}
                     kcal
                   </span>
@@ -162,7 +162,7 @@ function DaySheet({ day, onClose }: { day: WeekDay; onClose: () => void }) {
                 <StatCell label="C 炭水化物" value={day.carbs} unit="g" />
               </div>
 
-              <div style={{ fontSize: 11, color: "var(--muted)", marginTop: 12, lineHeight: 1.5 }}>
+              <div style={{ fontSize: 13, color: "var(--muted)", marginTop: 12, lineHeight: 1.5 }}>
                 食事 {day.mealCount} 件
                 {day.burn > 0 ? " · 消費は運動・歩数の記録ベース" : ""}
               </div>
@@ -204,7 +204,7 @@ function StatCell({
     >
       <div
         style={{
-          fontSize: 10,
+          fontSize: 12,
           color: "var(--muted)",
           fontWeight: 600,
           marginBottom: 4,
@@ -222,7 +222,7 @@ function StatCell({
         }}
       >
         {value.toLocaleString()}
-        <span style={{ fontSize: 11, color: "var(--muted)", fontWeight: 500 }}>
+        <span style={{ fontSize: 13, color: "var(--muted)", fontWeight: 500 }}>
           {" "}
           {unit}
         </span>

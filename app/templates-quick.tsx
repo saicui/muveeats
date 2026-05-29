@@ -119,8 +119,8 @@ export function TemplateQuickPick({
             }}
           >
             <div style={{ flex: 1, minWidth: 0 }}>
-              <div style={{ fontWeight: 600, fontSize: 13 }}>{t.label}</div>
-              <div style={{ fontSize: 11, color: "var(--muted)", marginTop: 2 }}>
+              <div style={{ fontWeight: 600, fontSize: 15 }}>{t.label}</div>
+              <div style={{ fontSize: 13, color: "var(--muted)", marginTop: 2 }}>
                 {t.name}
                 {t.default_time ? ` · ${t.default_time}` : ""}
                 {t.calories ? ` · ${Math.round(t.calories)} kcal` : ""}
@@ -129,7 +129,7 @@ export function TemplateQuickPick({
             {isLogged ? (
               <span
                 style={{
-                  fontSize: 11,
+                  fontSize: 13,
                   fontWeight: 600,
                   color: "var(--eat)",
                   padding: "4px 8px",
@@ -146,7 +146,7 @@ export function TemplateQuickPick({
                   className="btn"
                   onClick={() => toggleSkip(t)}
                   disabled={isBusy}
-                  style={{ padding: "5px 10px", fontSize: 12 }}
+                  style={{ padding: "5px 10px", fontSize: 14 }}
                 >
                   {isSkipped ? "戻す" : "休む"}
                 </button>
@@ -155,7 +155,7 @@ export function TemplateQuickPick({
                   className="btn btn-primary"
                   onClick={() => !isSkipped && logTemplate(t)}
                   disabled={isBusy || isSkipped}
-                  style={{ padding: "5px 10px", fontSize: 12 }}
+                  style={{ padding: "5px 10px", fontSize: 14 }}
                 >
                   {isBusy ? <Spinner size={12} /> : "記録"}
                 </button>

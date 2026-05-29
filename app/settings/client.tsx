@@ -180,7 +180,7 @@ export function SettingsClient({
             border: "1px solid var(--warn)",
             color: "var(--warn)",
             borderRadius: 8,
-            fontSize: 12,
+            fontSize: 14,
             marginBottom: 16,
           }}
         >
@@ -204,14 +204,14 @@ export function SettingsClient({
             alignItems: "center",
             gap: 6,
             fontWeight: 700,
-            fontSize: 14,
+            fontSize: 16,
             marginBottom: 4,
           }}
         >
           <Icon name="bot" size="sm" />
           目標を AI に相談
         </div>
-        <div style={{ fontSize: 12, color: "var(--ink-2)", marginBottom: 10 }}>
+        <div style={{ fontSize: 14, color: "var(--ink-2)", marginBottom: 10 }}>
           下のプロフィールを埋めてから質問すると、より具体的な提案が返ります
         </div>
 
@@ -233,7 +233,7 @@ export function SettingsClient({
               <div
                 key={i}
                 style={{
-                  fontSize: 12,
+                  fontSize: 14,
                   padding: "8px 10px",
                   borderRadius: 8,
                   background: m.role === "user" ? "var(--surface-2)" : "transparent",
@@ -256,7 +256,7 @@ export function SettingsClient({
                   >
                     <div
                       className="num"
-                      style={{ fontWeight: 600, fontSize: 12, color: "var(--ink)", marginBottom: 6 }}
+                      style={{ fontWeight: 600, fontSize: 14, color: "var(--ink)", marginBottom: 6 }}
                     >
                       推奨 {Math.round(m.suggestion.kcal)} kcal · P
                       {Math.round(m.suggestion.protein_g)} / F
@@ -266,7 +266,7 @@ export function SettingsClient({
                     <button
                       type="button"
                       className="btn btn-primary"
-                      style={{ fontSize: 11, padding: "4px 10px" }}
+                      style={{ fontSize: 13, padding: "4px 10px" }}
                       onClick={() => applySuggestion(m.suggestion!)}
                     >
                       この値を目標に
@@ -379,7 +379,7 @@ export function SettingsClient({
             unit="kg"
             sub="体組成記録から自動更新"
           >
-            <div className="num" style={{ color: "var(--ink-2)", fontSize: 14 }}>
+            <div className="num" style={{ color: "var(--ink-2)", fontSize: 16 }}>
               {latestBody?.weight_kg ?? "—"}
             </div>
           </Row>
@@ -420,7 +420,7 @@ export function SettingsClient({
             borderRadius: 12,
             padding: "12px 14px",
             marginBottom: 18,
-            fontSize: 13,
+            fontSize: 15,
           }}
         >
           サインイン中:{" "}
@@ -434,7 +434,7 @@ export function SettingsClient({
               border: "1px solid var(--danger)",
               color: "var(--danger)",
               borderRadius: 8,
-              fontSize: 12,
+              fontSize: 14,
               marginBottom: 12,
             }}
           >
@@ -448,7 +448,7 @@ export function SettingsClient({
               border: "1px solid var(--eat)",
               color: "var(--eat)",
               borderRadius: 8,
-              fontSize: 12,
+              fontSize: 14,
               marginBottom: 12,
             }}
           >
@@ -469,7 +469,7 @@ export function SettingsClient({
       <div className="section-title">表示</div>
       <div style={{ marginBottom: 18 }}>
         <ThemePicker />
-        <div style={{ fontSize: 11, color: "var(--muted)", marginTop: 6 }}>
+        <div style={{ fontSize: 13, color: "var(--muted)", marginTop: 6 }}>
           システムを選ぶと OS のダークモード設定に追従します
         </div>
       </div>
@@ -521,7 +521,7 @@ export function SettingsClient({
       >
         <div
           style={{
-            fontSize: 10,
+            fontSize: 12,
             color: "var(--muted)",
             textTransform: "uppercase",
             letterSpacing: "0.1em",
@@ -547,7 +547,7 @@ export function SettingsClient({
         </button>
         <div
           style={{
-            fontSize: 11,
+            fontSize: 13,
             color: "var(--muted)",
             marginTop: 6,
           }}
@@ -558,7 +558,7 @@ export function SettingsClient({
           <div
             style={{
               marginTop: 8,
-              fontSize: 12,
+              fontSize: 14,
               color: purgeMsg.includes("削除しました") ? "var(--eat)" : "var(--muted)",
             }}
           >
@@ -593,9 +593,9 @@ function Row({
       }}
     >
       <div>
-        <div style={{ fontSize: 13, fontWeight: 500 }}>{label}</div>
+        <div style={{ fontSize: 15, fontWeight: 500 }}>{label}</div>
         {(unit || sub) && (
-          <div style={{ fontSize: 11, color: "var(--muted)" }}>
+          <div style={{ fontSize: 13, color: "var(--muted)" }}>
             {sub ?? unit}
           </div>
         )}

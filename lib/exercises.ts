@@ -24,10 +24,26 @@ export const EQUIPMENT_LABELS: Record<Exercise["equipment"], string> = {
   other: "その他",
 };
 
-// 起動時に1回だけ正規化。検索のたびに toLowerCase を全レコード分計算しない。
+/**
+ * 検索照合用にキー文字列を正規化する。
+ * - NFKC: 全角/半角・互換文字を統一 (半角カナ→全角カナ等)
+ * - toLowerCase: 英字の大文字小文字を無視
+ * - カタカナ→ひらがな: 「ベンチ」と「べんち」を同一視 (U+30A1〜U+30F6 を -0x60)
+ * これで「べんち」でも「ベンチプレス」がヒットする。
+ */
+export function normalizeKana(s: string): string {
+  return s
+    .normalize("NFKC")
+    .toLowerCase()
+    .replace(/[ァ-ヶ]/g, (ch) =>
+      String.fromCharCode(ch.charCodeAt(0) - 0x60),
+    );
+}
+
+// 起動時に1回だけ正規化。検索のたびに全レコード分を再計算しない。
 const NORMALIZED = EXERCISES.map((e) => ({
   ex: e,
-  needle: [e.name, ...(e.aliases ?? [])].map((s) => s.toLowerCase()),
+  needle: [e.name, ...(e.aliases ?? [])].map(normalizeKana),
 }));
 const ID_INDEX = new Map(EXERCISES.map((e) => [e.id, e]));
 
@@ -39,7 +55,7 @@ export function findExercise(id: string): Exercise | null {
  * 検索クエリで種目をフィルタ (名前 + エイリアスに対する includes マッチ)。
  */
 export function searchExercises(query: string): Exercise[] {
-  const q = query.trim().toLowerCase();
+  const q = normalizeKana(query.trim());
   if (!q) return EXERCISES;
   const result: Exercise[] = [];
   for (const { ex, needle } of NORMALIZED) {
@@ -53,7 +69,7 @@ export function searchExercises(query: string): Exercise[] {
  * 見つからなければ null を返し、カスタム種目として扱う想定。
  */
 export function matchExerciseByName(name: string): Exercise | null {
-  const q = name.trim().toLowerCase();
+  const q = normalizeKana(name.trim());
   if (!q) return null;
   for (const { ex, needle } of NORMALIZED) {
     if (needle.includes(q)) return ex;

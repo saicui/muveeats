@@ -104,7 +104,7 @@ export function ThemePicker() {
             color: theme === o.id ? "var(--ink)" : "var(--muted)",
             fontWeight: theme === o.id ? 600 : 500,
             borderRadius: 6,
-            fontSize: 12,
+            fontSize: 14,
             fontFamily: "inherit",
             cursor: "pointer",
             boxShadow: theme === o.id ? "0 1px 2px rgba(0,0,0,0.08)" : "none",

@@ -161,7 +161,7 @@ export function WorkoutTemplatesClient({
             border: "1px solid var(--danger)",
             color: "var(--danger)",
             borderRadius: 8,
-            fontSize: 12,
+            fontSize: 14,
             marginBottom: 16,
           }}
         >
@@ -182,7 +182,7 @@ export function WorkoutTemplatesClient({
           <div style={{ fontWeight: 600, marginBottom: 4 }}>
             まだ運動テンプレがありません
           </div>
-          <div style={{ fontSize: 12, color: "var(--muted)", marginBottom: 12 }}>
+          <div style={{ fontSize: 14, color: "var(--muted)", marginBottom: 12 }}>
             「胸の日」「脚の日」などの典型メニューを登録しておくと便利
           </div>
           <button
@@ -220,10 +220,10 @@ export function WorkoutTemplatesClient({
                 }}
               >
                 <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ fontWeight: 600, fontSize: 14 }}>{t.label}</div>
+                  <div style={{ fontWeight: 600, fontSize: 16 }}>{t.label}</div>
                   <div
                     style={{
-                      fontSize: 11,
+                      fontSize: 13,
                       color: "var(--muted)",
                       marginTop: 2,
                       overflow: "hidden",
@@ -237,7 +237,7 @@ export function WorkoutTemplatesClient({
                 <Link
                   href={`/workouts/new?template=${t.id}`}
                   className="btn btn-primary"
-                  style={{ padding: "6px 10px", fontSize: 12 }}
+                  style={{ padding: "6px 10px", fontSize: 14 }}
                 >
                   開始
                 </Link>
@@ -372,7 +372,7 @@ function TemplateEditor({
             overflow: "hidden",
           }}
         >
-          <div style={{ fontSize: 16, fontWeight: 700, flexShrink: 0 }}>
+          <div style={{ fontSize: 17, fontWeight: 700, flexShrink: 0 }}>
             {d.id ? "テンプレを編集" : "新規運動テンプレ"}
           </div>
           <input
@@ -395,7 +395,7 @@ function TemplateEditor({
                 }}
               >
                 <div style={{ display: "flex", alignItems: "center", marginBottom: 8 }}>
-                  <div style={{ flex: 1, fontWeight: 600, fontSize: 13 }}>
+                  <div style={{ flex: 1, fontWeight: 600, fontSize: 15 }}>
                     {ex.exercise_name}
                   </div>
                   <button
@@ -413,7 +413,7 @@ function TemplateEditor({
                       key={setIdx}
                       style={{ display: "flex", gap: 6, alignItems: "center" }}
                     >
-                      <div style={{ width: 24, fontSize: 11, color: "var(--muted)" }}>
+                      <div style={{ width: 24, fontSize: 13, color: "var(--muted)" }}>
                         #{setIdx + 1}
                       </div>
                       <input
@@ -463,7 +463,7 @@ function TemplateEditor({
                     type="button"
                     className="btn"
                     onClick={() => addSet(exIdx)}
-                    style={{ fontSize: 12, padding: "5px 10px", alignSelf: "flex-start" }}
+                    style={{ fontSize: 14, padding: "5px 10px", alignSelf: "flex-start" }}
                   >
                     <Icon name="plus" size="sm" />
                     セット追加
@@ -559,7 +559,7 @@ function ExercisePicker({
             overflow: "hidden",
           }}
         >
-          <div style={{ fontSize: 16, fontWeight: 700, flexShrink: 0 }}>
+          <div style={{ fontSize: 17, fontWeight: 700, flexShrink: 0 }}>
             種目を選ぶ
           </div>
           <div className="search-input" style={{ flexShrink: 0 }}>
@@ -605,7 +605,7 @@ function ExercisePicker({
                 flexShrink: 0,
               }}
             >
-              <div style={{ fontSize: 13, fontWeight: 600 }}>
+              <div style={{ fontSize: 15, fontWeight: 600 }}>
                 「{query}」をカスタム種目として追加
               </div>
             </button>
@@ -623,7 +623,7 @@ function ExercisePicker({
             }}
           >
             {list.length === 0 ? (
-              <div style={{ padding: 20, textAlign: "center", color: "var(--muted)", fontSize: 13 }}>
+              <div style={{ padding: 20, textAlign: "center", color: "var(--muted)", fontSize: 15 }}>
                 該当する種目がありません
               </div>
             ) : (
@@ -645,8 +645,8 @@ function ExercisePicker({
                     color: "var(--ink)",
                   }}
                 >
-                  <div style={{ fontSize: 13, fontWeight: 600 }}>{e.name}</div>
-                  <div style={{ fontSize: 10, color: "var(--muted)", marginTop: 2 }}>
+                  <div style={{ fontSize: 15, fontWeight: 600 }}>{e.name}</div>
+                  <div style={{ fontSize: 12, color: "var(--muted)", marginTop: 2 }}>
                     {BODY_PARTS.find((p) => p.id === e.body_part)?.label}
                   </div>
                 </button>

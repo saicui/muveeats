@@ -207,9 +207,17 @@ export function getCatalogStats() {
   };
 }
 
-/** Lower-case + remove whitespace for fuzzy match. */
+/**
+ * あいまい照合用の正規化。
+ * NFKC (全角/半角統一) + 小文字化 + カタカナ→ひらがな + 空白除去。
+ * カナ畳み込みで「べんとう」でも「ベントウ」がヒットする。
+ */
 function normalize(s: string): string {
-  return s.toLowerCase().replace(/\s+/g, "");
+  return s
+    .normalize("NFKC")
+    .toLowerCase()
+    .replace(/[ァ-ヶ]/g, (ch) => String.fromCharCode(ch.charCodeAt(0) - 0x60))
+    .replace(/\s+/g, "");
 }
 
 export function searchChainItems(

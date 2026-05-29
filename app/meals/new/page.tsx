@@ -313,7 +313,7 @@ function MealBackdateField({
           background: "transparent",
           border: 0,
           color: "var(--muted)",
-          fontSize: 11,
+          fontSize: 13,
           padding: "4px 0",
           cursor: "pointer",
           fontFamily: "inherit",
@@ -347,7 +347,7 @@ function MealBackdateField({
         className="input"
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        style={{ flex: 1, padding: "4px 6px", fontSize: 13 }}
+        style={{ flex: 1, padding: "4px 6px", fontSize: 15 }}
       />
       <button
         type="button"
@@ -392,7 +392,7 @@ function MealTemplatePickSheet({
             gap: 8,
           }}
         >
-          <div style={{ fontSize: 16, fontWeight: 700, marginBottom: 6 }}>
+          <div style={{ fontSize: 17, fontWeight: 700, marginBottom: 6 }}>
             テンプレから記録
           </div>
           {templates.map((t) => (
@@ -411,10 +411,10 @@ function MealTemplatePickSheet({
                 color: "var(--ink)",
               }}
             >
-              <div style={{ fontSize: 13, fontWeight: 600 }}>{t.label}</div>
+              <div style={{ fontSize: 15, fontWeight: 600 }}>{t.label}</div>
               <div
                 style={{
-                  fontSize: 11,
+                  fontSize: 13,
                   color: "var(--muted)",
                   marginTop: 2,
                 }}
@@ -467,7 +467,7 @@ function ModeTabs({ mode, setMode }: { mode: Mode; setMode: (m: Mode) => void })
             fontWeight: mode === t.id ? 600 : 500,
             boxShadow: mode === t.id ? "0 1px 2px rgba(0,0,0,0.04)" : "none",
             padding: "8px 12px",
-            fontSize: 12,
+            fontSize: 14,
           }}
         >
           <Icon name={t.icon} size="sm" />
@@ -564,7 +564,7 @@ function ChainSearchStep({ onPick }: { onPick: (item: ChainItem) => void }) {
             display: "flex",
             gap: 12,
             alignItems: "center",
-            fontSize: 12,
+            fontSize: 14,
             color: "var(--muted)",
             marginBottom: 12,
           }}
@@ -577,7 +577,7 @@ function ChainSearchStep({ onPick }: { onPick: (item: ChainItem) => void }) {
         </div>
       )}
 
-      {loading && <div style={{ fontSize: 12, color: "var(--muted)" }}>検索中…</div>}
+      {loading && <div style={{ fontSize: 14, color: "var(--muted)" }}>検索中…</div>}
 
       {!loading && query && results.length === 0 && (
         <div
@@ -592,7 +592,7 @@ function ChainSearchStep({ onPick }: { onPick: (item: ChainItem) => void }) {
           <div style={{ fontWeight: 600, marginBottom: 4 }}>
             「{query}」に一致するメニューがありません
           </div>
-          <div style={{ fontSize: 12, color: "var(--muted)" }}>
+          <div style={{ fontSize: 14, color: "var(--muted)" }}>
             写真や手動入力で記録してください
           </div>
         </div>
@@ -613,7 +613,7 @@ function ChainSearchStep({ onPick }: { onPick: (item: ChainItem) => void }) {
                 style={{
                   padding: "8px 14px",
                   background: "var(--surface-2)",
-                  fontSize: 10,
+                  fontSize: 12,
                   textTransform: "uppercase",
                   letterSpacing: "0.1em",
                   color: "var(--muted)",
@@ -649,7 +649,7 @@ function ChainSearchStep({ onPick }: { onPick: (item: ChainItem) => void }) {
                   }}
                 >
                   <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ fontWeight: 600, fontSize: 14 }}>{item.display_name}</div>
+                    <div style={{ fontWeight: 600, fontSize: 16 }}>{item.display_name}</div>
                     <div
                       style={{
                         display: "flex",
@@ -668,11 +668,11 @@ function ChainSearchStep({ onPick }: { onPick: (item: ChainItem) => void }) {
                     </div>
                   </div>
                   <div className="num" style={{ textAlign: "right", flexShrink: 0 }}>
-                    <div style={{ fontWeight: 700, fontSize: 14 }}>
+                    <div style={{ fontWeight: 700, fontSize: 16 }}>
                       {item.calories ?? "—"}
                       <span
                         style={{
-                          fontSize: 11,
+                          fontSize: 13,
                           color: "var(--muted)",
                           marginLeft: 2,
                           fontWeight: 500,
@@ -681,7 +681,7 @@ function ChainSearchStep({ onPick }: { onPick: (item: ChainItem) => void }) {
                         kcal
                       </span>
                     </div>
-                    <div style={{ fontSize: 10, color: "var(--muted)", marginTop: 1 }}>
+                    <div style={{ fontSize: 12, color: "var(--muted)", marginTop: 1 }}>
                       {item.protein_g != null
                         ? `P${item.protein_g} / F${item.fat_g} / C${item.carbs_g}`
                         : "PFC 値非公開"}
@@ -772,7 +772,7 @@ function PhotoStep({ onResult }: { onResult: (r: AnalysisResult) => void }) {
         ) : (
           <>
             <Icon name="camera" size="lg" />
-            <div style={{ fontSize: 13, color: "var(--muted)" }}>
+            <div style={{ fontSize: 15, color: "var(--muted)" }}>
               タップして写真を選択 / 撮影
             </div>
           </>
@@ -789,7 +789,7 @@ function PhotoStep({ onResult }: { onResult: (r: AnalysisResult) => void }) {
       >
         <span
           style={{
-            fontSize: 10,
+            fontSize: 12,
             textTransform: "uppercase",
             letterSpacing: "0.1em",
             color: "var(--muted)",
@@ -807,7 +807,7 @@ function PhotoStep({ onResult }: { onResult: (r: AnalysisResult) => void }) {
           maxLength={200}
           style={{ resize: "vertical", fontFamily: "inherit" }}
         />
-        <span style={{ fontSize: 10, color: "var(--muted)" }}>
+        <span style={{ fontSize: 12, color: "var(--muted)" }}>
           量や調理法のヒントを書くと精度が上がります ({note.length}/200)
         </span>
       </label>
@@ -830,7 +830,7 @@ function PhotoStep({ onResult }: { onResult: (r: AnalysisResult) => void }) {
             border: "1px solid var(--danger)",
             color: "var(--danger)",
             borderRadius: 8,
-            fontSize: 12,
+            fontSize: 14,
           }}
         >
           {error}
@@ -915,7 +915,7 @@ function ConsultStep({ onResult }: { onResult: (r: AnalysisResult) => void }) {
           borderRadius: 10,
           padding: 10,
           marginBottom: 12,
-          fontSize: 11,
+          fontSize: 13,
           color: "var(--muted)",
           lineHeight: 1.5,
         }}
@@ -953,7 +953,7 @@ function ConsultStep({ onResult }: { onResult: (r: AnalysisResult) => void }) {
           marginBottom: 4,
         }}
       />
-      <div style={{ fontSize: 10, color: "var(--muted)", marginBottom: 14 }}>
+      <div style={{ fontSize: 12, color: "var(--muted)", marginBottom: 14 }}>
         {description.length}/500
       </div>
 
@@ -990,7 +990,7 @@ function ConsultStep({ onResult }: { onResult: (r: AnalysisResult) => void }) {
         ) : (
           <>
             <Icon name="camera" size="lg" />
-            <div style={{ fontSize: 12, color: "var(--muted)" }}>
+            <div style={{ fontSize: 14, color: "var(--muted)" }}>
               メニュー表 / 伝票 / 料理写真をタップで添付
             </div>
           </>
@@ -1023,7 +1023,7 @@ function ConsultStep({ onResult }: { onResult: (r: AnalysisResult) => void }) {
             border: "1px solid var(--danger)",
             color: "var(--danger)",
             borderRadius: 8,
-            fontSize: 12,
+            fontSize: 14,
           }}
         >
           {error}
@@ -1103,7 +1103,7 @@ function Field({
     <label style={{ display: "flex", flexDirection: "column", gap: 4 }}>
       <span
         style={{
-          fontSize: 10,
+          fontSize: 12,
           textTransform: "uppercase",
           letterSpacing: "0.1em",
           color: "var(--muted)",
@@ -1170,10 +1170,10 @@ function ConfirmStep({
       >
         <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 12 }}>
           <div style={{ minWidth: 0 }}>
-            <div style={{ fontSize: 15, fontWeight: 700, marginBottom: 4 }}>
+            <div style={{ fontSize: 16, fontWeight: 700, marginBottom: 4 }}>
               {selected.name}
             </div>
-            <div style={{ fontSize: 11, color: "var(--muted)", display: "flex", gap: 6, alignItems: "center", flexWrap: "wrap" }}>
+            <div style={{ fontSize: 13, color: "var(--muted)", display: "flex", gap: 6, alignItems: "center", flexWrap: "wrap" }}>
               {selected.chain_name && <span>{selected.chain_name}</span>}
               {selected.source === "chain" && <span className="official-tag">official</span>}
               {selected.source === "photo" && (
@@ -1200,7 +1200,7 @@ function ConfirmStep({
             style={{
               background: "transparent",
               border: 0,
-              fontSize: 11,
+              fontSize: 13,
               color: "var(--ink-2)",
               cursor: "pointer",
               textDecoration: "underline",
@@ -1225,7 +1225,7 @@ function ConfirmStep({
             >
               <div
                 style={{
-                  fontSize: 9,
+                  fontSize: 11,
                   textTransform: "uppercase",
                   letterSpacing: "0.1em",
                   color: "var(--muted)",
@@ -1234,7 +1234,7 @@ function ConfirmStep({
               >
                 {["kcal", "P", "F", "C"][i]}
               </div>
-              <div className="num" style={{ fontSize: 17, fontWeight: 700, marginTop: 4 }}>
+              <div className="num" style={{ fontSize: 18, fontWeight: 700, marginTop: 4 }}>
                 {selected[k] != null ? Math.round(Number(selected[k])) : "—"}
               </div>
             </div>
@@ -1248,7 +1248,7 @@ function ConfirmStep({
               background: "var(--surface-2)",
               borderLeft: "3px solid var(--ai)",
               padding: "8px 10px",
-              fontSize: 12,
+              fontSize: 14,
               color: "var(--ink-2)",
               borderRadius: "0 6px 6px 0",
             }}
@@ -1302,7 +1302,7 @@ function ConfirmStep({
             border: "1px solid var(--danger)",
             color: "var(--danger)",
             borderRadius: 8,
-            fontSize: 12,
+            fontSize: 14,
           }}
         >
           {error}
@@ -1341,7 +1341,7 @@ function TagGroup({
     <div style={{ marginBottom: 12 }}>
       <div
         style={{
-          fontSize: 10,
+          fontSize: 12,
           textTransform: "uppercase",
           letterSpacing: "0.1em",
           color: "var(--muted)",

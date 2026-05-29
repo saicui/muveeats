@@ -21,7 +21,7 @@ export function RecordSwitch({ current }: { current: RecordType }) {
           key={o.type}
           href={o.href}
           className="btn"
-          style={{ padding: "5px 10px", fontSize: 11 }}
+          style={{ padding: "5px 10px", fontSize: 13 }}
         >
           <Icon name={o.icon} size="sm" />
           {o.label}

@@ -172,7 +172,7 @@ export default async function DashboardPage() {
             border: "1px solid var(--warn)",
             color: "var(--warn)",
             borderRadius: 8,
-            fontSize: 12,
+            fontSize: 14,
             marginBottom: 16,
           }}
         >
@@ -278,7 +278,7 @@ export default async function DashboardPage() {
             borderRadius: 10,
             padding: "14px 16px",
             marginBottom: 22,
-            fontSize: 12,
+            fontSize: 14,
             color: "var(--muted)",
             display: "flex",
             alignItems: "center",
@@ -292,7 +292,7 @@ export default async function DashboardPage() {
           <Link
             href="/templates"
             className="btn"
-            style={{ padding: "6px 10px", fontSize: 12, flexShrink: 0 }}
+            style={{ padding: "6px 10px", fontSize: 14, flexShrink: 0 }}
           >
             設定
           </Link>
@@ -312,7 +312,7 @@ export default async function DashboardPage() {
         style={{
           textAlign: "center",
           marginTop: 12,
-          fontSize: 11,
+          fontSize: 13,
           color: "var(--muted)",
         }}
       >
@@ -352,7 +352,7 @@ function SummaryCard({
           alignItems: "center",
           gap: 8,
           color: "var(--muted)",
-          fontSize: 10,
+          fontSize: 12,
           letterSpacing: "0.1em",
           textTransform: "uppercase",
           fontWeight: 600,
@@ -376,7 +376,7 @@ function SummaryCard({
         {typeof value === "number" ? value.toLocaleString() : value}
         <span
           style={{
-            fontSize: 13,
+            fontSize: 15,
             color: "var(--muted)",
             fontWeight: 500,
             marginLeft: 4,
@@ -389,7 +389,7 @@ function SummaryCard({
         style={{
           display: "flex",
           gap: 12,
-          fontSize: 11,
+          fontSize: 13,
           color: "var(--muted)",
           marginTop: 8,
           flexWrap: "wrap",
@@ -438,7 +438,7 @@ function EnergyBalance({
         style={{
           display: "flex",
           justifyContent: "space-between",
-          fontSize: 10,
+          fontSize: 12,
           letterSpacing: "0.1em",
           textTransform: "uppercase",
           color: "var(--muted)",
@@ -484,14 +484,14 @@ function EnergyBalance({
           }}
         />
       </div>
-      <div style={{ display: "flex", justifyContent: "space-between", fontSize: 11 }}>
+      <div style={{ display: "flex", justifyContent: "space-between", fontSize: 13 }}>
         <Legend dotColor="var(--eat)" label="摂取" value={`+${Math.round(intake)}`} />
         <Legend dotColor="var(--move)" label="消費" value={`−${Math.round(burn)}`} />
       </div>
       <div
         style={{
           textAlign: "center",
-          fontSize: 12,
+          fontSize: 14,
           color: "var(--muted)",
           marginTop: 12,
           paddingTop: 12,
@@ -567,7 +567,7 @@ function BodyCard({
             display: "flex",
             alignItems: "center",
             gap: 8,
-            fontSize: 10,
+            fontSize: 12,
             letterSpacing: "0.1em",
             textTransform: "uppercase",
             color: "var(--muted)",
@@ -581,7 +581,7 @@ function BodyCard({
             未記録
           </span>
         </div>
-        <div style={{ fontSize: 12, color: "var(--muted)" }}>
+        <div style={{ fontSize: 14, color: "var(--muted)" }}>
           まだ体組成の記録がありません。
           <Link href="/body/new" style={{ color: "var(--ink-2)", textDecoration: "underline", textUnderlineOffset: 3, marginLeft: 4 }}>
             最初の記録を作る →
@@ -615,7 +615,7 @@ function BodyCard({
           display: "flex",
           alignItems: "center",
           gap: 8,
-          fontSize: 10,
+          fontSize: 12,
           letterSpacing: "0.1em",
           textTransform: "uppercase",
           color: "var(--muted)",
@@ -636,13 +636,13 @@ function BodyCard({
         <div style={{ flex: 1, minWidth: 0 }}>
           <div className="num" style={{ fontSize: 22, fontWeight: 700 }}>
             {latest.weight_kg ?? "—"}
-            <span style={{ fontSize: 12, color: "var(--muted)", fontWeight: 500 }}> kg</span>
+            <span style={{ fontSize: 14, color: "var(--muted)", fontWeight: 500 }}> kg</span>
           </div>
           {wDelta != null ? (
             <div
               className="num"
               style={{
-                fontSize: 11,
+                fontSize: 13,
                 fontWeight: 600,
                 marginTop: 2,
                 color: wDelta < 0 ? "var(--eat)" : wDelta > 0 ? "var(--warn)" : "var(--muted)",
@@ -652,7 +652,7 @@ function BodyCard({
               {wDelta.toFixed(1)} / 7d
             </div>
           ) : (
-            <div style={{ fontSize: 11, color: "var(--muted)", marginTop: 2 }}>体重</div>
+            <div style={{ fontSize: 13, color: "var(--muted)", marginTop: 2 }}>体重</div>
           )}
         </div>
         {latest.body_fat_pct != null && (
@@ -682,9 +682,9 @@ function BodyMetric({
     <div style={{ flex: 1, minWidth: 0 }}>
       <div className="num" style={{ fontSize: 18, fontWeight: 700 }}>
         {value}
-        <span style={{ fontSize: 11, color: "var(--muted)", fontWeight: 500 }}> {unit}</span>
+        <span style={{ fontSize: 13, color: "var(--muted)", fontWeight: 500 }}> {unit}</span>
       </div>
-      <div style={{ fontSize: 11, color: "var(--muted)", marginTop: 2 }}>{label}</div>
+      <div style={{ fontSize: 13, color: "var(--muted)", marginTop: 2 }}>{label}</div>
     </div>
   );
 }
@@ -722,7 +722,7 @@ function QuickAction({
       >
         <Icon name={icon} size="lg" />
       </div>
-      <div style={{ fontSize: 11, fontWeight: 600 }}>{label}</div>
+      <div style={{ fontSize: 13, fontWeight: 600 }}>{label}</div>
     </Link>
   );
 }
@@ -804,7 +804,7 @@ function RecentList({
         }}
       >
         <div style={{ fontWeight: 600, marginBottom: 4 }}>まだ記録がありません</div>
-        <div style={{ fontSize: 12, color: "var(--muted)" }}>
+        <div style={{ fontSize: 14, color: "var(--muted)" }}>
           上のクイックアクションから最初の1件を記録しましょう
         </div>
       </div>
@@ -851,7 +851,7 @@ function RecentList({
               <div
                 style={{
                   fontWeight: 600,
-                  fontSize: 14,
+                  fontSize: 16,
                   overflow: "hidden",
                   textOverflow: "ellipsis",
                   whiteSpace: "nowrap",
@@ -859,14 +859,14 @@ function RecentList({
               >
                 {r.name}
               </div>
-              <div style={{ fontSize: 11, color: "var(--muted)", marginTop: 2 }}>
+              <div style={{ fontSize: 13, color: "var(--muted)", marginTop: 2 }}>
                 {r.meta}
               </div>
             </div>
             <div className="num" style={{ textAlign: "right", flexShrink: 0 }}>
-              <div style={{ fontSize: 14, fontWeight: 700 }}>{r.primary}</div>
+              <div style={{ fontSize: 16, fontWeight: 700 }}>{r.primary}</div>
               {r.sub && (
-                <div style={{ fontSize: 10, color: "var(--muted)", marginTop: 1 }}>
+                <div style={{ fontSize: 12, color: "var(--muted)", marginTop: 1 }}>
                   {r.sub}
                 </div>
               )}
@@ -1118,7 +1118,7 @@ function TrendRow({
             display: "flex",
             alignItems: "center",
             gap: 6,
-            fontSize: 11,
+            fontSize: 13,
             color: "var(--muted)",
             textTransform: "uppercase",
             letterSpacing: "0.08em",
@@ -1128,13 +1128,13 @@ function TrendRow({
           <span style={{ width: 6, height: 6, borderRadius: 999, background: color }} />
           {label}
         </div>
-        <div className="num" style={{ fontSize: 14, fontWeight: 700 }}>
+        <div className="num" style={{ fontSize: 16, fontWeight: 700 }}>
           {latest != null
             ? decimals > 0
               ? latest.toFixed(decimals)
               : Math.round(latest).toLocaleString()
             : "—"}
-          <span style={{ fontSize: 10, color: "var(--muted)", marginLeft: 3, fontWeight: 500 }}>
+          <span style={{ fontSize: 12, color: "var(--muted)", marginLeft: 3, fontWeight: 500 }}>
             {unit}
           </span>
         </div>

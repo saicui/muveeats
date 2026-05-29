@@ -83,7 +83,7 @@ export default async function BodyPage() {
             border: "1px solid var(--warn)",
             color: "var(--warn)",
             borderRadius: 8,
-            fontSize: 12,
+            fontSize: 14,
             marginBottom: 16,
           }}
         >
@@ -167,23 +167,23 @@ export default async function BodyPage() {
                 }}
               />
               <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ fontSize: 13, fontWeight: 600 }}>
+                <div style={{ fontSize: 15, fontWeight: 600 }}>
                   {new Date(r.recorded_at).toLocaleDateString("ja-JP", {
                     month: "short",
                     day: "numeric",
                   })}
                 </div>
-                <div style={{ fontSize: 11, color: "var(--muted)", marginTop: 2 }}>
+                <div style={{ fontSize: 13, color: "var(--muted)", marginTop: 2 }}>
                   {fmtTime(r.recorded_at)} · 手動記録
                 </div>
               </div>
               <div className="num" style={{ textAlign: "right" }}>
-                <div style={{ fontSize: 14, fontWeight: 700 }}>
+                <div style={{ fontSize: 16, fontWeight: 700 }}>
                   {r.weight_kg ?? "—"}
-                  <span style={{ fontSize: 11, color: "var(--muted)", marginLeft: 2 }}>kg</span>
+                  <span style={{ fontSize: 13, color: "var(--muted)", marginLeft: 2 }}>kg</span>
                 </div>
                 {r.body_fat_pct != null && (
-                  <div style={{ fontSize: 10, color: "var(--muted)" }}>
+                  <div style={{ fontSize: 12, color: "var(--muted)" }}>
                     体脂肪 {r.body_fat_pct}%
                   </div>
                 )}
@@ -220,7 +220,7 @@ function Cell({
     >
       <div
         style={{
-          fontSize: 10,
+          fontSize: 12,
           color: "var(--muted)",
           textTransform: "uppercase",
           letterSpacing: "0.1em",
@@ -233,7 +233,7 @@ function Cell({
       <div className="num" style={{ fontSize: 20, fontWeight: 700 }}>
         {value ?? "—"}
         {value != null && unit && (
-          <span style={{ fontSize: 12, color: "var(--muted)", fontWeight: 500 }}>
+          <span style={{ fontSize: 14, color: "var(--muted)", fontWeight: 500 }}>
             {" "}
             {unit}
           </span>
@@ -281,7 +281,7 @@ function GraphCard({
         <div>
           <div
             style={{
-              fontSize: 11,
+              fontSize: 13,
               color: "var(--muted)",
               textTransform: "uppercase",
               letterSpacing: "0.1em",
@@ -295,7 +295,7 @@ function GraphCard({
             style={{ fontSize: 28, fontWeight: 700, letterSpacing: "-0.02em", lineHeight: 1.2 }}
           >
             {value ?? "—"}
-            <span style={{ fontSize: 13, color: "var(--muted)", fontWeight: 500 }}>
+            <span style={{ fontSize: 15, color: "var(--muted)", fontWeight: 500 }}>
               {" "}
               {unit}
             </span>
@@ -304,7 +304,7 @@ function GraphCard({
             <div
               className="num"
               style={{
-                fontSize: 11,
+                fontSize: 13,
                 fontWeight: 600,
                 color: delta < 0 ? "var(--eat)" : delta > 0 ? "var(--warn)" : "var(--muted)",
               }}
@@ -326,7 +326,7 @@ function Sparkline({ points, color }: { points: number[]; color: string }) {
       <div
         style={{
           height: 60,
-          fontSize: 11,
+          fontSize: 13,
           color: "var(--muted)",
           display: "flex",
           alignItems: "center",

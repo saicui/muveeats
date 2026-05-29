@@ -146,7 +146,7 @@ export default function NewCardioPage() {
               cursor: "pointer",
               fontFamily: "inherit",
               fontWeight: type === t.id ? 600 : 500,
-              fontSize: 12,
+              fontSize: 14,
             }}
           >
             <div style={{ display: "flex", justifyContent: "center", marginBottom: 4, color: "var(--ink-2)" }}>
@@ -218,7 +218,7 @@ export default function NewCardioPage() {
         <CalcCell label="ペース" value={pacePerKm ? `${pacePerKm}` : "—"} unit=" / km" />
         <CalcCell label="消費 kcal" value={estKcal ?? "—"} unit=" kcal" />
       </div>
-      <div style={{ fontSize: 11, color: "var(--muted)", lineHeight: 1.55, marginBottom: 16 }}>
+      <div style={{ fontSize: 13, color: "var(--muted)", lineHeight: 1.55, marginBottom: 16 }}>
         MET × 体重 × 時間で算出した目安値。実測ではありません。
         {!bodyWeight && " 体重は仮値 65kg を使用中。"}
       </div>
@@ -240,7 +240,7 @@ export default function NewCardioPage() {
             border: "1px solid var(--danger)",
             color: "var(--danger)",
             borderRadius: 8,
-            fontSize: 12,
+            fontSize: 14,
             marginBottom: 12,
           }}
         >
@@ -284,11 +284,11 @@ function Field({
       }}
     >
       <div>
-        <div style={{ fontSize: 13, fontWeight: 500 }}>
+        <div style={{ fontSize: 15, fontWeight: 500 }}>
           {label}
           {required && <span style={{ color: "var(--danger)", marginLeft: 4 }}>*</span>}
         </div>
-        {sub && <div style={{ fontSize: 11, color: "var(--muted)" }}>{sub}</div>}
+        {sub && <div style={{ fontSize: 13, color: "var(--muted)" }}>{sub}</div>}
       </div>
       <div style={{ width: 130 }}>{children}</div>
     </div>
@@ -315,7 +315,7 @@ function CalcCell({
     >
       <div
         style={{
-          fontSize: 10,
+          fontSize: 12,
           color: "var(--muted)",
           textTransform: "uppercase",
           letterSpacing: "0.1em",
@@ -327,7 +327,7 @@ function CalcCell({
       </div>
       <div className="num" style={{ fontSize: 20, fontWeight: 700, letterSpacing: "-0.01em" }}>
         {value}
-        <span style={{ fontSize: 12, color: "var(--muted)", fontWeight: 500 }}>
+        <span style={{ fontSize: 14, color: "var(--muted)", fontWeight: 500 }}>
           {unit}
         </span>
       </div>
@@ -352,7 +352,7 @@ function CardioBackdateField({
           background: "transparent",
           border: 0,
           color: "var(--muted)",
-          fontSize: 11,
+          fontSize: 13,
           padding: "4px 0",
           cursor: "pointer",
           fontFamily: "inherit",
@@ -388,7 +388,7 @@ function CardioBackdateField({
         className="input"
         value={value ?? now.toISOString().slice(0, 16)}
         onChange={(e) => onChange(e.target.value)}
-        style={{ flex: 1, padding: "4px 6px", fontSize: 13 }}
+        style={{ flex: 1, padding: "4px 6px", fontSize: 15 }}
       />
       <button
         type="button"

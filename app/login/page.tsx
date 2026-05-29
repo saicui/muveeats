@@ -82,7 +82,7 @@ function LoginInner() {
             fontWeight: mode === "signin" ? 600 : 500,
             boxShadow: mode === "signin" ? "0 1px 2px rgba(0,0,0,0.04)" : "none",
             padding: "8px 12px",
-            fontSize: 12,
+            fontSize: 14,
           }}
         >
           サインイン
@@ -99,7 +99,7 @@ function LoginInner() {
             fontWeight: mode === "signup" ? 600 : 500,
             boxShadow: mode === "signup" ? "0 1px 2px rgba(0,0,0,0.04)" : "none",
             padding: "8px 12px",
-            fontSize: 12,
+            fontSize: 14,
           }}
         >
           新規登録
@@ -113,7 +113,7 @@ function LoginInner() {
         <label style={{ display: "flex", flexDirection: "column", gap: 4 }}>
           <span
             style={{
-              fontSize: 10,
+              fontSize: 12,
               textTransform: "uppercase",
               letterSpacing: "0.1em",
               color: "var(--muted)",
@@ -134,7 +134,7 @@ function LoginInner() {
         <label style={{ display: "flex", flexDirection: "column", gap: 4 }}>
           <span
             style={{
-              fontSize: 10,
+              fontSize: 12,
               textTransform: "uppercase",
               letterSpacing: "0.1em",
               color: "var(--muted)",
@@ -162,7 +162,7 @@ function LoginInner() {
               border: "1px solid var(--danger)",
               color: "var(--danger)",
               borderRadius: 8,
-              fontSize: 12,
+              fontSize: 14,
             }}
           >
             {error}
@@ -176,7 +176,7 @@ function LoginInner() {
               border: "1px solid var(--eat)",
               color: "var(--eat)",
               borderRadius: 8,
-              fontSize: 12,
+              fontSize: 14,
             }}
           >
             {info}

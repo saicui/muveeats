@@ -99,7 +99,7 @@ export default function NewBodyRecordPage() {
                 background: "var(--surface-2)",
                 borderLeft: "3px solid var(--ai)",
                 padding: "8px 10px",
-                fontSize: 12,
+                fontSize: 14,
                 color: "var(--ink-2)",
                 borderRadius: "0 6px 6px 0",
                 marginBottom: 12,
@@ -192,7 +192,7 @@ export default function NewBodyRecordPage() {
                 border: "1px solid var(--danger)",
                 color: "var(--danger)",
                 borderRadius: 8,
-                fontSize: 12,
+                fontSize: 14,
                 marginBottom: 12,
               }}
             >
@@ -244,7 +244,7 @@ function ModeTab({
         fontWeight: active ? 600 : 500,
         boxShadow: active ? "0 1px 2px rgba(0,0,0,0.04)" : "none",
         padding: "8px 12px",
-        fontSize: 12,
+        fontSize: 14,
       }}
     >
       <Icon name={icon} size="sm" />
@@ -334,10 +334,10 @@ function PhotoMode({ onResult }: { onResult: (r: AnalyzeResult) => void }) {
         ) : (
           <>
             <Icon name="camera" size="lg" />
-            <div style={{ fontSize: 13, color: "var(--muted)" }}>
+            <div style={{ fontSize: 15, color: "var(--muted)" }}>
               タップして撮影 / 選択
             </div>
-            <div style={{ fontSize: 11, color: "var(--muted)", textAlign: "center", maxWidth: 280 }}>
+            <div style={{ fontSize: 13, color: "var(--muted)", textAlign: "center", maxWidth: 280 }}>
               タニタ・オムロン・インボディなど。表示画面が明るく写っている方が精度が上がります
             </div>
           </>
@@ -367,7 +367,7 @@ function PhotoMode({ onResult }: { onResult: (r: AnalyzeResult) => void }) {
             border: "1px solid var(--danger)",
             color: "var(--danger)",
             borderRadius: 8,
-            fontSize: 12,
+            fontSize: 14,
           }}
         >
           {error}
@@ -398,8 +398,8 @@ function Field({
       }}
     >
       <div>
-        <div style={{ fontSize: 13, fontWeight: 500 }}>{label}</div>
-        {unit && <div style={{ fontSize: 11, color: "var(--muted)" }}>{unit}</div>}
+        <div style={{ fontSize: 15, fontWeight: 500 }}>{label}</div>
+        {unit && <div style={{ fontSize: 13, color: "var(--muted)" }}>{unit}</div>}
       </div>
       <div style={{ width: 140 }}>{children}</div>
     </div>
