@@ -148,7 +148,7 @@ export default async function DashboardPage() {
   );
 
   // 直近 14 日のトレンド (摂取・消費 kcal / 体重)
-  const trend = buildTrend(meals, workouts, bodyList);
+  const trend = buildTrend(meals, workouts, activityRecords, bodyList);
 
   const targetKcal = profile?.target_kcal ?? null;
   const net = intake - burn;
@@ -632,13 +632,13 @@ function BodyCard({
           })}
         </span>
       </div>
-      <div style={{ display: "flex", gap: 24, alignItems: "baseline" }}>
-        <div>
+      <div style={{ display: "flex", gap: 8, alignItems: "baseline" }}>
+        <div style={{ flex: 1, minWidth: 0 }}>
           <div className="num" style={{ fontSize: 22, fontWeight: 700 }}>
             {latest.weight_kg ?? "—"}
             <span style={{ fontSize: 12, color: "var(--muted)", fontWeight: 500 }}> kg</span>
           </div>
-          {wDelta != null && (
+          {wDelta != null ? (
             <div
               className="num"
               style={{
@@ -651,19 +651,41 @@ function BodyCard({
               {wDelta > 0 ? "+" : ""}
               {wDelta.toFixed(1)} / 7d
             </div>
+          ) : (
+            <div style={{ fontSize: 11, color: "var(--muted)", marginTop: 2 }}>体重</div>
           )}
         </div>
         {latest.body_fat_pct != null && (
-          <div>
-            <div className="num" style={{ fontSize: 22, fontWeight: 700 }}>
-              {latest.body_fat_pct}
-              <span style={{ fontSize: 12, color: "var(--muted)", fontWeight: 500 }}> %</span>
-            </div>
-            <div style={{ fontSize: 11, color: "var(--muted)", marginTop: 2 }}>体脂肪</div>
-          </div>
+          <BodyMetric value={`${latest.body_fat_pct}`} unit="%" label="体脂肪" />
+        )}
+        {latest.muscle_kg != null && (
+          <BodyMetric value={`${latest.muscle_kg}`} unit="kg" label="筋肉量" />
+        )}
+        {latest.bmr_kcal != null && (
+          <BodyMetric value={Math.round(Number(latest.bmr_kcal)).toLocaleString()} unit="kcal" label="基礎代謝" />
         )}
       </div>
     </Link>
+  );
+}
+
+function BodyMetric({
+  value,
+  unit,
+  label,
+}: {
+  value: string;
+  unit: string;
+  label: string;
+}) {
+  return (
+    <div style={{ flex: 1, minWidth: 0 }}>
+      <div className="num" style={{ fontSize: 18, fontWeight: 700 }}>
+        {value}
+        <span style={{ fontSize: 11, color: "var(--muted)", fontWeight: 500 }}> {unit}</span>
+      </div>
+      <div style={{ fontSize: 11, color: "var(--muted)", marginTop: 2 }}>{label}</div>
+    </div>
   );
 }
 
@@ -954,7 +976,12 @@ type Trend = {
   days: { iso: string; intakeKcal: number | null; burnKcal: number | null; weightKg: number | null }[];
 };
 
-function buildTrend(meals: Meal[], workouts: Workout[], body: BodyRecord[]): Trend {
+function buildTrend(
+  meals: Meal[],
+  workouts: Workout[],
+  activityRecords: ActivityRecord[],
+  body: BodyRecord[],
+): Trend {
   const today = startOfDay(new Date());
   // 直近 14 日ぶんを集約。データが null の日もエントリは入れて欠損として扱う。
   const intake: Record<string, number> = {};
@@ -967,6 +994,11 @@ function buildTrend(meals: Meal[], workouts: Workout[], body: BodyRecord[]): Tre
   for (const w of workouts) {
     const key = isoDate(new Date(w.started_at));
     burn[key] = (burn[key] ?? 0) + (Number(w.est_kcal) || 0);
+  }
+  // 歩数・活動の消費カロリーも消費トレンドに合算 (BURN カードと整合)
+  for (const a of activityRecords) {
+    const key = isoDate(new Date(a.recorded_at));
+    burn[key] = (burn[key] ?? 0) + (Number(a.active_kcal) || 0);
   }
   // 体重は同日複数件あれば最新値
   for (const b of body) {
