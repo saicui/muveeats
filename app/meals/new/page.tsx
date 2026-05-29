@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
@@ -435,11 +435,21 @@ function MealTemplatePickSheet({
 // Mode tabs
 // ============================================================
 function ModeTabs({ mode, setMode }: { mode: Mode; setMode: (m: Mode) => void }) {
-  const tabs: { id: Mode; label: string; icon: "search" | "camera" | "edit" | "bot" }[] = [
+  const tabs: { id: Mode; label: ReactNode; icon: "search" | "camera" | "edit" | "bot" }[] = [
     { id: "search", label: "検索", icon: "search" },
     { id: "photo", label: "写真", icon: "camera" },
     { id: "manual", label: "手動", icon: "edit" },
-    { id: "consult", label: "AI相談", icon: "bot" },
+    // 「相談」を nowrap で固め、折り返すなら "AI" / "相談" の境界で改行させる
+    {
+      id: "consult",
+      label: (
+        <>
+          AI<wbr />
+          <span style={{ whiteSpace: "nowrap" }}>相談</span>
+        </>
+      ),
+      icon: "bot",
+    },
   ];
   return (
     <div

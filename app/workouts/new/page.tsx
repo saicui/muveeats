@@ -1005,31 +1005,6 @@ function ExercisePicker({
             ))}
           </div>
 
-          {showCustomCta && (
-            <button
-              type="button"
-              onClick={() => onPick(buildCustomExercise(query))}
-              style={{
-                padding: "12px 14px",
-                border: "2px dashed var(--ai)",
-                borderRadius: 10,
-                background: "var(--surface-2)",
-                cursor: "pointer",
-                textAlign: "left",
-                fontFamily: "inherit",
-                color: "var(--ink)",
-                flexShrink: 0,
-              }}
-            >
-              <div style={{ fontSize: 15, fontWeight: 600 }}>
-                「{query}」をカスタム種目として追加
-              </div>
-              <div style={{ fontSize: 13, color: "var(--muted)", marginTop: 2 }}>
-                MET は 4.0 で扱います（その他カテゴリ）
-              </div>
-            </button>
-          )}
-
           <div
             style={{
               background: "var(--surface)",
@@ -1117,6 +1092,32 @@ function ExercisePicker({
               })
             )}
           </div>
+
+          {/* カスタム追加は候補の邪魔をしないよう最下部に置く (検索で一致が無いとき) */}
+          {showCustomCta && (
+            <button
+              type="button"
+              onClick={() => onPick(buildCustomExercise(query))}
+              style={{
+                padding: "12px 14px",
+                border: "2px dashed var(--ai)",
+                borderRadius: 10,
+                background: "var(--surface-2)",
+                cursor: "pointer",
+                textAlign: "left",
+                fontFamily: "inherit",
+                color: "var(--ink)",
+                flexShrink: 0,
+              }}
+            >
+              <div style={{ fontSize: 15, fontWeight: 600 }}>
+                「{query}」をカスタム種目として追加
+              </div>
+              <div style={{ fontSize: 13, color: "var(--muted)", marginTop: 2 }}>
+                MET は 4.0 で扱います（その他カテゴリ）
+              </div>
+            </button>
+          )}
         </div>
       </div>
     </div>
