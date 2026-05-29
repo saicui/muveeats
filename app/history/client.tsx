@@ -3,11 +3,11 @@
 import { useMemo, useState } from "react";
 import { Icon } from "@/app/icons";
 import { createClient } from "@/lib/supabase/client";
+import { fmtTime, fmtDateTime } from "@/lib/format";
 import type { Meal, Workout, BodyRecord, ExerciseSet } from "@/lib/types";
 
 type Filter = "all" | "eat" | "move" | "body";
 
-type EntryKind = "meal" | "workout" | "body";
 type Entry =
   | { kind: "meal"; at: string; data: Meal }
   | { kind: "workout"; at: string; data: Workout; sets: ExerciseSet[] }
@@ -153,6 +153,37 @@ export function HistoryClient({
     return "この記録はテンプレ化できません";
   }
 
+  // 履歴アイテムを編集する (カロリー / 体組成値など)
+  async function saveEntry(
+    e: Entry,
+    patch: Record<string, unknown>,
+  ): Promise<string | null> {
+    const supabase = createClient();
+    const table =
+      e.kind === "meal"
+        ? "meals"
+        : e.kind === "workout"
+        ? "workouts"
+        : "body_records";
+    const { error } = await supabase.from(table).update(patch).eq("id", e.data.id);
+    if (error) return error.message;
+
+    if (e.kind === "meal") {
+      const next = { ...e.data, ...patch } as Meal;
+      setMeals((p) => p.map((m) => (m.id === e.data.id ? next : m)));
+      setSelected({ kind: "meal", at: next.eaten_at, data: next });
+    } else if (e.kind === "workout") {
+      const next = { ...e.data, ...patch } as Workout;
+      setWorkouts((p) => p.map((w) => (w.id === e.data.id ? next : w)));
+      setSelected({ kind: "workout", at: next.started_at, data: next, sets: e.sets });
+    } else {
+      const next = { ...e.data, ...patch } as BodyRecord;
+      setBody((p) => p.map((b) => (b.id === e.data.id ? next : b)));
+      setSelected({ kind: "body", at: next.recorded_at, data: next });
+    }
+    return null;
+  }
+
   return (
     <div>
       <h1 className="page-title">履歴</h1>
@@ -289,6 +320,7 @@ export function HistoryClient({
           entry={selected}
           onClose={() => setSelected(null)}
           onDelete={() => removeEntry(selected)}
+          onSave={(patch) => saveEntry(selected, patch)}
           onTemplatize={async () => {
             const err = await templatize(selected);
             if (err) {
@@ -326,7 +358,7 @@ function EntryRow({
   if (entry.kind === "meal") {
     const m = entry.data;
     name = m.name + (m.size ? ` ${m.size}` : "");
-    meta = `${new Date(m.eaten_at).toLocaleTimeString("ja-JP", { timeStyle: "short" })} · ${m.chain_name ?? mealSource(m.source)}`;
+    meta = `${fmtTime(m.eaten_at)} · ${m.chain_name ?? mealSource(m.source)}`;
     primary = m.calories != null ? `+${Math.round(Number(m.calories))} kcal` : "—";
     sub = m.protein_g != null ? `P${m.protein_g} / F${m.fat_g} / C${m.carbs_g}` : undefined;
   } else if (entry.kind === "workout") {
@@ -347,12 +379,12 @@ function EntryRow({
       ...(w.duration_min ? [`${w.duration_min}分`] : []),
       ...(w.distance_km ? [`${w.distance_km}km`] : []),
     ];
-    meta = `${new Date(w.started_at).toLocaleTimeString("ja-JP", { timeStyle: "short" })} · ${tags.join(" · ")}`;
+    meta = `${fmtTime(w.started_at)} · ${tags.join(" · ")}`;
     primary = w.est_kcal != null ? `−${Math.round(Number(w.est_kcal))} kcal` : "—";
   } else {
     const b = entry.data;
     name = `体組成 ${b.weight_kg ?? "—"}kg`;
-    meta = `${new Date(b.recorded_at).toLocaleTimeString("ja-JP", { timeStyle: "short" })} · 手動記録`;
+    meta = `${fmtTime(b.recorded_at)} · 手動記録`;
     primary = b.body_fat_pct != null ? `体脂肪 ${b.body_fat_pct}%` : "—";
   }
 
@@ -414,59 +446,406 @@ function DetailSheet({
   onClose,
   onDelete,
   onTemplatize,
+  onSave,
 }: {
   entry: Entry;
   onClose: () => void;
   onDelete: () => void;
   onTemplatize: () => void;
+  onSave: (patch: Record<string, unknown>) => Promise<string | null>;
 }) {
+  const [editing, setEditing] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [err, setErr] = useState<string | null>(null);
+
   // テンプレ化できる: 食事すべて / 筋トレ (strength) のみ
   const canTemplatize =
     entry.kind === "meal" ||
     (entry.kind === "workout" && entry.data.kind === "strength");
 
+  async function submit(patch: Record<string, unknown>) {
+    setSaving(true);
+    setErr(null);
+    const e = await onSave(patch);
+    setSaving(false);
+    if (e) {
+      setErr(e);
+      return;
+    }
+    setEditing(false);
+  }
+
   return (
-    <div className="sheet-backdrop" onClick={onClose}>
+    <div className="sheet-backdrop" onClick={editing ? undefined : onClose}>
       <div className="sheet" onClick={(e) => e.stopPropagation()}>
         <div className="sheet-handle" />
         <div style={{ padding: "8px 18px 20px" }}>
-          {entry.kind === "meal" && <MealDetail meal={entry.data} />}
-          {entry.kind === "workout" && (
-            <WorkoutDetail workout={entry.data} sets={entry.sets} />
-          )}
-          {entry.kind === "body" && <BodyDetail rec={entry.data} />}
+          {editing ? (
+            <>
+              {entry.kind === "meal" && (
+                <MealEdit
+                  meal={entry.data}
+                  saving={saving}
+                  error={err}
+                  onSubmit={submit}
+                  onCancel={() => setEditing(false)}
+                />
+              )}
+              {entry.kind === "workout" && (
+                <WorkoutEdit
+                  workout={entry.data}
+                  saving={saving}
+                  error={err}
+                  onSubmit={submit}
+                  onCancel={() => setEditing(false)}
+                />
+              )}
+              {entry.kind === "body" && (
+                <BodyEdit
+                  rec={entry.data}
+                  saving={saving}
+                  error={err}
+                  onSubmit={submit}
+                  onCancel={() => setEditing(false)}
+                />
+              )}
+            </>
+          ) : (
+            <>
+              {entry.kind === "meal" && <MealDetail meal={entry.data} />}
+              {entry.kind === "workout" && (
+                <WorkoutDetail workout={entry.data} sets={entry.sets} />
+              )}
+              {entry.kind === "body" && <BodyDetail rec={entry.data} />}
 
-          {canTemplatize && (
-            <button
-              className="btn btn-block"
-              style={{ marginTop: 16, justifyContent: "center" }}
-              onClick={onTemplatize}
-            >
-              <Icon name="plus" size="sm" />
-              テンプレに追加
-            </button>
-          )}
+              <div style={{ display: "flex", gap: 8, marginTop: 16 }}>
+                <button
+                  className="btn"
+                  style={{ flex: 1, justifyContent: "center" }}
+                  onClick={() => {
+                    setErr(null);
+                    setEditing(true);
+                  }}
+                >
+                  <Icon name="edit" size="sm" />
+                  編集
+                </button>
+                {canTemplatize && (
+                  <button
+                    className="btn"
+                    style={{ flex: 1, justifyContent: "center" }}
+                    onClick={onTemplatize}
+                  >
+                    <Icon name="plus" size="sm" />
+                    テンプレに追加
+                  </button>
+                )}
+              </div>
 
-          <div style={{ display: "flex", gap: 8, marginTop: canTemplatize ? 8 : 16 }}>
-            <button
-              className="btn btn-danger"
-              style={{ flex: 1, justifyContent: "center" }}
-              onClick={onDelete}
-            >
-              <Icon name="trash" size="sm" />
-              削除
-            </button>
-            <button
-              className="btn btn-primary"
-              style={{ flex: 1, justifyContent: "center" }}
-              onClick={onClose}
-            >
-              閉じる
-            </button>
-          </div>
+              <div style={{ display: "flex", gap: 8, marginTop: 8 }}>
+                <button
+                  className="btn btn-danger"
+                  style={{ flex: 1, justifyContent: "center" }}
+                  onClick={onDelete}
+                >
+                  <Icon name="trash" size="sm" />
+                  削除
+                </button>
+                <button
+                  className="btn btn-primary"
+                  style={{ flex: 1, justifyContent: "center" }}
+                  onClick={onClose}
+                >
+                  閉じる
+                </button>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>
+  );
+}
+
+// ============================================================
+// 編集フォーム
+function numOrNull(s: string): number | null {
+  const t = s.trim();
+  if (!t) return null;
+  const n = Number(t);
+  return Number.isFinite(n) ? n : null;
+}
+
+function str(v: number | null | undefined): string {
+  return v == null ? "" : String(v);
+}
+
+function EditNum({
+  label,
+  value,
+  onChange,
+}: {
+  label: string;
+  value: string;
+  onChange: (v: string) => void;
+}) {
+  return (
+    <label
+      style={{
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        gap: 12,
+        padding: "9px 0",
+        borderBottom: "1px solid var(--line-soft)",
+      }}
+    >
+      <span style={{ fontSize: 13, color: "var(--ink-2)" }}>{label}</span>
+      <input
+        className="input num"
+        type="number"
+        inputMode="decimal"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        style={{ width: 130, textAlign: "right" }}
+      />
+    </label>
+  );
+}
+
+function EditText({
+  label,
+  value,
+  onChange,
+}: {
+  label: string;
+  value: string;
+  onChange: (v: string) => void;
+}) {
+  return (
+    <label
+      style={{
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        gap: 12,
+        padding: "9px 0",
+        borderBottom: "1px solid var(--line-soft)",
+      }}
+    >
+      <span style={{ fontSize: 13, color: "var(--ink-2)", flexShrink: 0 }}>{label}</span>
+      <input
+        className="input"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        style={{ width: 180, textAlign: "right" }}
+      />
+    </label>
+  );
+}
+
+function EditActions({
+  saving,
+  error,
+  onCancel,
+}: {
+  saving: boolean;
+  error: string | null;
+  onCancel: () => void;
+}) {
+  return (
+    <>
+      {error && (
+        <div
+          style={{
+            padding: "8px 10px",
+            border: "1px solid var(--danger)",
+            color: "var(--danger)",
+            borderRadius: 8,
+            fontSize: 12,
+            marginTop: 12,
+          }}
+        >
+          {error}
+        </div>
+      )}
+      <div style={{ display: "flex", gap: 8, marginTop: 16 }}>
+        <button
+          type="button"
+          className="btn"
+          style={{ flex: 1, justifyContent: "center" }}
+          onClick={onCancel}
+          disabled={saving}
+        >
+          キャンセル
+        </button>
+        <button
+          type="submit"
+          className="btn btn-primary"
+          style={{ flex: 1, justifyContent: "center" }}
+          disabled={saving}
+        >
+          {saving ? "保存中…" : "保存"}
+        </button>
+      </div>
+    </>
+  );
+}
+
+function EditTitle() {
+  return (
+    <div style={{ fontSize: 16, fontWeight: 700, marginBottom: 10 }}>記録を編集</div>
+  );
+}
+
+function MealEdit({
+  meal,
+  saving,
+  error,
+  onSubmit,
+  onCancel,
+}: {
+  meal: Meal;
+  saving: boolean;
+  error: string | null;
+  onSubmit: (patch: Record<string, unknown>) => void;
+  onCancel: () => void;
+}) {
+  const [name, setName] = useState(meal.name);
+  const [calories, setCalories] = useState(str(meal.calories));
+  const [protein, setProtein] = useState(str(meal.protein_g));
+  const [fat, setFat] = useState(str(meal.fat_g));
+  const [carbs, setCarbs] = useState(str(meal.carbs_g));
+
+  return (
+    <form
+      onSubmit={(ev) => {
+        ev.preventDefault();
+        onSubmit({
+          name: name.trim() || meal.name,
+          calories: numOrNull(calories),
+          protein_g: numOrNull(protein),
+          fat_g: numOrNull(fat),
+          carbs_g: numOrNull(carbs),
+        });
+      }}
+    >
+      <EditTitle />
+      <EditText label="名前" value={name} onChange={setName} />
+      <EditNum label="kcal" value={calories} onChange={setCalories} />
+      <EditNum label="P (g)" value={protein} onChange={setProtein} />
+      <EditNum label="F (g)" value={fat} onChange={setFat} />
+      <EditNum label="C (g)" value={carbs} onChange={setCarbs} />
+      <EditActions saving={saving} error={error} onCancel={onCancel} />
+    </form>
+  );
+}
+
+function WorkoutEdit({
+  workout,
+  saving,
+  error,
+  onSubmit,
+  onCancel,
+}: {
+  workout: Workout;
+  saving: boolean;
+  error: string | null;
+  onSubmit: (patch: Record<string, unknown>) => void;
+  onCancel: () => void;
+}) {
+  const isStrength = workout.kind === "strength";
+  const [title, setTitle] = useState(workout.title ?? "");
+  const [duration, setDuration] = useState(str(workout.duration_min));
+  const [distance, setDistance] = useState(str(workout.distance_km));
+  const [avgHr, setAvgHr] = useState(str(workout.avg_hr));
+  const [kcal, setKcal] = useState(str(workout.est_kcal));
+  const [note, setNote] = useState(workout.note ?? "");
+
+  return (
+    <form
+      onSubmit={(ev) => {
+        ev.preventDefault();
+        const patch: Record<string, unknown> = {
+          est_kcal: numOrNull(kcal),
+          note: note.trim() || null,
+        };
+        if (isStrength) {
+          patch.title = title.trim() || null;
+        } else {
+          patch.duration_min = numOrNull(duration);
+          patch.distance_km = numOrNull(distance);
+          patch.avg_hr = numOrNull(avgHr);
+        }
+        onSubmit(patch);
+      }}
+    >
+      <EditTitle />
+      {isStrength ? (
+        <EditText label="タイトル" value={title} onChange={setTitle} />
+      ) : (
+        <>
+          <EditNum label="時間 (分)" value={duration} onChange={setDuration} />
+          <EditNum label="距離 (km)" value={distance} onChange={setDistance} />
+          <EditNum label="平均心拍 (bpm)" value={avgHr} onChange={setAvgHr} />
+        </>
+      )}
+      <EditNum label="消費 kcal" value={kcal} onChange={setKcal} />
+      <div style={{ marginTop: 12 }}>
+        <div style={{ fontSize: 13, color: "var(--ink-2)", marginBottom: 4 }}>メモ</div>
+        <textarea
+          className="input"
+          rows={2}
+          value={note}
+          onChange={(e) => setNote(e.target.value)}
+          style={{ resize: "vertical", width: "100%" }}
+        />
+      </div>
+      <EditActions saving={saving} error={error} onCancel={onCancel} />
+    </form>
+  );
+}
+
+function BodyEdit({
+  rec,
+  saving,
+  error,
+  onSubmit,
+  onCancel,
+}: {
+  rec: BodyRecord;
+  saving: boolean;
+  error: string | null;
+  onSubmit: (patch: Record<string, unknown>) => void;
+  onCancel: () => void;
+}) {
+  const [weight, setWeight] = useState(str(rec.weight_kg));
+  const [fat, setFat] = useState(str(rec.body_fat_pct));
+  const [muscle, setMuscle] = useState(str(rec.muscle_kg));
+  const [visceral, setVisceral] = useState(str(rec.visceral_fat));
+  const [bmr, setBmr] = useState(str(rec.bmr_kcal));
+
+  return (
+    <form
+      onSubmit={(ev) => {
+        ev.preventDefault();
+        onSubmit({
+          weight_kg: numOrNull(weight),
+          body_fat_pct: numOrNull(fat),
+          muscle_kg: numOrNull(muscle),
+          visceral_fat: numOrNull(visceral),
+          bmr_kcal: numOrNull(bmr),
+        });
+      }}
+    >
+      <EditTitle />
+      <EditNum label="体重 (kg)" value={weight} onChange={setWeight} />
+      <EditNum label="体脂肪率 (%)" value={fat} onChange={setFat} />
+      <EditNum label="筋肉量 (kg)" value={muscle} onChange={setMuscle} />
+      <EditNum label="内臓脂肪" value={visceral} onChange={setVisceral} />
+      <EditNum label="基礎代謝 (kcal)" value={bmr} onChange={setBmr} />
+      <EditActions saving={saving} error={error} onCancel={onCancel} />
+    </form>
   );
 }
 
@@ -492,12 +871,7 @@ function MealDetail({ meal }: { meal: Meal }) {
           marginTop: 4,
         }}
       >
-        <span>
-          {new Date(meal.eaten_at).toLocaleString("ja-JP", {
-            dateStyle: "long",
-            timeStyle: "short",
-          })}
-        </span>
+        <span>{fmtDateTime(meal.eaten_at)}</span>
         <span>·</span>
         {meal.chain_name ? (
           <>
@@ -610,10 +984,7 @@ function WorkoutDetail({
             : "有酸素")}
       </div>
       <div style={{ fontSize: 11, color: "var(--muted)", marginTop: 4, marginBottom: 14 }}>
-        {new Date(workout.started_at).toLocaleString("ja-JP", {
-          dateStyle: "long",
-          timeStyle: "short",
-        })}
+        {fmtDateTime(workout.started_at)}
         {workout.duration_min ? ` · ${workout.duration_min}分` : ""}
         {workout.distance_km ? ` · ${workout.distance_km}km` : ""}
         {workout.avg_hr ? ` · 平均${workout.avg_hr}bpm` : ""}
@@ -663,11 +1034,7 @@ function BodyDetail({ rec }: { rec: BodyRecord }) {
     <>
       <div style={{ fontSize: 18, fontWeight: 700 }}>体組成</div>
       <div style={{ fontSize: 11, color: "var(--muted)", marginTop: 4, marginBottom: 14 }}>
-        {new Date(rec.recorded_at).toLocaleString("ja-JP", {
-          dateStyle: "long",
-          timeStyle: "short",
-        })}{" "}
-        · 手動記録
+        {fmtDateTime(rec.recorded_at)} · 手動記録
       </div>
       <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
         {cells

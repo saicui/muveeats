@@ -589,7 +589,7 @@ async function loadPrev(
 }
 
 // ============================================================
-const REST_PRESETS = [60, 90, 180] as const;
+const REST_PRESETS = [60, 120, 180] as const;
 
 function ExerciseBlock({
   block,
@@ -629,8 +629,8 @@ function ExerciseBlock({
   function handleSetDoneToggle(j: number, currentDone: boolean) {
     onUpdateSet(j, { done: !currentDone });
     if (!currentDone) {
-      // セット完了 → レスト開始
-      setRest({ endsAt: Date.now() + 90_000, preset: 90 });
+      // セット完了 → レスト開始 (デフォルト 1 分)
+      setRest({ endsAt: Date.now() + 60_000, preset: 60 });
     }
   }
 
@@ -891,7 +891,7 @@ function RestPanel({
             className={`tag ${preset === sec ? "selected" : ""}`}
             style={{ fontSize: 11 }}
           >
-            {sec}秒
+            {sec / 60}分
           </button>
         ))}
         <button
@@ -913,14 +913,14 @@ function RestPanel({
         <button
           type="button"
           onClick={onSkip}
-          className="btn"
+          className="btn btn-primary"
           style={{
-            padding: "3px 10px",
+            padding: "3px 14px",
             fontSize: 11,
             marginLeft: "auto",
           }}
         >
-          スキップ
+          OK
         </button>
       </div>
     </div>

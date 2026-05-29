@@ -11,6 +11,7 @@ import type {
 import { TemplateQuickPick } from "./templates-quick";
 import { Sparkline } from "./components/sparkline";
 import { CoachFeedback } from "./coach-feedback";
+import { fmtTime } from "@/lib/format";
 
 function sumNum(arr: (number | null)[]): number {
   return arr.reduce<number>((acc, v) => acc + (Number(v) || 0), 0);
@@ -751,7 +752,7 @@ function RecentList({
       id: `m-${m.id}`,
       at: m.eaten_at,
       name: m.name,
-      meta: `${new Date(m.eaten_at).toLocaleTimeString("ja-JP", { timeStyle: "short" })} · ${m.chain_name ?? sourceLabel(m.source)}`,
+      meta: `${fmtTime(m.eaten_at)} · ${m.chain_name ?? sourceLabel(m.source)}`,
       accent: "eat",
       primary: m.calories != null ? `+${Math.round(Number(m.calories))} kcal` : "—",
       sub: m.protein_g != null ? `P${m.protein_g} / F${m.fat_g} / C${m.carbs_g}` : undefined,
@@ -770,7 +771,7 @@ function RecentList({
           : w.cardio_type === "bike"
           ? "バイク"
           : "有酸素"),
-      meta: `${new Date(w.started_at).toLocaleTimeString("ja-JP", { timeStyle: "short" })} · ${w.kind === "strength" ? "筋トレ" : "有酸素"}${w.duration_min ? ` · ${w.duration_min}分` : ""}`,
+      meta: `${fmtTime(w.started_at)} · ${w.kind === "strength" ? "筋トレ" : "有酸素"}${w.duration_min ? ` · ${w.duration_min}分` : ""}`,
       accent: "move",
       primary: w.est_kcal != null ? `−${Math.round(Number(w.est_kcal))} kcal` : "—",
     })),
@@ -780,7 +781,7 @@ function RecentList({
             id: `b-${body.id}`,
             at: body.recorded_at,
             name: `体組成 ${body.weight_kg ?? "—"}kg`,
-            meta: `${new Date(body.recorded_at).toLocaleTimeString("ja-JP", { timeStyle: "short" })} · 手動記録`,
+            meta: `${fmtTime(body.recorded_at)} · 手動記録`,
             accent: "body" as const,
             primary:
               body.body_fat_pct != null

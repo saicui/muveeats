@@ -755,7 +755,6 @@ function PhotoStep({ onResult }: { onResult: (r: AnalysisResult) => void }) {
         <input
           type="file"
           accept="image/*"
-          capture="environment"
           style={{ display: "none" }}
           onChange={(e) => pickFile(e.target.files?.[0] ?? null)}
         />

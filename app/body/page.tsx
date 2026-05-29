@@ -3,6 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import type { BodyRecord, Profile } from "@/lib/types";
 import { Icon } from "@/app/icons";
 import { estimateBMR } from "@/lib/met";
+import { fmtTime } from "@/lib/format";
 
 export default async function BodyPage() {
   let records: BodyRecord[] = [];
@@ -173,10 +174,7 @@ export default async function BodyPage() {
                   })}
                 </div>
                 <div style={{ fontSize: 11, color: "var(--muted)", marginTop: 2 }}>
-                  {new Date(r.recorded_at).toLocaleTimeString("ja-JP", {
-                    timeStyle: "short",
-                  })}{" "}
-                  · 手動記録
+                  {fmtTime(r.recorded_at)} · 手動記録
                 </div>
               </div>
               <div className="num" style={{ textAlign: "right" }}>

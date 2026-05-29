@@ -2,6 +2,7 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import type { Workout, ExerciseSet } from "@/lib/types";
 import { Icon } from "@/app/icons";
+import { fmtTime } from "@/lib/format";
 
 export default async function WorkoutsPage() {
   let workouts: Workout[] = [];
@@ -173,7 +174,7 @@ function WorkoutCard({
                 weekday: "short",
               })}
               {" "}
-              {date.toLocaleTimeString("ja-JP", { timeStyle: "short" })}
+              {fmtTime(date)}
               {workout.duration_min ? ` · ${workout.duration_min}分` : ""}
               {!isStrength && workout.distance_km
                 ? ` · ${workout.distance_km}km`
