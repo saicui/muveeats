@@ -67,6 +67,7 @@ export function SettingsClient({
         "meal_template_skips",
         "meals",
         "workouts",
+        "activity_records",
         "body_records",
         "meal_templates",
         "workout_templates",

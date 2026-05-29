@@ -6,7 +6,7 @@ import { fmtTime } from "@/lib/format";
 
 export default async function WorkoutsPage() {
   let workouts: Workout[] = [];
-  let setsByWorkout: Map<string, ExerciseSet[]> = new Map();
+  const setsByWorkout: Map<string, ExerciseSet[]> = new Map();
   let connError: string | null = null;
   try {
     const supabase = await createClient();
@@ -36,35 +36,33 @@ export default async function WorkoutsPage() {
 
   return (
     <div>
+      <h1 className="page-title">運動</h1>
+      <p className="page-subtitle">記録する種目を選びましょう</p>
+
+      {/* 記録チューザー (中央上部・大きめ) */}
       <div
         style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "baseline",
-          marginBottom: 4,
+          display: "grid",
+          gridTemplateColumns: "repeat(3, 1fr)",
+          gap: 8,
+          marginTop: 12,
+          marginBottom: 22,
         }}
       >
-        <h1 className="page-title">運動</h1>
-        <div style={{ display: "flex", gap: 8 }}>
-          <Link href="/workouts/new" className="btn btn-primary">
-            <Icon name="dumbbell" size="sm" />
-            筋トレ
-          </Link>
-          <Link href="/cardio/new" className="btn">
-            <Icon name="run" size="sm" />
-            有酸素
-          </Link>
-        </div>
+        <RecordChoice href="/workouts/new" icon="dumbbell" label="筋トレ" sub="セット記録" />
+        <RecordChoice href="/cardio/new" icon="run" label="有酸素" sub="時間・距離" />
+        <RecordChoice href="/activity/new" icon="footprints" label="歩数" sub="活動・消費" />
       </div>
-      <p className="page-subtitle">セッション履歴</p>
-      <div style={{ marginTop: 6, marginBottom: 12 }}>
+
+      <div className="section-title">
+        <span>セッション履歴</span>
         <Link
           href="/workouts/templates"
-          className="btn"
-          style={{ fontSize: 12, padding: "6px 10px" }}
+          className="aux"
+          style={{ display: "inline-flex", alignItems: "center", gap: 4, color: "var(--ink-2)" }}
         >
           <Icon name="edit" size="sm" />
-          テンプレを管理 / 開始
+          テンプレ管理 / 開始
         </Link>
       </div>
 
@@ -104,6 +102,53 @@ export default async function WorkoutsPage() {
         ))
       )}
     </div>
+  );
+}
+
+function RecordChoice({
+  href,
+  icon,
+  label,
+  sub,
+}: {
+  href: string;
+  icon: "dumbbell" | "run" | "footprints";
+  label: string;
+  sub: string;
+}) {
+  return (
+    <Link
+      href={href}
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        gap: 8,
+        padding: "18px 8px",
+        background: "var(--surface)",
+        border: "1px solid var(--line)",
+        borderRadius: 14,
+        textDecoration: "none",
+        color: "var(--ink)",
+      }}
+    >
+      <span
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          width: 46,
+          height: 46,
+          borderRadius: 999,
+          background: "var(--surface-2)",
+          color: "var(--move)",
+        }}
+      >
+        <Icon name={icon} size="lg" />
+      </span>
+      <div style={{ fontSize: 14, fontWeight: 700 }}>{label}</div>
+      <div style={{ fontSize: 10, color: "var(--muted)" }}>{sub}</div>
+    </Link>
   );
 }
 

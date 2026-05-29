@@ -4,13 +4,20 @@ import { useMemo, useState } from "react";
 import { Icon } from "@/app/icons";
 import { createClient } from "@/lib/supabase/client";
 import { fmtTime, fmtDateTime } from "@/lib/format";
-import type { Meal, Workout, BodyRecord, ExerciseSet } from "@/lib/types";
+import type {
+  Meal,
+  Workout,
+  BodyRecord,
+  ExerciseSet,
+  ActivityRecord,
+} from "@/lib/types";
 
 type Filter = "all" | "eat" | "move" | "body";
 
 type Entry =
   | { kind: "meal"; at: string; data: Meal }
   | { kind: "workout"; at: string; data: Workout; sets: ExerciseSet[] }
+  | { kind: "activity"; at: string; data: ActivityRecord }
   | { kind: "body"; at: string; data: BodyRecord };
 
 const PAGE_SIZE = 20;
@@ -19,18 +26,21 @@ export function HistoryClient({
   meals: initialMeals,
   workouts: initialWorkouts,
   bodyRecords: initialBody,
+  activityRecords: initialActivity,
   setsByWorkout: initialSets,
   error,
 }: {
   meals: Meal[];
   workouts: Workout[];
   bodyRecords: BodyRecord[];
+  activityRecords: ActivityRecord[];
   setsByWorkout: Record<string, ExerciseSet[]>;
   error: string | null;
 }) {
   const [meals, setMeals] = useState(initialMeals);
   const [workouts, setWorkouts] = useState(initialWorkouts);
   const [body, setBody] = useState(initialBody);
+  const [activity, setActivity] = useState(initialActivity);
   const setsByWorkout = initialSets;
   const [filter, setFilter] = useState<Filter>("all");
   const [visible, setVisible] = useState(PAGE_SIZE);
@@ -45,6 +55,11 @@ export function HistoryClient({
         data: w,
         sets: setsByWorkout[w.id] ?? [],
       })),
+      ...activity.map<Entry>((a) => ({
+        kind: "activity",
+        at: a.recorded_at,
+        data: a,
+      })),
       ...body.map<Entry>((b) => ({
         kind: "body",
         at: b.recorded_at,
@@ -54,9 +69,10 @@ export function HistoryClient({
     all.sort((a, b) => +new Date(b.at) - +new Date(a.at));
     if (filter === "all") return all;
     if (filter === "eat") return all.filter((e) => e.kind === "meal");
-    if (filter === "move") return all.filter((e) => e.kind === "workout");
+    if (filter === "move")
+      return all.filter((e) => e.kind === "workout" || e.kind === "activity");
     return all.filter((e) => e.kind === "body");
-  }, [meals, workouts, body, setsByWorkout, filter]);
+  }, [meals, workouts, body, activity, setsByWorkout, filter]);
 
   const grouped = useMemo(() => {
     const map = new Map<string, Entry[]>();
@@ -79,6 +95,13 @@ export function HistoryClient({
       const { error } = await supabase.from("workouts").delete().eq("id", e.data.id);
       if (error) return alert(error.message);
       setWorkouts((p) => p.filter((w) => w.id !== e.data.id));
+    } else if (e.kind === "activity") {
+      const { error } = await supabase
+        .from("activity_records")
+        .delete()
+        .eq("id", e.data.id);
+      if (error) return alert(error.message);
+      setActivity((p) => p.filter((a) => a.id !== e.data.id));
     } else {
       const { error } = await supabase
         .from("body_records")
@@ -164,6 +187,8 @@ export function HistoryClient({
         ? "meals"
         : e.kind === "workout"
         ? "workouts"
+        : e.kind === "activity"
+        ? "activity_records"
         : "body_records";
     const { error } = await supabase.from(table).update(patch).eq("id", e.data.id);
     if (error) return error.message;
@@ -176,6 +201,10 @@ export function HistoryClient({
       const next = { ...e.data, ...patch } as Workout;
       setWorkouts((p) => p.map((w) => (w.id === e.data.id ? next : w)));
       setSelected({ kind: "workout", at: next.started_at, data: next, sets: e.sets });
+    } else if (e.kind === "activity") {
+      const next = { ...e.data, ...patch } as ActivityRecord;
+      setActivity((p) => p.map((a) => (a.id === e.data.id ? next : a)));
+      setSelected({ kind: "activity", at: next.recorded_at, data: next });
     } else {
       const next = { ...e.data, ...patch } as BodyRecord;
       setBody((p) => p.map((b) => (b.id === e.data.id ? next : b)));
@@ -346,7 +375,7 @@ function EntryRow({
   const accent =
     entry.kind === "meal"
       ? "var(--eat)"
-      : entry.kind === "workout"
+      : entry.kind === "workout" || entry.kind === "activity"
       ? "var(--move)"
       : "var(--body)";
 
@@ -381,6 +410,16 @@ function EntryRow({
     ];
     meta = `${fmtTime(w.started_at)} · ${tags.join(" · ")}`;
     primary = w.est_kcal != null ? `−${Math.round(Number(w.est_kcal))} kcal` : "—";
+  } else if (entry.kind === "activity") {
+    const a = entry.data;
+    name = "歩数・活動";
+    const tags: string[] = [
+      "アクティビティ",
+      ...(a.distance_km ? [`${a.distance_km}km`] : []),
+    ];
+    meta = `${fmtTime(a.recorded_at)} · ${tags.join(" · ")}`;
+    primary = a.steps != null ? `${Math.round(a.steps).toLocaleString()} 歩` : "—";
+    sub = a.active_kcal != null ? `${Math.round(Number(a.active_kcal))} kcal` : undefined;
   } else {
     const b = entry.data;
     name = `体組成 ${b.weight_kg ?? "—"}kg`;
@@ -500,6 +539,15 @@ function DetailSheet({
                   onCancel={() => setEditing(false)}
                 />
               )}
+              {entry.kind === "activity" && (
+                <ActivityEdit
+                  rec={entry.data}
+                  saving={saving}
+                  error={err}
+                  onSubmit={submit}
+                  onCancel={() => setEditing(false)}
+                />
+              )}
               {entry.kind === "body" && (
                 <BodyEdit
                   rec={entry.data}
@@ -516,6 +564,7 @@ function DetailSheet({
               {entry.kind === "workout" && (
                 <WorkoutDetail workout={entry.data} sets={entry.sets} />
               )}
+              {entry.kind === "activity" && <ActivityDetail rec={entry.data} />}
               {entry.kind === "body" && <BodyDetail rec={entry.data} />}
 
               <div style={{ display: "flex", gap: 8, marginTop: 16 }}>
@@ -849,6 +898,56 @@ function BodyEdit({
   );
 }
 
+function ActivityEdit({
+  rec,
+  saving,
+  error,
+  onSubmit,
+  onCancel,
+}: {
+  rec: ActivityRecord;
+  saving: boolean;
+  error: string | null;
+  onSubmit: (patch: Record<string, unknown>) => void;
+  onCancel: () => void;
+}) {
+  const [steps, setSteps] = useState(str(rec.steps));
+  const [kcal, setKcal] = useState(str(rec.active_kcal));
+  const [distance, setDistance] = useState(str(rec.distance_km));
+  const [note, setNote] = useState(rec.note ?? "");
+
+  return (
+    <form
+      onSubmit={(ev) => {
+        ev.preventDefault();
+        const s = numOrNull(steps);
+        onSubmit({
+          steps: s != null ? Math.round(s) : null,
+          active_kcal: numOrNull(kcal),
+          distance_km: numOrNull(distance),
+          note: note.trim() || null,
+        });
+      }}
+    >
+      <EditTitle />
+      <EditNum label="歩数 (歩)" value={steps} onChange={setSteps} />
+      <EditNum label="消費 kcal" value={kcal} onChange={setKcal} />
+      <EditNum label="移動距離 (km)" value={distance} onChange={setDistance} />
+      <div style={{ marginTop: 12 }}>
+        <div style={{ fontSize: 13, color: "var(--ink-2)", marginBottom: 4 }}>メモ</div>
+        <textarea
+          className="input"
+          rows={2}
+          value={note}
+          onChange={(e) => setNote(e.target.value)}
+          style={{ resize: "vertical", width: "100%" }}
+        />
+      </div>
+      <EditActions saving={saving} error={error} onCancel={onCancel} />
+    </form>
+  );
+}
+
 function MealDetail({ meal }: { meal: Meal }) {
   return (
     <>
@@ -1059,6 +1158,78 @@ function BodyDetail({ rec }: { rec: BodyRecord }) {
             </div>
           ))}
       </div>
+    </>
+  );
+}
+
+function ActivityDetail({ rec }: { rec: ActivityRecord }) {
+  const cells: [string, string][] = [
+    ["歩数", rec.steps != null ? `${Math.round(rec.steps).toLocaleString()} 歩` : "—"],
+    ["消費カロリー", rec.active_kcal != null ? `${Math.round(Number(rec.active_kcal))} kcal` : "—"],
+    ["移動距離", rec.distance_km != null ? `${rec.distance_km} km` : "—"],
+  ];
+  return (
+    <>
+      <div style={{ fontSize: 18, fontWeight: 700 }}>歩数・活動</div>
+      <div style={{ fontSize: 11, color: "var(--muted)", marginTop: 4, marginBottom: 14 }}>
+        {fmtDateTime(rec.recorded_at)} · {rec.source === "photo" ? "写真記録" : "手動記録"}
+        {rec.ai_confidence != null && (
+          <span style={{ color: "var(--ai)", marginLeft: 6 }}>
+            自信度 {Math.round(rec.ai_confidence * 100)}%
+          </span>
+        )}
+      </div>
+      <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+        {cells.map(([k, v]) => (
+          <div
+            key={k}
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              padding: "8px 10px",
+              background: "var(--surface-2)",
+              border: "1px solid var(--line)",
+              borderRadius: 8,
+              fontSize: 13,
+            }}
+          >
+            <span style={{ color: "var(--muted)" }}>{k}</span>
+            <span className="num" style={{ fontWeight: 700 }}>
+              {v}
+            </span>
+          </div>
+        ))}
+      </div>
+      {rec.note && (
+        <div
+          style={{
+            background: "var(--surface-2)",
+            borderLeft: "3px solid var(--move)",
+            padding: "8px 10px",
+            fontSize: 12,
+            color: "var(--ink-2)",
+            borderRadius: "0 6px 6px 0",
+            marginTop: 12,
+          }}
+        >
+          {rec.note}
+        </div>
+      )}
+      {rec.ai_note && (
+        <div
+          style={{
+            background: "var(--surface-2)",
+            borderLeft: "3px solid var(--ai)",
+            padding: "8px 10px",
+            fontSize: 12,
+            color: "var(--ink-2)",
+            borderRadius: "0 6px 6px 0",
+            marginTop: 8,
+          }}
+        >
+          {rec.ai_note}
+        </div>
+      )}
     </>
   );
 }

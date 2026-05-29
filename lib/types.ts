@@ -113,6 +113,22 @@ export type BodyRecord = {
   created_at: string;
 };
 
+// スマートウォッチ / ヘルスケアアプリ由来の日次アクティビティ。
+// 将来 HealthKit / Google Fit 連携で自動投入する布石。
+export type ActivityRecord = {
+  id: string;
+  user_id: string;
+  recorded_at: string;
+  steps: number | null;
+  active_kcal: number | null;       // アクティブ消費カロリー (kcal)
+  distance_km: number | null;
+  source: "manual" | "photo";
+  ai_confidence: number | null;
+  ai_note: string | null;
+  note: string | null;
+  created_at: string;
+};
+
 export type Profile = {
   user_id: string;
   display_name: string | null;

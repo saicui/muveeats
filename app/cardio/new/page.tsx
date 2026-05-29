@@ -2,9 +2,9 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { Icon } from "@/app/icons";
+import { RecordSwitch } from "@/app/components/record-switch";
 import { estimateCardioKcal } from "@/lib/met";
 import type { CardioType, Intensity } from "@/lib/types";
 
@@ -117,14 +117,7 @@ export default function NewCardioPage() {
         }}
       >
         <h1 className="page-title">有酸素</h1>
-        <Link
-          href="/workouts/new"
-          className="btn"
-          style={{ padding: "6px 10px", fontSize: 12 }}
-        >
-          <Icon name="dumbbell" size="sm" />
-          筋トレ
-        </Link>
+        <RecordSwitch current="cardio" />
       </div>
       <p className="page-subtitle">時間 / 距離 / 強度を入力 → MET 法で消費 kcal を概算</p>
 

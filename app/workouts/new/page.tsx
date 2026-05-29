@@ -2,9 +2,9 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { Icon } from "@/app/icons";
+import { RecordSwitch } from "@/app/components/record-switch";
 import {
   EXERCISES,
   BODY_PARTS,
@@ -303,15 +303,8 @@ export default function NewWorkoutPage() {
         </div>
       </div>
 
-      <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 8 }}>
-        <Link
-          href="/cardio/new"
-          className="btn"
-          style={{ padding: "5px 10px", fontSize: 11 }}
-        >
-          <Icon name="run" size="sm" />
-          有酸素
-        </Link>
+      <div style={{ marginBottom: 8 }}>
+        <RecordSwitch current="strength" />
       </div>
 
       {/* 後日記録 (任意) */}

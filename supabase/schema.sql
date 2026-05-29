@@ -1,4 +1,4 @@
--- MuveEats schema (v8)
+-- MuveEats schema (v9)
 -- Supabase の SQL Editor で実行してください。冪等に書いています。
 
 create extension if not exists "pgcrypto";
@@ -273,4 +273,33 @@ alter table public.body_records enable row level security;
 
 drop policy if exists "body_records_owner_all" on public.body_records;
 create policy "body_records_owner_all" on public.body_records
+  for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
+
+-- ====================================================================
+-- activity_records (日次アクティビティ: 歩数 / 消費カロリー)
+-- スマートウォッチ・ヘルスケアアプリの記録を手入力 or 写真から取り込む。
+-- 将来の HealthKit / Google Fit 連携の布石。
+-- ====================================================================
+create table if not exists public.activity_records (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references auth.users(id) on delete cascade,
+  recorded_at timestamptz not null default now(),
+  steps integer,
+  active_kcal numeric,              -- アクティブ消費カロリー (kcal)
+  distance_km numeric,
+  source text not null default 'manual',  -- 'manual' | 'photo'
+  ai_confidence numeric,
+  ai_note text,
+  note text,
+  created_at timestamptz not null default now()
+);
+
+create index if not exists activity_records_user_recorded_idx
+  on public.activity_records (user_id, recorded_at desc);
+
+grant select, insert, update, delete on public.activity_records to anon, authenticated;
+alter table public.activity_records enable row level security;
+
+drop policy if exists "activity_records_owner_all" on public.activity_records;
+create policy "activity_records_owner_all" on public.activity_records
   for all using (auth.uid() = user_id) with check (auth.uid() = user_id);

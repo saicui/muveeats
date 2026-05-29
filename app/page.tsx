@@ -7,10 +7,12 @@ import type {
   BodyRecord,
   Profile,
   MealTemplate,
+  ActivityRecord,
 } from "@/lib/types";
 import { TemplateQuickPick } from "./templates-quick";
 import { Sparkline } from "./components/sparkline";
 import { CoachFeedback } from "./coach-feedback";
+import { WeekStrip, type WeekDay } from "./week-strip";
 import { fmtTime } from "@/lib/format";
 
 function sumNum(arr: (number | null)[]): number {
@@ -25,6 +27,7 @@ function startOfDay(d: Date) {
 export default async function DashboardPage() {
   let meals: Meal[] = [];
   let workouts: Workout[] = [];
+  let activityRecords: ActivityRecord[] = [];
   let body: BodyRecord | null = null;
   let bodyWeekAgo: BodyRecord | null = null;
   let bodyList: BodyRecord[] = [];
@@ -41,7 +44,7 @@ export default async function DashboardPage() {
     const todayStart = new Date();
     todayStart.setHours(0, 0, 0, 0);
     const todayISO = todayStart.toISOString().slice(0, 10);
-    const [r1, r2, r3, r4, r5, r6] = await Promise.all([
+    const [r1, r2, r3, r4, r5, r6, r7] = await Promise.all([
       supabase
         .from("meals")
         .select("*")
@@ -69,12 +72,20 @@ export default async function DashboardPage() {
         .from("meal_template_skips")
         .select("template_id")
         .eq("skip_date", todayISO),
+      supabase
+        .from("activity_records")
+        .select("*")
+        .gte("recorded_at", since.toISOString())
+        .order("recorded_at", { ascending: false })
+        .limit(50),
     ]);
     if (r1.error) throw r1.error;
     if (r2.error) throw r2.error;
     if (r3.error) throw r3.error;
     meals = (r1.data ?? []) as Meal[];
     workouts = (r2.data ?? []) as Workout[];
+    // activity_records はマイグレーション未適用でもダッシュボードを壊さないよう非致命扱い
+    if (!r7.error) activityRecords = (r7.data ?? []) as ActivityRecord[];
     bodyList = (r3.data ?? []) as BodyRecord[];
     body = bodyList[0] ?? null;
     if (body) {
@@ -106,9 +117,15 @@ export default async function DashboardPage() {
   const today = startOfDay(new Date());
   const todayMeals = meals.filter((m) => new Date(m.eaten_at) >= today);
   const todayWorkouts = workouts.filter((w) => new Date(w.started_at) >= today);
+  const todayActivity = activityRecords.filter(
+    (a) => new Date(a.recorded_at) >= today,
+  );
 
   const intake = sumNum(todayMeals.map((m) => m.calories));
-  const burn = sumNum(todayWorkouts.map((w) => w.est_kcal));
+  const workoutBurn = sumNum(todayWorkouts.map((w) => w.est_kcal));
+  const activityBurn = sumNum(todayActivity.map((a) => a.active_kcal));
+  const burn = workoutBurn + activityBurn;
+  const todaySteps = sumNum(todayActivity.map((a) => a.steps));
   const intakeP = sumNum(todayMeals.map((m) => m.protein_g));
   const intakeF = sumNum(todayMeals.map((m) => m.fat_g));
   const intakeC = sumNum(todayMeals.map((m) => m.carbs_g));
@@ -123,7 +140,12 @@ export default async function DashboardPage() {
   const streak = computeStreak(meals, workouts, body ? [body] : []);
 
   // 7 日ドット
-  const week = buildWeekDots(meals, workouts, [body, bodyWeekAgo].filter(Boolean) as BodyRecord[]);
+  const week = buildWeekDots(
+    meals,
+    workouts,
+    activityRecords,
+    [body, bodyWeekAgo].filter(Boolean) as BodyRecord[],
+  );
 
   // 直近 14 日のトレンド (摂取・消費 kcal / 体重)
   const trend = buildTrend(meals, workouts, bodyList);
@@ -181,7 +203,13 @@ export default async function DashboardPage() {
               ? [{ label: "筋トレ", value: `${strengthMin}分` }]
               : []),
             ...(cardioMin ? [{ label: "有酸素", value: `${cardioMin}分` }] : []),
-            ...(!strengthMin && !cardioMin
+            ...(todaySteps
+              ? [{ label: "歩数", value: `${Math.round(todaySteps).toLocaleString()}歩` }]
+              : []),
+            ...(activityBurn
+              ? [{ label: "活動", value: `${Math.round(activityBurn)}kcal` }]
+              : []),
+            ...(!strengthMin && !cardioMin && !todaySteps && !activityBurn
               ? [{ label: "未記録", value: "—" }]
               : []),
           ]}
@@ -207,60 +235,22 @@ export default async function DashboardPage() {
 
       {/* Week strip */}
       <div className="section-title">直近 7日</div>
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(7, 1fr)",
-          gap: 4,
-          marginBottom: 18,
-        }}
-      >
-        {week.map((d) => (
-          <div
-            key={d.iso}
-            style={{
-              background: d.today ? "var(--surface)" : "var(--surface-2)",
-              border: d.today ? "1px solid var(--ink)" : "1px solid var(--line)",
-              borderRadius: 8,
-              padding: "8px 4px",
-              textAlign: "center",
-            }}
-          >
-            <div
-              style={{
-                fontSize: 10,
-                color: "var(--muted)",
-                fontWeight: 600,
-                letterSpacing: "0.06em",
-                textTransform: "uppercase",
-                marginBottom: 6,
-              }}
-            >
-              {d.dow}
-            </div>
-            <div style={{ display: "flex", justifyContent: "center", gap: 2, height: 14, alignItems: "center" }}>
-              {d.eat && <Dot color="var(--eat)" />}
-              {d.move && <Dot color="var(--move)" />}
-              {d.body && <Dot color="var(--body)" />}
-              {!d.eat && !d.move && !d.body && <Dot empty />}
-            </div>
-          </div>
-        ))}
-      </div>
+      <WeekStrip days={week} />
 
       {/* Quick actions */}
       <div className="section-title">記録する</div>
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(4, 1fr)",
-          gap: 8,
+          gridTemplateColumns: "repeat(5, 1fr)",
+          gap: 6,
           marginBottom: 16,
         }}
       >
         <QuickAction href="/meals/new" icon="fork" label="食事" />
         <QuickAction href="/workouts/new" icon="dumbbell" label="筋トレ" />
         <QuickAction href="/cardio/new" icon="run" label="有酸素" />
+        <QuickAction href="/activity/new" icon="footprints" label="歩数" />
         <QuickAction href="/body/new" icon="scale" label="体組成" />
       </div>
 
@@ -329,20 +319,6 @@ export default async function DashboardPage() {
         {streak > 0 ? `記録ストリーク ${streak} 日` : "記録ストリーク 0 日"}
       </div>
     </div>
-  );
-}
-
-function Dot({ color, empty }: { color?: string; empty?: boolean }) {
-  return (
-    <span
-      style={{
-        width: 6,
-        height: 6,
-        borderRadius: 999,
-        background: empty ? "transparent" : color,
-        border: empty ? "1px solid var(--line)" : "none",
-      }}
-    />
   );
 }
 
@@ -697,7 +673,7 @@ function QuickAction({
   label,
 }: {
   href: string;
-  icon: "fork" | "dumbbell" | "run" | "scale";
+  icon: "fork" | "dumbbell" | "run" | "scale" | "footprints";
   label: string;
 }) {
   return (
@@ -707,7 +683,7 @@ function QuickAction({
         background: "var(--surface)",
         border: "1px solid var(--line)",
         borderRadius: 10,
-        padding: "12px 8px",
+        padding: "12px 4px",
         textAlign: "center",
         textDecoration: "none",
         color: "var(--ink)",
@@ -894,38 +870,73 @@ function sourceLabel(s: string) {
 function buildWeekDots(
   meals: Meal[],
   workouts: Workout[],
+  activityRecords: ActivityRecord[],
   bodyRecords: BodyRecord[],
-) {
-  // 各日のローカルタイム ISO を 1 パスで Set 化 (旧実装は 7×N で new Date を走らせていた)。
-  // .slice(0,10) は UTC ベースで深夜帯の日付がズレるのでローカルで計算する。
-  const mealDays = new Set(meals.map((m) => isoDate(new Date(m.eaten_at))));
-  const workoutDays = new Set(
-    workouts.map((w) => isoDate(new Date(w.started_at))),
-  );
+): WeekDay[] {
+  // 各日のローカルタイム ISO で集計 (.slice(0,10) は UTC で日跨ぎするためローカル計算)。
+  type Agg = { intake: number; burn: number; p: number; f: number; c: number; meals: number };
+  const agg = new Map<string, Agg>();
+  const ensure = (iso: string): Agg => {
+    let a = agg.get(iso);
+    if (!a) {
+      a = { intake: 0, burn: 0, p: 0, f: 0, c: 0, meals: 0 };
+      agg.set(iso, a);
+    }
+    return a;
+  };
+
+  const mealDays = new Set<string>();
+  for (const m of meals) {
+    const iso = isoDate(new Date(m.eaten_at));
+    mealDays.add(iso);
+    const a = ensure(iso);
+    a.intake += Number(m.calories) || 0;
+    a.p += Number(m.protein_g) || 0;
+    a.f += Number(m.fat_g) || 0;
+    a.c += Number(m.carbs_g) || 0;
+    a.meals += 1;
+  }
+  const workoutDays = new Set<string>();
+  for (const w of workouts) {
+    const iso = isoDate(new Date(w.started_at));
+    workoutDays.add(iso);
+    ensure(iso).burn += Number(w.est_kcal) || 0;
+  }
+  // 歩数・活動の消費カロリーも「動いた日」として消費に合算
+  for (const a of activityRecords) {
+    const iso = isoDate(new Date(a.recorded_at));
+    workoutDays.add(iso);
+    ensure(iso).burn += Number(a.active_kcal) || 0;
+  }
   const bodyDays = new Set(
     bodyRecords.map((b) => isoDate(new Date(b.recorded_at))),
   );
 
   const today = startOfDay(new Date());
-  const result: {
-    iso: string;
-    dow: string;
-    today: boolean;
-    eat: boolean;
-    move: boolean;
-    body: boolean;
-  }[] = [];
+  const result: WeekDay[] = [];
   for (let i = 6; i >= 0; i--) {
     const d = new Date(today);
     d.setDate(today.getDate() - i);
     const iso = isoDate(d);
+    const a = agg.get(iso);
     result.push({
       iso,
       dow: d.toLocaleDateString("ja-JP", { weekday: "short" }),
+      label: d.toLocaleDateString("ja-JP", {
+        month: "long",
+        day: "numeric",
+        weekday: "short",
+      }),
       today: i === 0,
       eat: mealDays.has(iso),
       move: workoutDays.has(iso),
       body: bodyDays.has(iso),
+      intake: Math.round(a?.intake ?? 0),
+      burn: Math.round(a?.burn ?? 0),
+      protein: Math.round(a?.p ?? 0),
+      fat: Math.round(a?.f ?? 0),
+      carbs: Math.round(a?.c ?? 0),
+      mealCount: a?.meals ?? 0,
     });
   }
   return result;

@@ -32,6 +32,7 @@ export type IconName =
   | "grid"
   | "user"
   | "bot"
+  | "footprints"
   | "target";
 
 type Size = "sm" | "md" | "lg";
@@ -168,6 +169,14 @@ const PATHS: Record<IconName, React.ReactNode> = {
       <circle cx="12" cy="12" r="9" />
       <circle cx="12" cy="12" r="5" />
       <circle cx="12" cy="12" r="1" />
+    </>
+  ),
+  footprints: (
+    <>
+      <ellipse cx="8" cy="8.5" rx="2.3" ry="3.3" />
+      <path d="M5.9 12.5c-.7 1.3-.5 2.6.7 3" />
+      <ellipse cx="16" cy="14" rx="2.3" ry="3.3" />
+      <path d="M18.1 18c.7-1.3.5-2.6-.7-3" />
     </>
   ),
 };
